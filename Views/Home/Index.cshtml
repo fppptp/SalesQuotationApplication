@@ -1,0 +1,119 @@
+@* @using SQTWeb.Models.QTMS.ViewModels
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h1 class="h3 mb-1">Quotation Dashboard</h1>
+        <p class="text-muted mb-0">Overview for freight forwarding quotation activity</p>
+    </div>
+    <a asp-controller="Quotations" asp-action="Create" class="btn btn-primary">Create quotation</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="card metric-card h-100">
+            <div class="card-body">
+                <div class="metric-label">Total Quotes</div>
+                <div class="metric-value">@Model.TotalQuotes</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card metric-card h-100">
+            <div class="card-body">
+                <div class="metric-label">Draft</div>
+                <div class="metric-value">@Model.DraftQuotes</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card metric-card h-100">
+            <div class="card-body">
+                <div class="metric-label">Sent</div>
+                <div class="metric-value">@Model.SentQuotes</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card metric-card h-100">
+            <div class="card-body">
+                <div class="metric-label">Approved / Booked</div>
+                <div class="metric-value">@Model.ApprovedOrBookedQuotes</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h6 text-muted text-uppercase">Current Month Sales</h2>
+                <div class="display-6 fw-bold">@Model.CurrentMonthSales.ToString("N2")</div>
+                <p class="text-muted mb-0">Based on quotation date in the current month</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h6 text-muted text-uppercase">Current Month Profit</h2>
+                <div class="display-6 fw-bold">@Model.CurrentMonthProfit.ToString("N2")</div>
+                <p class="text-muted mb-0">Sell amount minus cost amount</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">Latest Quotations</h2>
+        <a asp-controller="Quotations" asp-action="Index" class="btn btn-outline-secondary btn-sm">View all</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Quote No.</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Route</th>
+                    <th>Status</th>
+                    <th class="text-end">Grand Total</th>
+                    <th class="text-end">Profit</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.LatestQuotations.Count == 0)
+                {
+                    <tr>
+                        <td colspan="8" class="text-center py-4 text-muted">No quotation data yet.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model.LatestQuotations)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@item.QuoteNo</td>
+                            <td>@item.QuoteDate.ToString("dd/MM/yyyy")</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.Origin → @item.Destination</td>
+                            <td><span class="badge text-bg-light border">@item.Status</span></td>
+                            <td class="text-end">@item.CurrencyCode @item.GrandTotal.ToString("N2")</td>
+                            <td class="text-end">@item.CurrencyCode @item.ProfitTotal.ToString("N2")</td>
+                            <td class="text-end">
+                                <a asp-controller="Quotations" asp-action="Details" asp-route-id="@item.QuoteId" class="btn btn-sm btn-outline-primary">Open</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+ *@

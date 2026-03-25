@@ -1,0 +1,109 @@
+@* @using SQTWeb.ViewModels
+@model List<ChargeCodeViewModel>
+@{
+    ViewData["Title"] = L["Page_ChargeCodeList"].Value;
+    var keyword = ViewBag.Keyword as string;
+    var active  = ViewBag.Active as bool?;
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h1 class="h3 mb-1">@L["Page_ChargeCodeList"]</h1>
+        <p class="text-muted mb-0">Standard charge codes used across quotations and rate cards</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">@L["Btn_Create"]</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-5">
+                <label class="form-label">@L["Lbl_Keyword"]</label>
+                <input type="text" name="keyword" value="@keyword" class="form-control"
+                       placeholder="Code, name, or category" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">@L["Lbl_Status"]</label>
+                <select name="active" class="form-select">
+                    <option value="">@L["Lbl_AllStatus"]</option>
+                    <option value="true"  selected="@(active == true)">@L["Lbl_Active"]</option>
+                    <option value="false" selected="@(active == false)">@L["Lbl_Inactive"]</option>
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary">@L["Btn_Search"]</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">@L["Btn_Reset"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>@L["Lbl_Code"]</th>
+                    <th>@L["Lbl_ChargeName"]</th>
+                    <th>@L["Lbl_Category"]</th>
+                    <th>@L["Lbl_Basis"]</th>
+                    <th>@L["Lbl_Mode"]</th>
+                    <th class="text-center">@L["Lbl_Status"]</th>
+                    <th class="text-center">Sort</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="8" class="text-center py-4 text-muted">@L["Msg_NoChargeCodesFound"]</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold font-monospace">@item.Code</td>
+                            <td>
+                                @item.Name
+                                @if (!string.IsNullOrWhiteSpace(item.Description))
+                                {
+                                    <div class="small text-muted">@item.Description</div>
+                                }
+                            </td>
+                            <td>@item.Category</td>
+                            <td>@item.DefaultBasis</td>
+                            <td>@(item.TransportMode ?? "—")</td>
+                            <td class="text-center">
+                                @if (item.IsActive)
+                                {
+                                    <span class="badge text-bg-success">@L["Lbl_Active"]</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">@L["Lbl_Inactive"]</span>
+                                }
+                            </td>
+                            <td class="text-center">@item.SortOrder</td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="Edit" asp-route-id="@item.ChargeCodeId"
+                                       class="btn btn-outline-secondary">@L["Btn_Edit"]</a>
+                                    <form asp-action="Delete" method="post" class="m-0">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.ChargeCodeId" />
+                                        <button type="submit" class="btn btn-outline-danger"
+                                                onclick="return confirm('Delete charge code @item.Code?')">@L["Btn_Delete"]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+ *@

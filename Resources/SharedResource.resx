@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- ── Navigation ── -->
+  <data name="Nav_Dashboard"       xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Nav_Quotations"      xml:space="preserve"><value>Quotations</value></data>
+  <data name="Nav_NewQuotation"    xml:space="preserve"><value>New Quotation</value></data>
+  <data name="Nav_Rates"           xml:space="preserve"><value>Rates</value></data>
+  <data name="Nav_RateCards"       xml:space="preserve"><value>Rate Cards</value></data>
+  <data name="Nav_Surcharges"      xml:space="preserve"><value>Surcharges</value></data>
+  <data name="Nav_MarginRules"     xml:space="preserve"><value>Margin Rules</value></data>
+  <data name="Nav_RateTemplates"   xml:space="preserve"><value>Rate Templates</value></data>
+  <data name="Nav_Logout"          xml:space="preserve"><value>Logout</value></data>
+  <data name="Nav_Tagline"         xml:space="preserve"><value>Thailand-ready quotation portal for freight forwarders</value></data>
+  <data name="Nav_Settings"        xml:space="preserve"><value>Settings</value></data>
+  <data name="Nav_ChargeCodes"     xml:space="preserve"><value>Charge Codes</value></data>
+
+  <!-- ── Buttons ── -->
+  <data name="Btn_Save"            xml:space="preserve"><value>Save</value></data>
+  <data name="Btn_SaveQuotation"   xml:space="preserve"><value>Save quotation</value></data>
+  <data name="Btn_SaveRateCard"    xml:space="preserve"><value>Save rate card</value></data>
+  <data name="Btn_SaveTemplate"    xml:space="preserve"><value>Save template</value></data>
+  <data name="Btn_Cancel"          xml:space="preserve"><value>Cancel</value></data>
+  <data name="Btn_Back"            xml:space="preserve"><value>Back</value></data>
+  <data name="Btn_Close"           xml:space="preserve"><value>Close</value></data>
+  <data name="Btn_Print"           xml:space="preserve"><value>Print / Save PDF</value></data>
+  <data name="Btn_Edit"            xml:space="preserve"><value>Edit</value></data>
+  <data name="Btn_Delete"          xml:space="preserve"><value>Delete</value></data>
+  <data name="Btn_Search"          xml:space="preserve"><value>Search</value></data>
+  <data name="Btn_Reset"           xml:space="preserve"><value>Reset</value></data>
+  <data name="Btn_Create"          xml:space="preserve"><value>Create new</value></data>
+  <data name="Btn_Open"            xml:space="preserve"><value>Open</value></data>
+  <data name="Btn_Submit"          xml:space="preserve"><value>Submit</value></data>
+  <data name="Btn_NewRevision"     xml:space="preserve"><value>New Revision</value></data>
+  <data name="Btn_Copy"            xml:space="preserve"><value>Copy</value></data>
+  <data name="Btn_BuildQuotation"  xml:space="preserve"><value>Build Quotation</value></data>
+  <data name="Btn_Upload"          xml:space="preserve"><value>Upload</value></data>
+  <data name="Btn_Activate"        xml:space="preserve"><value>Activate</value></data>
+  <data name="Btn_Deactivate"      xml:space="preserve"><value>Deactivate</value></data>
+  <data name="Btn_AddLine"         xml:space="preserve"><value>Add line</value></data>
+
+  <!-- ── Page titles ── -->
+  <data name="Page_Dashboard"          xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Page_QuotationList"      xml:space="preserve"><value>Quotations</value></data>
+  <data name="Page_CreateQuotation"    xml:space="preserve"><value>Create quotation</value></data>
+  <data name="Page_EditQuotation"      xml:space="preserve"><value>Edit Quotation</value></data>
+  <data name="Page_QuotationDetails"   xml:space="preserve"><value>Quotation Details</value></data>
+  <data name="Page_RateCardList"       xml:space="preserve"><value>Rate Cards</value></data>
+  <data name="Page_NewRateCard"        xml:space="preserve"><value>New Rate Card</value></data>
+  <data name="Page_EditRateCard"       xml:space="preserve"><value>Edit Rate Card</value></data>
+  <data name="Page_RateCardDetails"    xml:space="preserve"><value>Rate Card Details</value></data>
+  <data name="Page_SurchargeList"      xml:space="preserve"><value>Surcharges</value></data>
+  <data name="Page_NewSurcharge"       xml:space="preserve"><value>New Surcharge</value></data>
+  <data name="Page_EditSurcharge"      xml:space="preserve"><value>Edit Surcharge</value></data>
+  <data name="Page_MarginRuleList"     xml:space="preserve"><value>Margin Rules</value></data>
+  <data name="Page_NewMarginRule"      xml:space="preserve"><value>New Margin Rule</value></data>
+  <data name="Page_EditMarginRule"     xml:space="preserve"><value>Edit Margin Rule</value></data>
+  <data name="Page_RateTemplateList"   xml:space="preserve"><value>Rate Templates</value></data>
+  <data name="Page_NewRateTemplate"    xml:space="preserve"><value>New Rate Template</value></data>
+  <data name="Page_EditRateTemplate"   xml:space="preserve"><value>Edit Rate Template</value></data>
+  <data name="Page_RateTemplateDetails" xml:space="preserve"><value>Rate Template Details</value></data>
+  <data name="Page_RateSheetImport"    xml:space="preserve"><value>Rate Sheet Import</value></data>
+
+  <!-- ── Sections ── -->
+  <data name="Sec_Header"           xml:space="preserve"><value>Header</value></data>
+  <data name="Sec_ChargeLines"      xml:space="preserve"><value>Charge Lines</value></data>
+  <data name="Sec_ShipmentDetails"  xml:space="preserve"><value>Shipment Details</value></data>
+  <data name="Lbl_CategorySubtotal" xml:space="preserve"><value>Subtotal</value></data>
+  <data name="Lbl_FreightQuotation" xml:space="preserve"><value>Freight Quotation</value></data>
+  <data name="Lbl_NetAmount"        xml:space="preserve"><value>Net Amount</value></data>
+  <data name="Lbl_PreparedBy"       xml:space="preserve"><value>Prepared by</value></data>
+  <data name="Sec_Summary"          xml:space="preserve"><value>Summary</value></data>
+  <data name="Sec_FinancialSummary" xml:space="preserve"><value>Financial Summary</value></data>
+  <data name="Sec_RemarksTerms"     xml:space="preserve"><value>Remarks / Terms</value></data>
+  <data name="Sec_QuickStatus"      xml:space="preserve"><value>Quick Status Update</value></data>
+  <data name="Sec_Actions"          xml:space="preserve"><value>Actions</value></data>
+  <data name="Sec_RateCardDetails"  xml:space="preserve"><value>Rate Card Details</value></data>
+  <data name="Sec_RateLines"        xml:space="preserve"><value>Rate Lines</value></data>
+  <data name="Sec_TemplateDetails"  xml:space="preserve"><value>Template Details</value></data>
+  <data name="Sec_UploadFile"       xml:space="preserve"><value>Upload File</value></data>
+  <data name="Sec_UploadHistory"    xml:space="preserve"><value>Upload History</value></data>
+
+  <!-- ── Common labels ── -->
+  <data name="Lbl_Status"        xml:space="preserve"><value>Status</value></data>
+  <data name="Lbl_Mode"          xml:space="preserve"><value>Mode</value></data>
+  <data name="Lbl_Route"         xml:space="preserve"><value>Route</value></data>
+  <data name="Lbl_Customer"      xml:space="preserve"><value>Customer</value></data>
+  <data name="Lbl_Currency"      xml:space="preserve"><value>Currency</value></data>
+  <data name="Lbl_Active"        xml:space="preserve"><value>Active</value></data>
+  <data name="Lbl_Inactive"      xml:space="preserve"><value>Inactive</value></data>
+  <data name="Lbl_NoData"        xml:space="preserve"><value>No records found.</value></data>
+  <data name="Lbl_Keyword"       xml:space="preserve"><value>Keyword</value></data>
+  <data name="Lbl_AllStatus"     xml:space="preserve"><value>All status</value></data>
+  <data name="Lbl_AllModes"      xml:space="preserve"><value>All modes</value></data>
+  <data name="Lbl_Notes"         xml:space="preserve"><value>Notes</value></data>
+  <data name="Lbl_Priority"      xml:space="preserve"><value>Priority</value></data>
+  <data name="Lbl_Code"          xml:space="preserve"><value>Code</value></data>
+  <data name="Lbl_Category"      xml:space="preserve"><value>Category</value></data>
+  <data name="Lbl_Basis"         xml:space="preserve"><value>Basis</value></data>
+  <data name="Lbl_BillTo"        xml:space="preserve"><value>Bill To</value></data>
+  <data name="Lbl_BuyRate"       xml:space="preserve"><value>Buy Rate</value></data>
+  <data name="Lbl_SellRate"      xml:space="preserve"><value>Sell Rate</value></data>
+  <data name="Lbl_Margin"        xml:space="preserve"><value>Margin</value></data>
+  <data name="Lbl_MarginPct"     xml:space="preserve"><value>Margin %</value></data>
+  <data name="Lbl_MarkupPct"     xml:space="preserve"><value>Markup %</value></data>
+  <data name="Lbl_MinCharge"     xml:space="preserve"><value>Min Charge</value></data>
+  <data name="Lbl_TotalBuy"      xml:space="preserve"><value>Total Buy</value></data>
+  <data name="Lbl_TotalSell"     xml:space="preserve"><value>Total Sell</value></data>
+  <data name="Lbl_TotalMargin"   xml:space="preserve"><value>Total Margin</value></data>
+  <data name="Lbl_EffectiveDate" xml:space="preserve"><value>Effective Date</value></data>
+  <data name="Lbl_ExpiryDate"    xml:space="preserve"><value>Expiry Date</value></data>
+  <data name="Lbl_Lines"         xml:space="preserve"><value>Lines</value></data>
+  <data name="Lbl_CarrierAgent"  xml:space="preserve"><value>Carrier / Agent</value></data>
+  <data name="Lbl_CreatedAt"     xml:space="preserve"><value>Created At</value></data>
+
+  <!-- ── Quotation labels ── -->
+  <data name="Lbl_QuoteNo"        xml:space="preserve"><value>Quote No.</value></data>
+  <data name="Lbl_QuoteDate"      xml:space="preserve"><value>Date</value></data>
+  <data name="Lbl_ValidUntil"     xml:space="preserve"><value>Valid Until</value></data>
+  <data name="Lbl_RevisionNo"     xml:space="preserve"><value>Rev.</value></data>
+  <data name="Lbl_ContactPerson"  xml:space="preserve"><value>Contact Person</value></data>
+  <data name="Lbl_Incoterm"       xml:space="preserve"><value>Incoterm</value></data>
+  <data name="Lbl_Origin"         xml:space="preserve"><value>Origin</value></data>
+  <data name="Lbl_Destination"    xml:space="preserve"><value>Destination</value></data>
+  <data name="Lbl_ServiceType"    xml:space="preserve"><value>Service Type</value></data>
+  <data name="Lbl_TransitTime"    xml:space="preserve"><value>Transit Time (Days)</value></data>
+  <data name="Lbl_FreeTime"       xml:space="preserve"><value>Free Time (Days)</value></data>
+  <data name="Lbl_Commodity"      xml:space="preserve"><value>Commodity</value></data>
+  <data name="Lbl_Packages"       xml:space="preserve"><value>Packages</value></data>
+  <data name="Lbl_GrossWeight"    xml:space="preserve"><value>Gross Weight</value></data>
+  <data name="Lbl_Volume"         xml:space="preserve"><value>Volume</value></data>
+  <data name="Lbl_ExchangeRate"   xml:space="preserve"><value>Exchange Rate</value></data>
+  <data name="Lbl_SalesPerson"    xml:space="preserve"><value>Sales Person</value></data>
+  <data name="Lbl_Remarks"        xml:space="preserve"><value>Remarks</value></data>
+  <data name="Lbl_Exclusions"     xml:space="preserve"><value>Exclusions</value></data>
+  <data name="Lbl_TermsConditions" xml:space="preserve"><value>Terms &amp; Conditions</value></data>
+  <data name="Lbl_Subtotal"       xml:space="preserve"><value>Subtotal</value></data>
+  <data name="Lbl_CostTotal"      xml:space="preserve"><value>Cost Total</value></data>
+  <data name="Lbl_Profit"         xml:space="preserve"><value>Profit</value></data>
+  <data name="Lbl_GpPercent"      xml:space="preserve"><value>GP %</value></data>
+  <data name="Lbl_Discount"       xml:space="preserve"><value>Discount</value></data>
+  <data name="Lbl_IncludeVAT"     xml:space="preserve"><value>Include VAT</value></data>
+  <data name="Lbl_VatRate"        xml:space="preserve"><value>VAT %</value></data>
+  <data name="Lbl_VatAmount"      xml:space="preserve"><value>VAT</value></data>
+  <data name="Lbl_GrandTotal"     xml:space="preserve"><value>Grand Total</value></data>
+  <data name="Lbl_Quantity"       xml:space="preserve"><value>Qty</value></data>
+  <data name="Lbl_UnitCost"       xml:space="preserve"><value>Unit Cost</value></data>
+  <data name="Lbl_UnitSell"       xml:space="preserve"><value>Unit Sell</value></data>
+  <data name="Lbl_CostAmount"     xml:space="preserve"><value>Cost Amt</value></data>
+  <data name="Lbl_SellAmount"     xml:space="preserve"><value>Sell Amt</value></data>
+  <data name="Lbl_ChargeName"     xml:space="preserve"><value>Charge Name</value></data>
+  <data name="Lbl_RouteContainer" xml:space="preserve"><value>Route / Container</value></data>
+
+  <!-- ── Statuses ── -->
+  <data name="Status_Draft"     xml:space="preserve"><value>Draft</value></data>
+  <data name="Status_Sent"      xml:space="preserve"><value>Sent</value></data>
+  <data name="Status_Approved"  xml:space="preserve"><value>Approved</value></data>
+  <data name="Status_Rejected"  xml:space="preserve"><value>Rejected</value></data>
+  <data name="Status_Expired"   xml:space="preserve"><value>Expired</value></data>
+  <data name="Status_Booked"    xml:space="preserve"><value>Booked</value></data>
+
+  <!-- ── Messages ── -->
+  <data name="Msg_NoQuotationsFound"    xml:space="preserve"><value>No quotations found.</value></data>
+  <data name="Msg_NoRateCardsFound"     xml:space="preserve"><value>No rate cards found.</value></data>
+  <data name="Msg_NoSurchargesFound"    xml:space="preserve"><value>No surcharges found.</value></data>
+  <data name="Msg_NoMarginRulesFound"   xml:space="preserve"><value>No margin rules defined.</value></data>
+  <data name="Msg_NoRateTemplatesFound" xml:space="preserve"><value>No rate templates found.</value></data>
+  <data name="Msg_AtLeastOneLine"       xml:space="preserve"><value>Please add at least one charge line.</value></data>
+  <data name="Msg_NoChargeCodesFound"   xml:space="preserve"><value>No charge codes found.</value></data>
+  <data name="Page_ChargeCodeList"      xml:space="preserve"><value>Charge Codes</value></data>
+  <data name="Page_NewChargeCode"       xml:space="preserve"><value>New Charge Code</value></data>
+  <data name="Page_EditChargeCode"      xml:space="preserve"><value>Edit Charge Code</value></data>
+</root>

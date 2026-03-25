@@ -1,0 +1,16 @@
+---- Replace the INT FK CompanyId approach with a plain string CompanyCode
+---- sourced directly from View_Customer.Company.
+--IF NOT EXISTS (
+--    SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+--    WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'QuotationHeaders'
+--      AND COLUMN_NAME = 'CompanyCode'
+--)
+--    ALTER TABLE dbo.QuotationHeaders ADD CompanyCode VARCHAR(10) NULL;
+--GO
+
+---- Migrate any existing data from the old FK column.
+--UPDATE h
+--SET    h.CompanyCode = c.CompanyCode
+--FROM   dbo.QuotationHeaders h
+--INNER  JOIN dbo.Companies   c ON h.CompanyId = c.CompanyId
+--WHERE  h.CompanyCode IS NULL AND h.CompanyId IS NOT NULL;

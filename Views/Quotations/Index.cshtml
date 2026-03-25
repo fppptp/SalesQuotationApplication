@@ -1,0 +1,117 @@
+@* @using SQTWeb.Models.QTMS
+@using SQTWeb.Models.COMMON;
+@model List<COM_Trs_SalesQuotation>
+@{
+    ViewData["Title"] = L["Page_QuotationList"].Value;
+    var keyword = ViewBag.Keyword as string;
+    var selectedStatus = ViewBag.Status as string;
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h1 class="h3 mb-1">@L["Page_QuotationList"]</h1>
+        <p class="text-muted mb-0">Search and manage freight quotations</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">@L["Nav_NewQuotation"]</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-5">
+                <label class="form-label">@L["Lbl_Keyword"]</label>
+                <input type="text" name="keyword" value="@keyword" class="form-control" placeholder="Quote no., customer, route, sales" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">@L["Lbl_Status"]</label>
+                <select name="status" class="form-select">
+                    <option value="">@L["Lbl_AllStatus"]</option>
+                    @foreach (var status in AppLists.Statuses)
+                    {
+                        if (selectedStatus == status)
+                        {
+                            <option value="@status" selected>@status</option>
+                        }
+                        else
+                        {
+                            <option value="@status">@status</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary">@L["Btn_Search"]</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">@L["Btn_Reset"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>@L["Lbl_QuoteNo"]</th>
+                    <th>@L["Lbl_QuoteDate"]</th>
+                    <th>@L["Lbl_ValidUntil"]</th>
+                    <th>@L["Lbl_Customer"]</th>
+                    <th>@L["Lbl_Mode"]</th>
+                    <th>@L["Lbl_Route"]</th>
+                    <th>@L["Lbl_Status"]</th>
+                    <th class="text-end">@L["Lbl_GrandTotal"]</th>
+                    <th class="text-end">@L["Lbl_Profit"]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="10" class="text-center py-4 text-muted">@L["Msg_NoQuotationsFound"]</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">
+                                @item.QuoteNo
+                                @if (item.RevisionNo > 1)
+                                {
+                                    <span class="badge text-bg-secondary ms-1">Rev. @item.RevisionNo</span>
+                                }
+                            </td>
+                            <td>@item.QuoteDate.ToString("dd/MM/yyyy")</td>
+                            <td>@item.ValidUntil.ToString("dd/MM/yyyy")</td>
+                            <td>@item.CustomerName</td>
+                            <td><span class="badge text-bg-light border">@item.StatusName</span></td>
+                            <td class="text-end">@item.CurrencyCode @item.GrandTotalFrieghtAmountDest.ToString("N2")</td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="Details" asp-route-id="@item.QuoteId" class="btn btn-outline-primary">@L["Btn_Open"]</a>
+                                    <a asp-action="Edit" asp-route-id="@item.QuoteId" class="btn btn-outline-secondary">@L["Btn_Edit"]</a>
+                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="visually-hidden">More</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <form asp-action="Copy" method="post" class="m-0">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.QuoteId" />
+                                                <button type="submit" class="dropdown-item">@L["Btn_Copy"]</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+ *@

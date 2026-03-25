@@ -1,0 +1,50 @@
+---- Run once to add Company support.
+
+--IF NOT EXISTS (
+--    SELECT 1 FROM INFORMATION_SCHEMA.TABLES
+--    WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'Companies'
+--)
+--BEGIN
+--    CREATE TABLE dbo.Companies
+--    (
+--        CompanyId     INT           IDENTITY(1,1) NOT NULL
+--            CONSTRAINT PK_Companies PRIMARY KEY,
+--        CompanyCode   NVARCHAR(20)  NOT NULL,
+--        CompanyNameTH NVARCHAR(200) NOT NULL CONSTRAINT DF_Companies_NameTH DEFAULT '',
+--        CompanyNameEN NVARCHAR(200) NOT NULL CONSTRAINT DF_Companies_NameEN DEFAULT '',
+--        IsActive      BIT           NOT NULL CONSTRAINT DF_Companies_IsActive DEFAULT 1,
+--        CONSTRAINT UQ_Companies_Code UNIQUE (CompanyCode)
+--    );
+--END;
+
+--IF NOT EXISTS (
+--    SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+--    WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'Companies'
+--      AND COLUMN_NAME = 'CompanyNameTH'
+--)
+--BEGIN
+--    ALTER TABLE dbo.Companies
+--    ADD CompanyNameTH NVARCHAR(200) NOT NULL CONSTRAINT DF_Companies_NameTH DEFAULT '';
+--END;
+
+--IF NOT EXISTS (
+--    SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+--    WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'Companies'
+--      AND COLUMN_NAME = 'CompanyNameEN'
+--)
+--BEGIN
+--    ALTER TABLE dbo.Companies
+--    ADD CompanyNameEN NVARCHAR(200) NOT NULL CONSTRAINT DF_Companies_NameEN DEFAULT '';
+--END;
+
+--IF NOT EXISTS (
+--    SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+--    WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'QuotationHeaders'
+--      AND COLUMN_NAME = 'CompanyId'
+--)
+--BEGIN
+--    ALTER TABLE dbo.QuotationHeaders
+--    ADD CompanyId INT NULL
+--        CONSTRAINT FK_QuotationHeaders_CompanyId
+--        REFERENCES dbo.Companies (CompanyId);
+--END;

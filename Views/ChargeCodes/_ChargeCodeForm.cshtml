@@ -1,0 +1,143 @@
+@* @using SQTWeb.ViewModels
+@model ChargeCodeInputModel
+
+<div class="row g-3">
+    <div class="col-md-2">
+        <label asp-for="Code" class="form-label"></label>
+        <input asp-for="Code" class="form-control text-uppercase" placeholder="e.g. OFR" />
+        <span asp-validation-for="Code" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" placeholder="e.g. Ocean Freight" />
+        <span asp-validation-for="Name" class="text-danger small"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="SortOrder" class="form-label"></label>
+        <input asp-for="SortOrder" class="form-control" />
+    </div>
+    <div class="col-md-2 d-flex align-items-end pb-1">
+        <div class="form-check">
+            <input asp-for="IsActive" class="form-check-input" />
+            <label asp-for="IsActive" class="form-check-label">@L["Lbl_Active"]</label>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="Category" class="form-label"></label>
+        <select asp-for="Category" class="form-select"
+                asp-items="new SelectList(AppLists.ChargeCategories)"></select>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="DefaultBasis" class="form-label"></label>
+        <select asp-for="DefaultBasis" class="form-select"
+                asp-items="new SelectList(AppLists.ChargeBases)"></select>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="TransportMode" class="form-label"></label>
+        <select asp-for="TransportMode" class="form-select">
+            <option value="">@L["Lbl_AllModes"]</option>
+            @foreach (var m in AppLists.Modes)
+            {
+                <option value="@m">@m</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-9">
+        <label asp-for="Description" class="form-label"></label>
+        <input asp-for="Description" class="form-control" placeholder="Optional description" />
+    </div>
+
+    <!-- Default rates & global min/max -->
+    <div class="col-md-3">
+        <label asp-for="DefaultBuyRate" class="form-label"></label>
+        <input asp-for="DefaultBuyRate" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="DefaultSellRate" class="form-label"></label>
+        <input asp-for="DefaultSellRate" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="MinCharge" class="form-label"></label>
+        <input asp-for="MinCharge" class="form-control" placeholder="No minimum" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="MaxCharge" class="form-label"></label>
+        <input asp-for="MaxCharge" class="form-control" placeholder="No ceiling" />
+    </div>
+</div>
+
+<!-- Dimension rate tiers -->
+<div class="card mt-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h3 class="h6 mb-0">Dimension Rate Tiers &amp; Min / Max per Bracket</h3>
+        <button type="button" class="btn btn-sm btn-outline-primary js-ccrate-add">Add tier</button>
+    </div>
+    <div class="card-body px-0 pb-0">
+        <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:160px;">Dimension</th>
+                        <th style="width:110px;">From</th>
+                        <th style="width:110px;">To (excl.)</th>
+                        <th style="width:120px;">@L["Lbl_BuyRate"]</th>
+                        <th style="width:120px;">@L["Lbl_SellRate"]</th>
+                        <th style="width:110px;">@L["Lbl_MinCharge"]</th>
+                        <th style="width:110px;">@L["Lbl_MaxCharge"]</th>
+                        <th style="width:50px;"></th>
+                    </tr>
+                </thead>
+                <tbody class="js-ccrate-body">
+                    @for (var i = 0; i < Model.Rates.Count; i++)
+                    {
+                        <tr class="js-ccrate-row">
+                            <td>
+                                <input type="hidden" asp-for="Rates[i].RateId" />
+                                <input type="hidden" asp-for="Rates[i].SortOrder" class="js-ccrate-sort" />
+                                <select asp-for="Rates[i].DimensionType" class="form-select form-select-sm"
+                                        asp-items="new SelectList(AppLists.ChargeDimensions)"></select>
+                            </td>
+                            <td><input asp-for="Rates[i].FromValue" class="form-control form-control-sm" placeholder="—" /></td>
+                            <td><input asp-for="Rates[i].ToValue"   class="form-control form-control-sm" placeholder="∞" /></td>
+                            <td><input asp-for="Rates[i].BuyRate"   class="form-control form-control-sm" /></td>
+                            <td><input asp-for="Rates[i].SellRate"  class="form-control form-control-sm" /></td>
+                            <td><input asp-for="Rates[i].MinCharge" class="form-control form-control-sm" placeholder="—" /></td>
+                            <td><input asp-for="Rates[i].MaxCharge" class="form-control form-control-sm" placeholder="—" /></td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-sm btn-outline-danger js-ccrate-remove">×</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<template id="ccrate-row-template">
+    <tr class="js-ccrate-row">
+        <td>
+            <input type="hidden" name="Rates[__index__].RateId" value="" />
+            <input type="hidden" name="Rates[__index__].SortOrder" value="__sort__" class="js-ccrate-sort" />
+            <select name="Rates[__index__].DimensionType" class="form-select form-select-sm">
+                @foreach (var d in AppLists.ChargeDimensions)
+                {
+                    if (d == "Weight") { <option value="@d" selected>@d</option> }
+                    else               { <option value="@d">@d</option>          }
+                }
+            </select>
+        </td>
+        <td><input name="Rates[__index__].FromValue" class="form-control form-control-sm" placeholder="—" /></td>
+        <td><input name="Rates[__index__].ToValue"   class="form-control form-control-sm" placeholder="∞" /></td>
+        <td><input name="Rates[__index__].BuyRate"   class="form-control form-control-sm" value="0" /></td>
+        <td><input name="Rates[__index__].SellRate"  class="form-control form-control-sm" value="0" /></td>
+        <td><input name="Rates[__index__].MinCharge" class="form-control form-control-sm" placeholder="—" /></td>
+        <td><input name="Rates[__index__].MaxCharge" class="form-control form-control-sm" placeholder="—" /></td>
+        <td class="text-end">
+            <button type="button" class="btn btn-sm btn-outline-danger js-ccrate-remove">×</button>
+        </td>
+    </tr>
+</template>
+
+ *@

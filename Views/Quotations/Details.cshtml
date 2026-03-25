@@ -1,0 +1,186 @@
+@* @using SQTWeb.Models.QTMS
+@model COM_Trs_SalesQuotation
+@{
+    ViewData["Title"] = L["Page_QuotationDetails"].Value;
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-start mb-4 gap-3">
+    <div>
+        <h1 class="h3 mb-1">
+            @Model.QuoteNo
+            <span class="badge text-bg-secondary ms-2">@L["Lbl_RevisionNo"] @Model.RevisionNo</span>
+        </h1>
+        <p class="text-muted mb-0">@Model.CustomerName</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <form asp-action="Revise" method="post" class="m-0">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.QuoteId" />
+            <button type="submit" class="btn btn-outline-warning"
+                    onclick="return confirm('Create a new revision from this quotation?')">@L["Btn_NewRevision"]</button>
+        </form>
+        <form asp-action="Copy" method="post" class="m-0">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.QuoteId" />
+            <button type="submit" class="btn btn-outline-info"
+                    onclick="return confirm('Copy this quotation to a new one?')">@L["Btn_Copy"]</button>
+        </form>
+        <a asp-action="Print" asp-route-id="@Model.QuoteId" class="btn btn-outline-secondary" target="_blank">
+            🖨&nbsp;@L["Btn_Print"]
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model.QuoteId" class="btn btn-primary">@L["Btn_Edit"]</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">@L["Btn_Back"]</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">@L["Sec_Header"]</h2>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 detail-grid">
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_QuoteDate"]</span><div>@Model.QuoteDate.ToString("dd/MM/yyyy")</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_ValidUntil"]</span><div>@Model.ValidUntil.ToString("dd/MM/yyyy")</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_Status"]</span><div><span class="badge text-bg-light border">@Model.Status</span></div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_Mode"]</span><div>@Model.Mode</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_ServiceType"]</span><div>@Model.ServiceType</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_Incoterm"]</span><div>@Model.Incoterm</div></div>
+                    <div class="col-md-6"><span class="detail-label">@L["Lbl_Origin"]</span><div>@Model.Origin</div></div>
+                    <div class="col-md-6"><span class="detail-label">@L["Lbl_Destination"]</span><div>@Model.Destination</div></div>
+                    <div class="col-md-6"><span class="detail-label">@L["Lbl_CarrierAgent"]</span><div>@Model.CarrierOrAgent</div></div>
+                    <div class="col-md-6"><span class="detail-label">@L["Lbl_TransitTime"]</span><div>@(Model.TransitTimeDays?.ToString() ?? "-") day(s)</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_Commodity"]</span><div>@Model.Commodity</div></div>
+                    <div class="col-md-2"><span class="detail-label">@L["Lbl_Packages"]</span><div>@Model.PackageCount</div></div>
+                    <div class="col-md-3"><span class="detail-label">@L["Lbl_GrossWeight"]</span><div>@Model.GrossWeightKg.ToString("N2") KG</div></div>
+                    <div class="col-md-3"><span class="detail-label">@L["Lbl_Volume"]</span><div>@Model.VolumeCbm.ToString("N2") CBM</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_Currency"]</span><div>@Model.CurrencyCode</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_ExchangeRate"]</span><div>@Model.ExchangeRate.ToString("N4")</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_SalesPerson"]</span><div>@Model.SalesPerson</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_ContactPerson"]</span><div>@(!string.IsNullOrWhiteSpace(Model.ContactPerson) ? Model.ContactPerson : "-")</div></div>
+                    <div class="col-md-4"><span class="detail-label">@L["Lbl_FreeTime"]</span><div>@(Model.FreeTimeDays.HasValue ? $"{Model.FreeTimeDays} day(s)" : "-")</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">@L["Sec_ChargeLines"]</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@L["Lbl_Code"]</th>
+                            <th>@L["Lbl_Category"]</th>
+                            <th>@L["Lbl_ChargeName"]</th>
+                            <th>@L["Lbl_Basis"]</th>
+                            <th class="text-end">@L["Lbl_Quantity"]</th>
+                            <th class="text-end">@L["Lbl_UnitCost"]</th>
+                            <th class="text-end">@L["Lbl_MarkupPct"]</th>
+                            <th class="text-end">@L["Lbl_UnitSell"]</th>
+                            <th class="text-end">@L["Lbl_CostAmount"]</th>
+                            <th class="text-end">@L["Lbl_SellAmount"]</th>
+                            <th class="text-end">@L["Lbl_Profit"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>@item.ChargeCode</td>
+                                <td>@item.ChargeCategory</td>
+                                <td>@item.ChargeName</td>
+                                <td>@item.ChargeBasis</td>
+                                <td class="text-end">@item.Quantity.ToString("N2")</td>
+                                <td class="text-end">@item.UnitCost.ToString("N2")</td>
+                                <td class="text-end">@item.MarkupPercent.ToString("N2") %</td>
+                                <td class="text-end">@item.UnitPrice.ToString("N2")</td>
+                                <td class="text-end">@item.CostAmount.ToString("N2")</td>
+                                <td class="text-end">@item.SellAmount.ToString("N2")</td>
+                                <td class="text-end">@item.ProfitAmount.ToString("N2")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">@L["Sec_RemarksTerms"]</h2>
+            </div>
+            <div class="card-body">
+                <h3 class="h6">@L["Lbl_Remarks"]</h3>
+                <p class="mb-4">@(!string.IsNullOrWhiteSpace(Model.Remarks) ? Model.Remarks : "-")</p>
+
+                <h3 class="h6">@L["Lbl_Exclusions"]</h3>
+                <p class="mb-4">@(!string.IsNullOrWhiteSpace(Model.Exclusions) ? Model.Exclusions : "-")</p>
+
+                <h3 class="h6">@L["Lbl_TermsConditions"]</h3>
+                <p class="mb-0">@(!string.IsNullOrWhiteSpace(Model.TermsAndConditions) ? Model.TermsAndConditions : "-")</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card sticky-summary mb-4">
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">@L["Sec_FinancialSummary"]</h2>
+            </div>
+            <div class="card-body">
+                <div class="summary-row">
+                    <span>@L["Lbl_Subtotal"]</span>
+                    <strong>@Model.CurrencyCode @Model.Subtotal.ToString("N2")</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_CostTotal"]</span>
+                    <strong>@Model.CurrencyCode @Model.CostTotal.ToString("N2")</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_MarkupPct"]</span>
+                    <strong>@Model.MarkupPercent.ToString("N2") %</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_Profit"]</span>
+                    <strong>@Model.CurrencyCode @Model.ProfitTotal.ToString("N2")</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_GpPercent"]</span>
+                    <strong>@Model.GpPercent.ToString("N2") %</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_Discount"]</span>
+                    <strong>@Model.CurrencyCode @Model.DiscountAmount.ToString("N2")</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_VatAmount"]</span>
+                    <strong>@Model.CurrencyCode @Model.VatAmount.ToString("N2")</strong>
+                </div>
+                <div class="summary-row grand-total">
+                    <span>@L["Lbl_GrandTotal"]</span>
+                    <strong>@Model.CurrencyCode @Model.GrandTotal.ToString("N2")</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">@L["Sec_QuickStatus"]</h2>
+            </div>
+            <div class="card-body d-grid gap-2">
+                @foreach (var status in AppLists.Statuses)
+                {
+                    <form asp-action="ChangeStatus" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.QuoteId" />
+                        <input type="hidden" name="status" value="@status" />
+                        <button type="submit" class="btn @(Model.Status == status ? "btn-primary" : "btn-outline-secondary") w-100">@status</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+ *@

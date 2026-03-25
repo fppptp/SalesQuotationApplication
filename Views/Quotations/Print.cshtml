@@ -1,0 +1,247 @@
+@* @using SQTWeb.Models.QTMS
+@model COM_Trs_SalesQuotation
+@inject IConfiguration Config
+@{
+    Layout = "~/Views/Shared/_PrintLayout.cshtml";
+    ViewData["Title"] = $"{Model.QuotationNo} — {L["Lbl_FreightQuotation"].Value}";
+
+    var co      = Config.GetSection("Company");
+    var coName  = co["Name"]?.Trim() is { Length: > 0 } n ? n : "Freight Quote Web";
+    var coAddr  = co["Address"]?.Trim() ?? "";
+    var coPhone = co["Phone"]?.Trim()   ?? "";
+    var coEmail = co["Email"]?.Trim()   ?? "";
+
+}
+
+<!-- Print toolbar (hidden on print) -->
+<div class="print-toolbar no-print d-flex gap-2 align-items-center mb-2">
+    <button onclick="window.print()" class="btn btn-primary btn-sm">
+        🖨&nbsp;@L["Btn_Print"]
+    </button>
+    <button onclick="window.close()" class="btn btn-outline-secondary btn-sm">✕&nbsp;@L["Btn_Close"]</button>
+    <span class="ms-auto small text-muted">Ctrl + P &nbsp;·&nbsp; Save as PDF via browser print dialog</span>
+</div>
+
+<!-- ═══ DOCUMENT ═══════════════════════════════════════════════════════════ -->
+<div class="print-document">
+
+    <!-- ── Letterhead ──────────────────────────────────────────────────── -->
+    <table style="width:100%;border-collapse:collapse;" class="mb-3">
+        <tr>
+            <td style="width:50%;vertical-align:top;">
+                <div class="fw-bold fs-4 doc-accent">@coName</div>
+                @if (!string.IsNullOrWhiteSpace(coAddr))  { <div class="small text-muted">@coAddr</div> }
+                @if (!string.IsNullOrWhiteSpace(coPhone)) { <div class="small text-muted">Tel: @coPhone</div> }
+                @if (!string.IsNullOrWhiteSpace(coEmail)) { <div class="small text-muted">Email: @coEmail</div> }
+            </td>
+            <td style="width:50%;vertical-align:top;text-align:right;">
+                <div class="fw-bold text-uppercase doc-accent" style="font-size:1.5rem;letter-spacing:0.05em;">
+                    @L["Lbl_FreightQuotation"]
+                </div>
+                <table style="margin-left:auto;font-size:0.88rem;border-collapse:collapse;">
+                    <tr>
+                        <td class="text-muted pe-3 pb-1">@L["Lbl_QuoteNo"]</td>
+                        <td class="fw-semibold pb-1">@Model.QuotationNo</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted pe-3 pb-1">@L["Lbl_RevisionNo"]</td>
+                        <td class="pb-1">@Model.RevisionNo</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted pe-3 pb-1">@L["Lbl_QuoteDate"]</td>
+                        <td class="pb-1">@Model.QuotationDate.ToString("dd MMMM yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted pe-3">@L["Lbl_ValidUntil"]</td>
+                        <td>@Model.ValidUntil.ToString("dd MMMM yyyy")</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <hr class="my-3" />
+
+    <!-- ── Bill-To + Reference ─────────────────────────────────────────── -->
+    <table style="width:100%;border-collapse:collapse;" class="mb-4">
+        <tr>
+            <td style="width:55%;vertical-align:top;">
+                <div class="section-label">@L["Lbl_BillTo"]</div>
+                <div class="fw-semibold" style="font-size:1.1rem;">@Model.CustomerName</div>
+                @if (!string.IsNullOrWhiteSpace(Model.ContactPerson))
+                {
+                    <div class="small text-muted">Att: @Model.ContactPerson</div>
+                }
+            </td>
+            <td style="width:45%;vertical-align:top;">
+                <table style="font-size:0.88rem;border-collapse:collapse;margin-left:auto;">
+                    <tr>
+                        <td class="text-muted pe-3 pb-1">@L["Lbl_Currency"]</td>
+                        <td class="fw-semibold pb-1">@Model.CurrencyCode</td>
+                    </tr>
+                    @if (Model.ExchangeRate != 1)
+                    {
+                        <tr>
+                            <td class="text-muted pe-3 pb-1">@L["Lbl_ExchangeRate"]</td>
+                            <td class="pb-1">@Model.ExchangeRate.ToString("N4")</td>
+                        </tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.SalesPerson))
+                    {
+                        <tr>
+                            <td class="text-muted pe-3">@L["Lbl_SalesPerson"]</td>
+                            <td>@Model.SalesPerson</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ── Shipment Details ────────────────────────────────────────────── -->
+    <div class="border rounded p-3 mb-4" style="background:#f8fafc;">
+        <div class="section-label">@L["Sec_ShipmentDetails"]</div>
+        <div class="mb-1">
+            <span class="fw-semibold">@Model.Origin</span>
+            <span class="text-muted mx-2">→</span>
+            <span class="fw-semibold">@Model.Destination</span>
+            <span class="text-muted mx-3">|</span>
+            <span>@Model.Mode</span>
+            <span class="text-muted mx-1">·</span>
+            <span>@Model.ServiceType</span>
+            <span class="text-muted mx-1">·</span>
+            <span class="fw-semibold">@Model.Incoterm</span>
+        </div>
+        <div class="small text-muted">
+            @if (!string.IsNullOrWhiteSpace(Model.CarrierOrAgent))
+            {
+                <span>@L["Lbl_CarrierAgent"]: @Model.CarrierOrAgent</span>
+                <span class="mx-2">|</span>
+            }
+            @if (Model.TransitTimeDays.HasValue)
+            {
+                <span>@L["Lbl_TransitTime"]: @Model.TransitTimeDays day(s)</span>
+                <span class="mx-2">|</span>
+            }
+            @if (Model.FreeTimeDays.HasValue)
+            {
+                <span>@L["Lbl_FreeTime"]: @Model.FreeTimeDays day(s)</span>
+            }
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.Commodity) || Model.PackageCount > 0 || Model.GrossWeightKg > 0 || Model.VolumeCbm > 0)
+        {
+            <div class="small mt-1">
+                @if (!string.IsNullOrWhiteSpace(Model.Commodity))
+                {
+                    <span>@L["Lbl_Commodity"]: @Model.Commodity</span>
+                    <span class="mx-2">|</span>
+                }
+                @if (Model.PackageCount > 0)
+                {
+                    <span>@L["Lbl_Packages"]: @Model.PackageCount</span>
+                    <span class="mx-2">|</span>
+                }
+                @if (Model.GrossWeightKg > 0)
+                {
+                    <span>@L["Lbl_GrossWeight"]: @Model.GrossWeightKg.ToString("N2") KG</span>
+                    <span class="mx-2">|</span>
+                }
+                @if (Model.VolumeCbm > 0)
+                {
+                    <span>@L["Lbl_Volume"]: @Model.VolumeCbm.ToString("N2") CBM</span>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- ── Charge Lines ────────────────────────────────────────────────── -->
+    <div class="section-label">@L["Sec_ChargeLines"]</div>
+    <table class="table table-sm table-bordered mb-0" style="font-size:0.87rem;">
+        <thead>
+            <tr style="background:#1744d1;color:white;">
+                <th style="width:80px;">@L["Lbl_Code"]</th>
+                <th>@L["Lbl_ChargeName"]</th>
+                <th style="width:130px;">@L["Lbl_Basis"]</th>
+                <th style="width:60px;" class="text-end">@L["Lbl_Quantity"]</th>
+                <th style="width:110px;" class="text-end">@L["Lbl_UnitSell"] (@Model.CurrencyCode)</th>
+                <th style="width:120px;" class="text-end">@L["Lbl_SellAmount"] (@Model.CurrencyCode)</th>
+            </tr>
+        </thead>
+        @foreach (var group in groups)
+        {
+            var groupTotal = group.Sum(x => x.SellAmount);
+            <tbody>
+                <tr class="category-header">
+                    <td colspan="6">@group.Key</td>
+                </tr>
+                @foreach (var item in group.OrderBy(x => x.SortOrder))
+                {
+                    <tr>
+                        <td class="font-monospace">@item.ChargeCode</td>
+                        <td>@item.ChargeName</td>
+                        <td>@item.ChargeBasis</td>
+                        <td class="text-end">@item.Quantity.ToString("N2")</td>
+                        <td class="text-end">@item.UnitPrice.ToString("N2")</td>
+                        <td class="text-end fw-semibold">@item.SellAmount.ToString("N2")</td>
+                    </tr>
+                }
+                <tr class="category-subtotal">
+                    <td colspan="5" class="text-end fst-italic text-muted">@group.Key @L["Lbl_CategorySubtotal"]</td>
+                    <td class="text-end fw-semibold">@groupTotal.ToString("N2")</td>
+                </tr>
+            </tbody>
+        }
+    </table>
+
+    <!-- ── Financial Summary ──────────────────────────────────────────── -->
+    <div class="d-flex justify-content-end mt-3 mb-4">
+        <table style="font-size:0.9rem;min-width:340px;border-collapse:collapse;">
+            <tr>
+                <td class="text-muted pe-4 pb-1">@L["Lbl_Subtotal"]</td>
+                <td class="text-end pb-1 fw-semibold">@Model.CurrencyCode @Model.Subtotal.ToString("N2")</td>
+            </tr>
+            @if (Model.DiscountAmount > 0)
+            {
+                <tr>
+                    <td class="text-muted pe-4 pb-1">@L["Lbl_Discount"]</td>
+                    <td class="text-end pb-1">(@Model.CurrencyCode @Model.DiscountAmount.ToString("N2"))</td>
+                </tr>
+                <tr>
+                    <td class="text-muted pe-4 pb-1">@L["Lbl_NetAmount"]</td>
+                    <td class="text-end pb-1">@Model.CurrencyCode @Model.NetBeforeVat.ToString("N2")</td>
+                </tr>
+            }
+            @if (Model.IncludeVat)
+            {
+                <tr>
+                    <td class="text-muted pe-4 pb-1">@L["Lbl_VatAmount"] (@Model.VatRate.ToString("N0")%)</td>
+                    <td class="text-end pb-1">@Model.CurrencyCode @Model.VatAmount.ToString("N2")</td>
+                </tr>
+            }
+            <tr class="grand-total-row">
+                <td class="pe-4 pt-2">@L["Lbl_GrandTotal"]</td>
+                <td class="text-end pt-2">@Model.CurrencyCode @(Model.GrandTotalFrieghtAmountDest?.ToString("N2") ?? "0.00")</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ── Remarks / Exclusions / T&C ─────────────────────────────────── -->
+    @{
+        var hasRemarks = !string.IsNullOrWhiteSpace(Model.AdditionalInformation);
+    }
+    @if (hasRemarks || hasExcl || hasTerms)
+    {
+        <hr class="my-3" />
+
+        @if (hasRemarks)
+        {
+            <div class="mb-3">
+                <div class="section-label">@L["Lbl_Remarks"]</div>
+                <p class="mb-0 small" style="white-space:pre-line;">@Model.AdditionalInformation</p>
+            </div>
+        }   
+    }
+
+
+</div>
+ *@

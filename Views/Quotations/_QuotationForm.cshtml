@@ -1,0 +1,359 @@
+@* @using Microsoft.AspNetCore.Mvc.Rendering
+@using SQTWeb.Models.QTMS
+@model COM_Trs_SalesQuotation
+@{
+    var companies = ViewBag.Companies as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>());
+}
+
+@Html.AntiForgeryToken()
+<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+<div class="row g-4">
+    <div class="col-xl-8">
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">@L["Sec_Header"]</h2>
+            </div>
+            <div class="card-body">
+                @if (!string.IsNullOrWhiteSpace(Model.QuotationNo))
+                {
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label asp-for="QuotationNo" class="form-label"></label>
+                            <div class="input-group">
+                                <input asp-for="QuotationNo" class="form-control" readonly />                               
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label asp-for="QuotationDate" class="form-label"></label>
+                        <input asp-for="QuotationDate" class="form-control" />
+                        <span asp-validation-for="QuotationDate" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="ValidUntil" class="form-label"></label>
+                        <input asp-for="ValidUntil" class="form-control" />
+                        <span asp-validation-for="ValidUntil" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="StatusName" class="form-label"></label>
+                        <select asp-for="StatusName" class="form-select" asp-items="new SelectList(AppLists.Statuses)"></select>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="CompanyCode" class="form-label"></label>
+                        <select asp-for="CompanyCode" class="form-select" asp-items="companies">
+                            <option value="">-- Select company --</option>
+                        </select>
+                        <span asp-validation-for="CompanyCode" class="text-danger small"></span>
+                    </div>
+                    .
+                    <div class="col-md-3">
+                        <label asp-for="CustomerCode" class="form-label"></label>
+                        <input asp-for="CustomerCode" class="form-control" />
+                    </div>
+                    <div class="col-md-9">
+                        <label asp-for="CustomerName" class="form-label"></label>
+                        <input asp-for="CustomerName" class="form-control" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="ContactPerson" class="form-label"></label>
+                        <input asp-for="ContactPerson" class="form-control" placeholder="Contact person for this quotation" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="ContactEmail" class="form-label"></label>
+                        <input asp-for="ContactEmail" class="form-control" type="email" />
+                        <span asp-validation-for="ContactEmail" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="ContactPhone" class="form-label"></label>
+                        <input asp-for="ContactPhone" class="form-control" type="tel" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Mode" class="form-label"></label>
+                        <select asp-for="Mode" class="form-select" asp-items="new SelectList(AppLists.Modes)"></select>
+                    </div>
+                   
+                    <div class="col-md-6">
+                        <label asp-for="Origin" class="form-label"></label>
+                        <input asp-for="Origin" class="form-control" placeholder="Bangkok, Thailand" />
+                        <span asp-validation-for="Origin" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Destination" class="form-label"></label>
+                        <input asp-for="Destination" class="form-control" placeholder="Singapore" />
+                        <span asp-validation-for="Destination" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="CarrierOrAgent" class="form-label"></label>
+                        <input asp-for="CarrierOrAgent" class="form-control" placeholder="Carrier or overseas agent" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="TransitTimeDays" class="form-label"></label>
+                        <input asp-for="TransitTimeDays" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="FreeTimeDays" class="form-label"></label>
+                        <input asp-for="FreeTimeDays" class="form-control" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Commodity" class="form-label"></label>
+                        <input asp-for="Commodity" class="form-control" placeholder="Electronic parts" />
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="PackageCount" class="form-label"></label>
+                        <input asp-for="PackageCount" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="GrossWeightKg" class="form-label"></label>
+                        <input asp-for="GrossWeightKg" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="VolumeCbm" class="form-label"></label>
+                        <input asp-for="VolumeCbm" class="form-control" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="CurrencyCode" class="form-label"></label>
+                        <select asp-for="CurrencyCode" class="form-select" asp-items="new SelectList(AppLists.Currencies)"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="ExchangeRate" class="form-label"></label>
+                        <input asp-for="ExchangeRate" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="SalesPerson" class="form-label"></label>
+                        <input asp-for="SalesPerson" class="form-control" placeholder="Sales name" />
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Remarks" class="form-label"></label>
+                        <textarea asp-for="Remarks" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="TermsAndConditions" class="form-label"></label>
+                        <textarea asp-for="TermsAndConditions" class="form-control" rows="4"></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Exclusions" class="form-label"></label>
+                        <textarea asp-for="Exclusions" class="form-control" rows="3"
+                                  placeholder="Items and charges NOT included in this quotation"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">@L["Sec_ChargeLines"]</h2>
+                <button type="button" class="btn btn-sm btn-outline-primary js-add-row">@L["Btn_AddLine"]</button>
+            </div>
+            <div class="card-body px-0">
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0 js-quote-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 110px;">@L["Lbl_Code"]</th>
+                                <th style="width: 140px;">@L["Lbl_Category"]</th>
+                                <th>@L["Lbl_ChargeName"]</th>
+                                <th style="width: 160px;">@L["Lbl_Basis"]</th>
+                                <th style="width: 100px;">@L["Lbl_Quantity"]</th>
+                                <th style="width: 120px;">@L["Lbl_UnitCost"]</th>
+                                <th style="width: 90px;" class="text-end">@L["Lbl_MarkupPct"]</th>
+                                <th style="width: 120px;">@L["Lbl_UnitSell"]</th>
+                                <th style="width: 120px;" class="text-end">@L["Lbl_CostAmount"]</th>
+                                <th style="width: 120px;" class="text-end">@L["Lbl_SellAmount"]</th>
+                                <th style="width: 120px;" class="text-end">@L["Lbl_Profit"]</th>
+                                <th style="width: 70px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="js-quote-body">
+                            @if (Model.Items.Count == 0)
+                            {
+                                Model.Items.Add(new QuoteItemInputModel { SortOrder = 1, ChargeBasis = "Lump Sum", Quantity = 1 });
+                            }
+
+                            @for (var i = 0; i < Model.Items.Count; i++)
+                            {
+                                <tr class="js-quote-row">
+                                    <td>
+                                        <input asp-for="Items[i].ItemId" type="hidden" />
+                                        <input asp-for="Items[i].SortOrder" type="hidden" class="js-sort-order" />
+                                        <div class="input-group input-group-sm">
+                                            <input asp-for="Items[i].ChargeCode"
+                                                   class="form-control form-control-sm js-charge-code text-uppercase"
+                                                   autocomplete="off" placeholder="Code" />
+                                            <button type="button" class="btn btn-outline-secondary js-cc-lookup px-1"
+                                                    tabindex="-1" title="Browse charge codes">▾</button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <select asp-for="Items[i].ChargeCategory" class="form-select form-select-sm js-charge-category"
+                                                asp-items="new SelectList(AppLists.ChargeCategories)"></select>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Items[i].ChargeName" class="form-control form-control-sm js-charge-name" />
+                                    </td>
+                                    <td>
+                                        <select asp-for="Items[i].ChargeBasis" class="form-select form-select-sm js-charge-basis" asp-items="new SelectList(AppLists.ChargeBases)"></select>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Items[i].Quantity" class="form-control form-control-sm js-qty" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="Items[i].UnitCost" class="form-control form-control-sm js-unit-cost" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm js-markup-pct text-end"
+                                               value="@Model.Items[i].MarkupPercent.ToString("N2")" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="Items[i].UnitPrice" class="form-control form-control-sm js-unit-price" />
+                                    </td>
+                                    <td class="text-end js-cost-amount">@Model.Items[i].CostAmount.ToString("N2")</td>
+                                    <td class="text-end js-sell-amount">@Model.Items[i].SellAmount.ToString("N2")</td>
+                                    <td class="text-end js-profit-amount">@Model.Items[i].ProfitAmount.ToString("N2")</td>
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-sm btn-outline-danger js-remove-row">×</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <template id="quote-row-template">
+            <tr class="js-quote-row">
+                <td>
+                    <input name="Items[__index__].ItemId" type="hidden" value="" />
+                    <input name="Items[__index__].SortOrder" type="hidden" value="__sort__" class="js-sort-order" />
+                    <div class="input-group input-group-sm">
+                        <input name="Items[__index__].ChargeCode"
+                               class="form-control form-control-sm js-charge-code text-uppercase"
+                               autocomplete="off" placeholder="Code" />
+                        <button type="button" class="btn btn-outline-secondary js-cc-lookup px-1"
+                                tabindex="-1" title="Browse charge codes">▾</button>
+                    </div>
+                </td>
+                <td>
+                    <select name="Items[__index__].ChargeCategory" class="form-select form-select-sm js-charge-category">
+                        @foreach (var cat in AppLists.ChargeCategories)
+                        {
+                            if (cat == "Freight")
+                            {
+                                <option value="@cat" selected>@cat</option>
+                            }
+                            else
+                            {
+                                <option value="@cat">@cat</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <input name="Items[__index__].ChargeName" class="form-control form-control-sm js-charge-name" />
+                </td>
+                <td>
+                    <select name="Items[__index__].ChargeBasis" class="form-select form-select-sm js-charge-basis">
+                        @foreach (var basis in AppLists.ChargeBases)
+                        {
+                            if (basis == "Lump Sum")
+                            {
+                                <option value="@basis" selected>@basis</option>
+                            }
+                            else
+                            {
+                                <option value="@basis">@basis</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <input name="Items[__index__].Quantity" class="form-control form-control-sm js-qty" value="1" />
+                </td>
+                <td>
+                    <input name="Items[__index__].UnitCost" class="form-control form-control-sm js-unit-cost" value="0" />
+                </td>
+                <td>
+                    <input type="text" class="form-control form-control-sm js-markup-pct text-end" value="0.00" />
+                </td>
+                <td>
+                    <input name="Items[__index__].UnitPrice" class="form-control form-control-sm js-unit-price" value="0" />
+                </td>
+                <td class="text-end js-cost-amount">0.00</td>
+                <td class="text-end js-sell-amount">0.00</td>
+                <td class="text-end js-profit-amount">0.00</td>
+                <td class="text-end">
+                    <button type="button" class="btn btn-sm btn-outline-danger js-remove-row">×</button>
+                </td>
+            </tr>
+        </template>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card sticky-summary">
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">@L["Sec_Summary"]</h2>
+            </div>
+            <div class="card-body">
+                <div class="summary-row">
+                    <span>@L["Lbl_Subtotal"]</span>
+                    <strong class="js-summary-subtotal">@Model.Subtotal.ToString("N2")</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_CostTotal"]</span>
+                    <strong class="js-summary-cost">@Model.CostTotal.ToString("N2")</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_MarkupPct"]</span>
+                    <strong class="js-summary-markup">@Model.MarkupPercent.ToString("N2") %</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_Profit"]</span>
+                    <strong class="js-summary-profit">@Model.ProfitTotal.ToString("N2")</strong>
+                </div>
+                <div class="summary-row">
+                    <span>@L["Lbl_GpPercent"]</span>
+                    <strong class="js-summary-gp">@Model.GpPercent.ToString("N2") %</strong>
+                </div>
+                <hr />
+                <div class="mb-3">
+                    <label asp-for="DiscountAmount" class="form-label"></label>
+                    <input asp-for="DiscountAmount" class="form-control js-discount" />
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input asp-for="IncludeVat" class="form-check-input js-include-vat" />
+                    <label asp-for="IncludeVat" class="form-check-label"></label>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="VatRate" class="form-label"></label>
+                    <input asp-for="VatRate" class="form-control js-vat-rate" />
+                </div>
+                <hr />
+                <div class="summary-row">
+                    <span>@L["Lbl_VAT"]</span>
+                    <strong class="js-summary-vat">@Model.VatAmount.ToString("N2")</strong>
+                </div>
+                <div class="summary-row grand-total">
+                    <span>@L["Lbl_GrandTotal"]</span>
+                    <strong class="js-summary-grand">@Model.GrandTotal.ToString("N2")</strong>
+                </div>
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">@L["Btn_SaveQuotation"]</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">@L["Btn_Cancel"]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ *@
