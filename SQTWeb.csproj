@@ -4,6 +4,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Models\Context\**" />
+    <Content Remove="Models\Context\**" />
+    <EmbeddedResource Remove="Models\Context\**" />
+    <None Remove="Models\Context\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
@@ -11,11 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Context\" />
+    <None Include=".github\copilot-instructions.md" />
+    <None Include="efpt.config.json.user" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include=".github\copilot-instructions.md" />
-    <None Include="efpt.config.json.user" />
+    <ProjectReference Include="..\Libraries\AppLib\AppLib.csproj" />
+    <ProjectReference Include="..\Libraries\UtilityLib\UtilityLib.csproj" />
+    <ProjectReference Include="..\Models\ACMSModel\ACMSModel.csproj" />
+    <ProjectReference Include="..\Models\COMMONModel\COMMONModel.csproj" />
+    <ProjectReference Include="..\Models\FMSModel\FMSModel.csproj" />
+    <ProjectReference Include="..\Models\LMSModel\LMSModel.csproj" />
+    <ProjectReference Include="..\Models\QTMSModel\QTMSModel.csproj" />
   </ItemGroup>
 </Project>

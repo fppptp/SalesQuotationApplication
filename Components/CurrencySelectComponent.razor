@@ -1,0 +1,50 @@
+@using FMSModel.Models
+@using SQTWeb.Services.Masters
+@inject ICurrencyService CurrencyService
+
+@if (_options.Count == 0)
+{
+    <select class="@CssClass" disabled>
+        <option>@LoadingText</option>
+    </select>
+}
+else
+{
+    <select class="@CssClass" value="@Value" @onchange="HandleChanged">
+        <option value="">@Placeholder</option>
+        @foreach (var item in _options)
+        {
+            <option value="@item.CurrencyCode">@item.CurrencyCode - @item.CurrencyName</option>
+        }
+    </select>
+}
+
+@code {
+    [Parameter]
+    public string? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; } = "form-select";
+
+    [Parameter]
+    public string Placeholder { get; set; } = "-- Select Currency --";
+
+    [Parameter]
+    public string LoadingText { get; set; } = "Loading...";
+
+    private IReadOnlyList<COM_View_MS_TISI_Currency> _options = Array.Empty<COM_View_MS_TISI_Currency>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _options = await CurrencyService.GetOptionsAsync();
+    }
+
+    private async Task HandleChanged(ChangeEventArgs e)
+    {
+        Value = e.Value?.ToString();
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

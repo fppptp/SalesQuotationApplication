@@ -1,0 +1,68 @@
+@using System.Linq
+@{
+    var modelErrors = ViewData.ModelState?.Values
+        .SelectMany(v => v.Errors)
+        .Select(e => e.ErrorMessage)
+        .Where(m => !string.IsNullOrWhiteSpace(m))
+        .ToList() ?? new List<string>();
+
+    var tempError = TempData["Error"] as string;
+    var tempSuccess = TempData["Success"] as string;
+    var hasMessages = modelErrors.Any() || !string.IsNullOrWhiteSpace(tempError) || !string.IsNullOrWhiteSpace(tempSuccess);
+}
+
+@if (hasMessages)
+{
+    @* Non-blocking Bootstrap toast positioned below the header so it doesn't cover the shared layout/nav *@
+    <div class="toast-container position-fixed end-0 p-3" style="z-index: 1080; top:76px;">
+        <div id="validationToast" class="toast" role="status" aria-live="polite" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <small class="text-muted">now</small>
+                <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @if (!string.IsNullOrWhiteSpace(tempSuccess))
+                {
+                    <div class="alert alert-success mb-2" style="white-space: pre-line; margin-bottom: .5rem;">@tempSuccess</div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(tempError))
+                {
+                    <div class="alert alert-danger mb-2" style="white-space: pre-line; margin-bottom: .5rem;">@tempError</div>
+                }
+
+                @if (modelErrors.Any())
+                {
+                    <div class="alert alert-danger mb-0">
+                        <ul class="mb-0">
+                            @foreach (var err in modelErrors)
+                            {
+                                <li>@err</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            document.addEventListener('DOMContentLoaded', function () {
+                var toastEl = document.getElementById('validationToast');
+                if (!toastEl) return;
+
+                // If Bootstrap's JS is available, use its Toast API for proper behavior.
+                if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
+                    // autohide true so it doesn't block the UI; delay 7000ms by default
+                    var toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 7000 });
+                    toast.show();
+                } else {
+                    // Fallback: add show class so it appears and allow dismissal via the close button
+                    toastEl.classList.add('show');
+                }
+            });
+        })();
+    </script>
+}

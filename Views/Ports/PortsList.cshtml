@@ -1,0 +1,74 @@
+@model IEnumerable<LMSModel.Models.COM_View_Port>
+@{
+    ViewData["Title"] = L["Nav_Ports"];
+    var keyword = ViewBag.Keyword as string;
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h1 class="h3 mb-1">@L["Nav_Ports"]</h1>
+        <p class="text-muted mb-0">View ports available in the system (read-only from database view)</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">@L["Lbl_Keyword"]</label>
+                <input type="text" name="keyword" value="@keyword" class="form-control"
+                       placeholder="Port code, name, or country" />
+            </div>
+            <div class="col-md-6 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary">@L["Btn_Search"]</button>
+                <a asp-action="PortsList" class="btn btn-outline-secondary">@L["Btn_Reset"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Type</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Country</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No ports found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Type</td>
+                            <td><strong>@item.Code</strong></td>
+                            <td>@item.Name</td>
+                            <td>@item.CountryName</td>
+                            <td>
+                                @if (item.Void == true)
+                                {
+                                    <span class="badge bg-secondary">Void</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

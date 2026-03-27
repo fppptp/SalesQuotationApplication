@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SQTWeb.Models.QTMS;
-using SQTWeb.Models;
+using QTMSModel.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace SQTWeb.Controllers;

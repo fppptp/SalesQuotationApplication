@@ -1,0 +1,53 @@
+@using FMSModel.Models
+@using SQTWeb.Services.Masters
+@inject ICompanyService CompanyService
+
+@if (_options.Count == 0)
+{
+    <select name="@Name" class="@CssClass" disabled>
+        <option>@LoadingText</option>
+    </select>
+}
+else
+{
+    <select name="@Name" class="@CssClass" value="@Value" @onchange="HandleChanged">
+        <option value="" selected="@((string.IsNullOrEmpty(Value)) ? "selected" : null)">@Placeholder</option>
+        @foreach (var item in _options)
+        {
+            <option value="@item.CompanyCode" selected="@(item.CompanyCode == Value ? "selected" : null)">@item.CompanyCode - @item.Company_Name_EN</option>
+        }
+    </select>
+}
+
+@code {
+    [Parameter]
+    public string? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; } = "form-select";
+
+    [Parameter]
+    public string Placeholder { get; set; } = "-- Select Company --";
+
+    [Parameter]
+    public string LoadingText { get; set; } = "Loading...";
+
+    [Parameter]
+    public string? Name { get; set; }
+
+    private IReadOnlyList<COM_MS_Company> _options = Array.Empty<COM_MS_Company>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _options = await CompanyService.GetOptionsAsync();
+    }
+
+    private async Task HandleChanged(ChangeEventArgs e)
+    {
+        Value = e.Value?.ToString();
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

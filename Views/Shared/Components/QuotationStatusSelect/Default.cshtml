@@ -1,0 +1,27 @@
+@model IReadOnlyList<COMMONModel.Models.COM_Ms_Status>
+@{
+    var name = (string)ViewData["Name"] ?? "StatusName";
+    var value = (string?)ViewData["Value"];
+    var css = (string)ViewData["CssClass"] ?? "form-select";
+    var disabled = ViewData["Disabled"] is true;
+}
+@if (disabled)
+{
+    <select class="@css" disabled>
+        @foreach (var item in Model)
+        {
+            <option value="@item.StatusDescription" selected="@(item.StatusDescription == value ? "selected" : null)">@item.StatusDescription</option>
+        }
+    </select>
+    <input type="hidden" name="@name" value="@value" />
+}
+else
+{
+    <select name="@name" class="@css">
+        <option value="">-- Select status --</option>
+        @foreach (var item in Model)
+        {
+            <option value="@item.StatusDescription" selected="@(item.StatusDescription == value ? "selected" : null)">@item.StatusDescription</option>
+        }
+    </select>
+}

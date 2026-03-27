@@ -1,359 +1,391 @@
-@* @using Microsoft.AspNetCore.Mvc.Rendering
-@using SQTWeb.Models.QTMS
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using QTMSModel.Models;
 @model COM_Trs_SalesQuotation
 @{
-    var companies = ViewBag.Companies as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>());
+    var isCreate = string.IsNullOrWhiteSpace(Model.QuotationNo);
 }
 
 @Html.AntiForgeryToken()
-<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+<div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
 
-<div class="row g-4">
-    <div class="col-xl-8">
-        <div class="card mb-4">
-            <div class="card-header bg-white">
-                <h2 class="h5 mb-0">@L["Sec_Header"]</h2>
-            </div>
-            <div class="card-body">
-                @if (!string.IsNullOrWhiteSpace(Model.QuotationNo))
-                {
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
-                            <label asp-for="QuotationNo" class="form-label"></label>
-                            <div class="input-group">
-                                <input asp-for="QuotationNo" class="form-control" readonly />                               
-                            </div>
-                        </div>
-                    </div>
-                }
-
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label asp-for="QuotationDate" class="form-label"></label>
-                        <input asp-for="QuotationDate" class="form-control" />
-                        <span asp-validation-for="QuotationDate" class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label asp-for="ValidUntil" class="form-label"></label>
-                        <input asp-for="ValidUntil" class="form-control" />
-                        <span asp-validation-for="ValidUntil" class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label asp-for="StatusName" class="form-label"></label>
-                        <select asp-for="StatusName" class="form-select" asp-items="new SelectList(AppLists.Statuses)"></select>
-                    </div>
-                    <div class="col-md-3">
-                        <label asp-for="CompanyCode" class="form-label"></label>
-                        <select asp-for="CompanyCode" class="form-select" asp-items="companies">
-                            <option value="">-- Select company --</option>
-                        </select>
-                        <span asp-validation-for="CompanyCode" class="text-danger small"></span>
-                    </div>
-                    .
-                    <div class="col-md-3">
-                        <label asp-for="CustomerCode" class="form-label"></label>
-                        <input asp-for="CustomerCode" class="form-control" />
-                    </div>
-                    <div class="col-md-9">
-                        <label asp-for="CustomerName" class="form-label"></label>
-                        <input asp-for="CustomerName" class="form-control" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="ContactPerson" class="form-label"></label>
-                        <input asp-for="ContactPerson" class="form-control" placeholder="Contact person for this quotation" />
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="ContactEmail" class="form-label"></label>
-                        <input asp-for="ContactEmail" class="form-control" type="email" />
-                        <span asp-validation-for="ContactEmail" class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="ContactPhone" class="form-label"></label>
-                        <input asp-for="ContactPhone" class="form-control" type="tel" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="Mode" class="form-label"></label>
-                        <select asp-for="Mode" class="form-select" asp-items="new SelectList(AppLists.Modes)"></select>
-                    </div>
-                   
-                    <div class="col-md-6">
-                        <label asp-for="Origin" class="form-label"></label>
-                        <input asp-for="Origin" class="form-control" placeholder="Bangkok, Thailand" />
-                        <span asp-validation-for="Origin" class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="Destination" class="form-label"></label>
-                        <input asp-for="Destination" class="form-control" placeholder="Singapore" />
-                        <span asp-validation-for="Destination" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="CarrierOrAgent" class="form-label"></label>
-                        <input asp-for="CarrierOrAgent" class="form-control" placeholder="Carrier or overseas agent" />
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="TransitTimeDays" class="form-label"></label>
-                        <input asp-for="TransitTimeDays" class="form-control" />
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="FreeTimeDays" class="form-label"></label>
-                        <input asp-for="FreeTimeDays" class="form-control" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="Commodity" class="form-label"></label>
-                        <input asp-for="Commodity" class="form-control" placeholder="Electronic parts" />
-                    </div>
-                    <div class="col-md-2">
-                        <label asp-for="PackageCount" class="form-label"></label>
-                        <input asp-for="PackageCount" class="form-control" />
-                    </div>
-                    <div class="col-md-3">
-                        <label asp-for="GrossWeightKg" class="form-label"></label>
-                        <input asp-for="GrossWeightKg" class="form-control" />
-                    </div>
-                    <div class="col-md-3">
-                        <label asp-for="VolumeCbm" class="form-label"></label>
-                        <input asp-for="VolumeCbm" class="form-control" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="CurrencyCode" class="form-label"></label>
-                        <select asp-for="CurrencyCode" class="form-select" asp-items="new SelectList(AppLists.Currencies)"></select>
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="ExchangeRate" class="form-label"></label>
-                        <input asp-for="ExchangeRate" class="form-control" />
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="SalesPerson" class="form-label"></label>
-                        <input asp-for="SalesPerson" class="form-control" placeholder="Sales name" />
-                    </div>
-
-                    <div class="col-12">
-                        <label asp-for="Remarks" class="form-label"></label>
-                        <textarea asp-for="Remarks" class="form-control" rows="3"></textarea>
-                    </div>
-
-                    <div class="col-12">
-                        <label asp-for="TermsAndConditions" class="form-label"></label>
-                        <textarea asp-for="TermsAndConditions" class="form-control" rows="4"></textarea>
-                    </div>
-
-                    <div class="col-12">
-                        <label asp-for="Exclusions" class="form-label"></label>
-                        <textarea asp-for="Exclusions" class="form-control" rows="3"
-                                  placeholder="Items and charges NOT included in this quotation"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">@L["Sec_ChargeLines"]</h2>
-                <button type="button" class="btn btn-sm btn-outline-primary js-add-row">@L["Btn_AddLine"]</button>
-            </div>
-            <div class="card-body px-0">
-                <div class="table-responsive">
-                    <table class="table table-sm align-middle mb-0 js-quote-table">
-                        <thead class="table-light">
-                            <tr>
-                                <th style="width: 110px;">@L["Lbl_Code"]</th>
-                                <th style="width: 140px;">@L["Lbl_Category"]</th>
-                                <th>@L["Lbl_ChargeName"]</th>
-                                <th style="width: 160px;">@L["Lbl_Basis"]</th>
-                                <th style="width: 100px;">@L["Lbl_Quantity"]</th>
-                                <th style="width: 120px;">@L["Lbl_UnitCost"]</th>
-                                <th style="width: 90px;" class="text-end">@L["Lbl_MarkupPct"]</th>
-                                <th style="width: 120px;">@L["Lbl_UnitSell"]</th>
-                                <th style="width: 120px;" class="text-end">@L["Lbl_CostAmount"]</th>
-                                <th style="width: 120px;" class="text-end">@L["Lbl_SellAmount"]</th>
-                                <th style="width: 120px;" class="text-end">@L["Lbl_Profit"]</th>
-                                <th style="width: 70px;"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="js-quote-body">
-                            @if (Model.Items.Count == 0)
-                            {
-                                Model.Items.Add(new QuoteItemInputModel { SortOrder = 1, ChargeBasis = "Lump Sum", Quantity = 1 });
-                            }
-
-                            @for (var i = 0; i < Model.Items.Count; i++)
-                            {
-                                <tr class="js-quote-row">
-                                    <td>
-                                        <input asp-for="Items[i].ItemId" type="hidden" />
-                                        <input asp-for="Items[i].SortOrder" type="hidden" class="js-sort-order" />
-                                        <div class="input-group input-group-sm">
-                                            <input asp-for="Items[i].ChargeCode"
-                                                   class="form-control form-control-sm js-charge-code text-uppercase"
-                                                   autocomplete="off" placeholder="Code" />
-                                            <button type="button" class="btn btn-outline-secondary js-cc-lookup px-1"
-                                                    tabindex="-1" title="Browse charge codes">▾</button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <select asp-for="Items[i].ChargeCategory" class="form-select form-select-sm js-charge-category"
-                                                asp-items="new SelectList(AppLists.ChargeCategories)"></select>
-                                    </td>
-                                    <td>
-                                        <input asp-for="Items[i].ChargeName" class="form-control form-control-sm js-charge-name" />
-                                    </td>
-                                    <td>
-                                        <select asp-for="Items[i].ChargeBasis" class="form-select form-select-sm js-charge-basis" asp-items="new SelectList(AppLists.ChargeBases)"></select>
-                                    </td>
-                                    <td>
-                                        <input asp-for="Items[i].Quantity" class="form-control form-control-sm js-qty" />
-                                    </td>
-                                    <td>
-                                        <input asp-for="Items[i].UnitCost" class="form-control form-control-sm js-unit-cost" />
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control form-control-sm js-markup-pct text-end"
-                                               value="@Model.Items[i].MarkupPercent.ToString("N2")" />
-                                    </td>
-                                    <td>
-                                        <input asp-for="Items[i].UnitPrice" class="form-control form-control-sm js-unit-price" />
-                                    </td>
-                                    <td class="text-end js-cost-amount">@Model.Items[i].CostAmount.ToString("N2")</td>
-                                    <td class="text-end js-sell-amount">@Model.Items[i].SellAmount.ToString("N2")</td>
-                                    <td class="text-end js-profit-amount">@Model.Items[i].ProfitAmount.ToString("N2")</td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-outline-danger js-remove-row">×</button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <template id="quote-row-template">
-            <tr class="js-quote-row">
-                <td>
-                    <input name="Items[__index__].ItemId" type="hidden" value="" />
-                    <input name="Items[__index__].SortOrder" type="hidden" value="__sort__" class="js-sort-order" />
-                    <div class="input-group input-group-sm">
-                        <input name="Items[__index__].ChargeCode"
-                               class="form-control form-control-sm js-charge-code text-uppercase"
-                               autocomplete="off" placeholder="Code" />
-                        <button type="button" class="btn btn-outline-secondary js-cc-lookup px-1"
-                                tabindex="-1" title="Browse charge codes">▾</button>
-                    </div>
-                </td>
-                <td>
-                    <select name="Items[__index__].ChargeCategory" class="form-select form-select-sm js-charge-category">
-                        @foreach (var cat in AppLists.ChargeCategories)
-                        {
-                            if (cat == "Freight")
-                            {
-                                <option value="@cat" selected>@cat</option>
-                            }
-                            else
-                            {
-                                <option value="@cat">@cat</option>
-                            }
-                        }
-                    </select>
-                </td>
-                <td>
-                    <input name="Items[__index__].ChargeName" class="form-control form-control-sm js-charge-name" />
-                </td>
-                <td>
-                    <select name="Items[__index__].ChargeBasis" class="form-select form-select-sm js-charge-basis">
-                        @foreach (var basis in AppLists.ChargeBases)
-                        {
-                            if (basis == "Lump Sum")
-                            {
-                                <option value="@basis" selected>@basis</option>
-                            }
-                            else
-                            {
-                                <option value="@basis">@basis</option>
-                            }
-                        }
-                    </select>
-                </td>
-                <td>
-                    <input name="Items[__index__].Quantity" class="form-control form-control-sm js-qty" value="1" />
-                </td>
-                <td>
-                    <input name="Items[__index__].UnitCost" class="form-control form-control-sm js-unit-cost" value="0" />
-                </td>
-                <td>
-                    <input type="text" class="form-control form-control-sm js-markup-pct text-end" value="0.00" />
-                </td>
-                <td>
-                    <input name="Items[__index__].UnitPrice" class="form-control form-control-sm js-unit-price" value="0" />
-                </td>
-                <td class="text-end js-cost-amount">0.00</td>
-                <td class="text-end js-sell-amount">0.00</td>
-                <td class="text-end js-profit-amount">0.00</td>
-                <td class="text-end">
-                    <button type="button" class="btn btn-sm btn-outline-danger js-remove-row">×</button>
-                </td>
-            </tr>
-        </template>
+<div class="card mb-4">
+    <div class="card-header bg-white">
+        <h2 class="h5 mb-0">@L["Sec_Header"]</h2>
     </div>
-
-    <div class="col-xl-4">
-        <div class="card sticky-summary">
-            <div class="card-header bg-white">
-                <h2 class="h5 mb-0">@L["Sec_Summary"]</h2>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label asp-for="QuotationDate" class="form-label"></label>
+                <input asp-for="QuotationDate" class="form-control" />
             </div>
-            <div class="card-body">
-                <div class="summary-row">
-                    <span>@L["Lbl_Subtotal"]</span>
-                    <strong class="js-summary-subtotal">@Model.Subtotal.ToString("N2")</strong>
-                </div>
-                <div class="summary-row">
-                    <span>@L["Lbl_CostTotal"]</span>
-                    <strong class="js-summary-cost">@Model.CostTotal.ToString("N2")</strong>
-                </div>
-                <div class="summary-row">
-                    <span>@L["Lbl_MarkupPct"]</span>
-                    <strong class="js-summary-markup">@Model.MarkupPercent.ToString("N2") %</strong>
-                </div>
-                <div class="summary-row">
-                    <span>@L["Lbl_Profit"]</span>
-                    <strong class="js-summary-profit">@Model.ProfitTotal.ToString("N2")</strong>
-                </div>
-                <div class="summary-row">
-                    <span>@L["Lbl_GpPercent"]</span>
-                    <strong class="js-summary-gp">@Model.GpPercent.ToString("N2") %</strong>
-                </div>
-                <hr />
-                <div class="mb-3">
-                    <label asp-for="DiscountAmount" class="form-label"></label>
-                    <input asp-for="DiscountAmount" class="form-control js-discount" />
-                </div>
-                <div class="form-check form-switch mb-3">
-                    <input asp-for="IncludeVat" class="form-check-input js-include-vat" />
-                    <label asp-for="IncludeVat" class="form-check-label"></label>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="VatRate" class="form-label"></label>
-                    <input asp-for="VatRate" class="form-control js-vat-rate" />
-                </div>
-                <hr />
-                <div class="summary-row">
-                    <span>@L["Lbl_VAT"]</span>
-                    <strong class="js-summary-vat">@Model.VatAmount.ToString("N2")</strong>
-                </div>
-                <div class="summary-row grand-total">
-                    <span>@L["Lbl_GrandTotal"]</span>
-                    <strong class="js-summary-grand">@Model.GrandTotal.ToString("N2")</strong>
-                </div>
-                <div class="d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-primary">@L["Btn_SaveQuotation"]</button>
-                    <a asp-action="Index" class="btn btn-outline-secondary">@L["Btn_Cancel"]</a>
-                </div>
+            <div class="col-md-3">
+                <label asp-for="CurrencyCode" class="form-label"></label>
+                @await Component.InvokeAsync("CurrencySelect", new { name = "CurrencyCode", value = Model.CurrencyCode, cssClass = "form-select" })
+            </div>
+            <div class="col-md-3">
+                <label asp-for="StatusName" class="form-label"></label>
+                @if (isCreate)
+                {
+                    @await Component.InvokeAsync("QuotationStatusSelect", new { name = "StatusName", value = "Open", cssClass = "form-select", filter = new[] { "Open" }, disabled = true })
+                }
+                else
+                {
+                    @await Component.InvokeAsync("QuotationStatusSelect", new { name = "StatusName", value = Model.StatusName, cssClass = "form-select" })
+                }
+            </div>
+            <div class="col-md-3">
+                <label asp-for="CompanyCode" class="form-label"></label>
+                @await Component.InvokeAsync("CompanySelect", new { name = "CompanyCode", value = Model.CompanyCode, cssClass = "form-select" })
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="CustomerCode" class="form-label"></label>
+                @await Component.InvokeAsync("CustomerSelect", new { name = "CustomerCode", value = Model.CustomerCode, cssClass = "form-control" })
+            </div>
+            <div class="col-md-9">
+                <label asp-for="CustomerName" class="form-label"></label>
+                <input asp-for="CustomerName" class="form-control"  />
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="PortCode" class="form-label">Port / Destination</label>
+                @await Component.InvokeAsync("PortSelect", new { name = "PortCode", value = Model.PortCode, cssClass = "form-control" })
+            </div>
+            <div class="col-md-6">
+                <label asp-for="PortName" class="form-label">Port Name</label>
+                <input name="PortName" value="@Model.PortName" class="form-control"  />
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="AgentCode" class="form-label"></label>
+                @await Component.InvokeAsync("AgentSelect", new { name = "AgentCode", value = Model.AgentCode, cssClass = "form-control" })
+            </div>
+            <div class="col-md-9">
+                <label asp-for="AgentName" class="form-label"></label>
+                <input asp-for="AgentName" class="form-control"  />
+            </div>
+
+            <div class="col-12">
+                <label asp-for="AdditionalInformation" class="form-label"></label>
+                <textarea asp-for="AdditionalInformation" class="form-control" rows="2"></textarea>
             </div>
         </div>
     </div>
 </div>
- *@
+
+<!-- Shipments -->
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="h6 mb-0">Shipments</h2>
+        <button type="button" class="btn btn-sm btn-outline-primary" id="add-shipment">Add shipment</button>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-sm mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:90px">Qty</th>
+                        <th>Unit</th>
+                        <th style="width:120px">Gross Wt</th>
+                        <th style="width:120px">Wgt Unit</th>
+                        <th>Dimensions</th>
+                        <th style="width:120px">CBM</th>
+                        <th style="width:90px"></th>
+                    </tr>
+                </thead>
+                <tbody id="shipments-body">
+                    @if (Model.COM_Trs_SalesQuotationShipmentDetails == null || !Model.COM_Trs_SalesQuotationShipmentDetails.Any())
+                    {
+                        <tr>
+                            <td><input name="COM_Trs_SalesQuotationShipmentDetails[0].Quantity" class="form-control form-control-sm" /></td>
+                            <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "COM_Trs_SalesQuotationShipmentDetails[0].PackageUnit", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
+                            <td><input name="COM_Trs_SalesQuotationShipmentDetails[0].GrossWeight" class="form-control form-control-sm" /></td>
+                            <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "COM_Trs_SalesQuotationShipmentDetails[0].GrossWeightUnit", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
+                            <td class="d-flex gap-2">
+                                <input name="COM_Trs_SalesQuotationShipmentDetails[0].Length" class="form-control form-control-sm" placeholder="L" />
+                                <input name="COM_Trs_SalesQuotationShipmentDetails[0].Width" class="form-control form-control-sm" placeholder="W" />
+                                <input name="COM_Trs_SalesQuotationShipmentDetails[0].Height" class="form-control form-control-sm" placeholder="H" />
+                            </td>
+                            <td><input name="COM_Trs_SalesQuotationShipmentDetails[0].TotalVolumeCBM" class="form-control form-control-sm" /></td>
+                            <td><button type="button" class="btn btn-sm btn-outline-danger remove-shipment">Remove</button></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @for (var i = 0; i < Model.COM_Trs_SalesQuotationShipmentDetails.Count; i++)
+                        {
+                            var s = Model.COM_Trs_SalesQuotationShipmentDetails.ElementAt(i);
+                            <tr>
+                                <td><input name="COM_Trs_SalesQuotationShipmentDetails[@i].Quantity" value="@(s.Quantity?.ToString())" class="form-control form-control-sm" /></td>
+                                <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = $"COM_Trs_SalesQuotationShipmentDetails[{i}].PackageUnit", value = s.PackageUnit, cssClass = "form-select form-select-sm" })</td>
+                                <td><input name="COM_Trs_SalesQuotationShipmentDetails[@i].GrossWeight" value="@(s.GrossWeight?.ToString())" class="form-control form-control-sm" /></td>
+                                <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = $"COM_Trs_SalesQuotationShipmentDetails[{i}].GrossWeightUnit", value = s.GrossWeightUnit, cssClass = "form-select form-select-sm" })</td>
+                                <td class="d-flex gap-2">
+                                    <input name="COM_Trs_SalesQuotationShipmentDetails[@i].Length" value="@(s.Length?.ToString())" class="form-control form-control-sm" placeholder="L" />
+                                    <input name="COM_Trs_SalesQuotationShipmentDetails[@i].Width" value="@(s.Width?.ToString())" class="form-control form-control-sm" placeholder="W" />
+                                    <input name="COM_Trs_SalesQuotationShipmentDetails[@i].Height" value="@(s.Height?.ToString())" class="form-control form-control-sm" placeholder="H" />
+                                </td>
+                                <td><input name="COM_Trs_SalesQuotationShipmentDetails[@i].TotalVolumeCBM" value="@(s.TotalVolumeCBM?.ToString())" class="form-control form-control-sm" /></td>
+                                <td><button type="button" class="btn btn-sm btn-outline-danger remove-shipment">Remove</button></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Freight charges -->
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="h6 mb-0">Freight Charges</h2>
+        <div>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="add-charge">Add charge</button>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-sm mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:110px">Code</th>
+                        <th>Name</th>
+                        <th style="width:90px">Unit</th>
+                        <th style="width:120px">Unit Price</th>
+                        <th style="width:100px">Currency</th>
+                        <th style="width:120px"></th>
+                    </tr>
+                </thead>
+                <tbody id="charges-body">
+                    @if (Model.COM_Trs_SalesQuotationFreightCharges == null || !Model.COM_Trs_SalesQuotationFreightCharges.Any())
+                    {
+                        <tr class="charge-main">
+                            <td>@await Component.InvokeAsync("ChargeSelect", new { name = "COM_Trs_SalesQuotationFreightCharges[0].ChargeCode", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
+                            <td><input name="COM_Trs_SalesQuotationFreightCharges[0].ChargeName" class="form-control form-control-sm" /></td>
+                            <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "COM_Trs_SalesQuotationFreightCharges[0].ChargeUnit", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
+                            <td><input name="COM_Trs_SalesQuotationFreightCharges[0].UnitPrice" class="form-control form-control-sm" /></td>
+                            <td>@await Component.InvokeAsync("CurrencySelect", new { name = "COM_Trs_SalesQuotationFreightCharges[0].CurrencyCode", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-outline-secondary toggle-tiers">Tiers</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger remove-charge">Remove</button>
+                            </td>
+                        </tr>
+                        <tr class="tier-row" style="display:none">
+                            <td colspan="6">
+                                <div class="tiers-container">
+                                    <table class="table table-sm mb-0">
+                                        <thead>
+                                            <tr><th>From</th><th>To</th><th>Unit Price</th><th></th></tr>
+                                        </thead>
+                                        <tbody class="tiers-body">
+                                            <tr>
+                                                <td><input name="COM_Trs_SalesQuotationFreightCharges[0].COM_Trs_SalesQuotationFreightChargePriceTiers[0].FromValue" class="form-control form-control-sm" /></td>
+                                                <td><input name="COM_Trs_SalesQuotationFreightCharges[0].COM_Trs_SalesQuotationFreightChargePriceTiers[0].ToValue" class="form-control form-control-sm" /></td>
+                                                <td><input name="COM_Trs_SalesQuotationFreightCharges[0].COM_Trs_SalesQuotationFreightChargePriceTiers[0].UnitPrice" class="form-control form-control-sm" /></td>
+                                                <td><button type="button" class="btn btn-sm btn-outline-danger remove-tier">Remove</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary add-tier">Add tier</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @for (var i = 0; i < Model.COM_Trs_SalesQuotationFreightCharges.Count; i++)
+                        {
+                            var c = Model.COM_Trs_SalesQuotationFreightCharges.ElementAt(i);
+                            <tr class="charge-main">
+                                <td>@await Component.InvokeAsync("ChargeSelect", new { name = $"COM_Trs_SalesQuotationFreightCharges[{i}].ChargeCode", value = c.ChargeCode, cssClass = "form-select form-select-sm" })</td>
+                                <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].ChargeName" value="@c.ChargeName" class="form-control form-control-sm" /></td>
+                                <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = $"COM_Trs_SalesQuotationFreightCharges[{i}].ChargeUnit", value = c.ChargeUnit, cssClass = "form-select form-select-sm" })</td>
+                                <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].UnitPrice" value="@(c.UnitPrice?.ToString())" class="form-control form-control-sm" /></td>
+                                <td>@await Component.InvokeAsync("CurrencySelect", new { name = $"COM_Trs_SalesQuotationFreightCharges[{i}].CurrencyCode", value = c.CurrencyCode, cssClass = "form-select form-select-sm" })</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary toggle-tiers">Tiers</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-charge">Remove</button>
+                                </td>
+                            </tr>
+                            <tr class="tier-row" style="display:none">
+                                <td colspan="6">
+                                    <div class="tiers-container">
+                                        <table class="table table-sm mb-0">
+                                            <thead>
+                                                <tr><th>From</th><th>To</th><th>Unit Price</th><th></th></tr>
+                                            </thead>
+                                            <tbody class="tiers-body">
+                                                @for (var t = 0; t < c.COM_Trs_SalesQuotationFreightChargePriceTiers.Count; t++)
+                                                {
+                                                    var tier = c.COM_Trs_SalesQuotationFreightChargePriceTiers.ElementAt(t);
+                                                    <tr>
+                                                        <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].COM_Trs_SalesQuotationFreightChargePriceTiers[@t].FromValue" value="@(tier.FromValue?.ToString())" class="form-control form-control-sm" /></td>
+                                                        <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].COM_Trs_SalesQuotationFreightChargePriceTiers[@t].ToValue" value="@(tier.ToValue?.ToString())" class="form-control form-control-sm" /></td>
+                                                        <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].COM_Trs_SalesQuotationFreightChargePriceTiers[@t].UnitPrice" value="@(tier.UnitPrice?.ToString())" class="form-control form-control-sm" /></td>
+                                                        <td><button type="button" class="btn btn-sm btn-outline-danger remove-tier">Remove</button></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-primary add-tier">Add tier</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="d-grid gap-2 mt-3">
+    <button type="submit" class="btn btn-primary">@L["Btn_SaveQuotation"]</button>
+    <a asp-action="QuotationsList" class="btn btn-outline-secondary">@L["Btn_Cancel"]</a>
+</div>
+
+<!-- Hidden source selects for JS cloning in dynamic rows -->
+<div id="source-selects" style="display:none">
+    @await Component.InvokeAsync("ChargeSelect", new { name = "__SRC_ChargeCode__", value = (string?)null, cssClass = "form-select form-select-sm" })
+    @await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "__SRC_ChargeUnit__", value = (string?)null, cssClass = "form-select form-select-sm" })
+    @await Component.InvokeAsync("CurrencySelect", new { name = "__SRC_CurrencyCode__", value = (string?)null, cssClass = "form-select form-select-sm" })
+    @await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "__SRC_PackageUnit__", value = (string?)null, cssClass = "form-select form-select-sm" })
+    @await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "__SRC_GrossWeightUnit__", value = (string?)null, cssClass = "form-select form-select-sm" })
+</div>
+
+<!-- Templates -->
+<template id="shipment-template">
+    <tr>
+        <td><input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Quantity" class="form-control form-control-sm" /></td>
+        <td><select name="COM_Trs_SalesQuotationShipmentDetails[__index__].PackageUnit" class="form-select form-select-sm" data-clone-source="__SRC_PackageUnit__"></select></td>
+        <td><input name="COM_Trs_SalesQuotationShipmentDetails[__index__].GrossWeight" class="form-control form-control-sm" /></td>
+        <td><select name="COM_Trs_SalesQuotationShipmentDetails[__index__].GrossWeightUnit" class="form-select form-select-sm" data-clone-source="__SRC_GrossWeightUnit__"></select></td>
+        <td class="d-flex gap-2">
+            <input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Length" class="form-control form-control-sm" placeholder="L" />
+            <input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Width" class="form-control form-control-sm" placeholder="W" />
+            <input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Height" class="form-control form-control-sm" placeholder="H" />
+        </td>
+        <td><input name="COM_Trs_SalesQuotationShipmentDetails[__index__].TotalVolumeCBM" class="form-control form-control-sm" /></td>
+        <td><button type="button" class="btn btn-sm btn-outline-danger remove-shipment">Remove</button></td>
+    </tr>
+</template>
+
+<template id="charge-template">
+    <tr class="charge-main">
+        <td><select name="COM_Trs_SalesQuotationFreightCharges[__index__].ChargeCode" class="form-select form-select-sm" data-clone-source="__SRC_ChargeCode__"></select></td>
+        <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].ChargeName" class="form-control form-control-sm" /></td>
+        <td><select name="COM_Trs_SalesQuotationFreightCharges[__index__].ChargeUnit" class="form-select form-select-sm" data-clone-source="__SRC_ChargeUnit__"></select></td>
+        <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].UnitPrice" class="form-control form-control-sm" /></td>
+        <td><select name="COM_Trs_SalesQuotationFreightCharges[__index__].CurrencyCode" class="form-select form-select-sm" data-clone-source="__SRC_CurrencyCode__"></select></td>
+        <td>
+            <button type="button" class="btn btn-sm btn-outline-secondary toggle-tiers">Tiers</button>
+            <button type="button" class="btn btn-sm btn-outline-danger remove-charge">Remove</button>
+        </td>
+    </tr>
+    <tr class="tier-row" style="display:none">
+        <td colspan="6">
+            <div class="tiers-container">
+                <table class="table table-sm mb-0">
+                    <thead>
+                        <tr><th>From</th><th>To</th><th>Unit Price</th><th></th></tr>
+                    </thead>
+                    <tbody class="tiers-body">
+                        <tr>
+                            <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].COM_Trs_SalesQuotationFreightChargePriceTiers[0].FromValue" class="form-control form-control-sm" /></td>
+                            <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].COM_Trs_SalesQuotationFreightChargePriceTiers[0].ToValue" class="form-control form-control-sm" /></td>
+                            <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].COM_Trs_SalesQuotationFreightChargePriceTiers[0].UnitPrice" class="form-control form-control-sm" /></td>
+                            <td><button type="button" class="btn btn-sm btn-outline-danger remove-tier">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mt-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary add-tier">Add tier</button>
+                </div>
+            </div>
+        </td>
+    </tr>
+</template>
+
+<script>
+    (function(){
+        function replaceIndex(html, idx){
+            return html.split(/__index__/g).join(idx);
+        }
+
+        // Clone options from hidden source selects into dynamically created selects
+        function hydrateSelects(container){
+            container.querySelectorAll('select[data-clone-source]').forEach(function(sel){
+                var srcName = sel.getAttribute('data-clone-source');
+                var src = document.querySelector('#source-selects select[name="' + srcName + '"]');
+                if (src){
+                    sel.innerHTML = src.innerHTML;
+                }
+                sel.removeAttribute('data-clone-source');
+            });
+        }
+
+        document.getElementById('add-shipment')?.addEventListener('click', function(){
+            const body = document.getElementById('shipments-body');
+            const tpl = document.getElementById('shipment-template').innerHTML;
+            const idx = body.querySelectorAll('tr').length;
+            const html = replaceIndex(tpl, idx);
+            body.insertAdjacentHTML('beforeend', html);
+            hydrateSelects(body.lastElementChild);
+        });
+
+        document.getElementById('add-charge')?.addEventListener('click', function(){
+            const body = document.getElementById('charges-body');
+            const tpl = document.getElementById('charge-template').innerHTML;
+            const idx = body.querySelectorAll('tr.charge-main').length;
+            const html = replaceIndex(tpl, idx);
+            body.insertAdjacentHTML('beforeend', html);
+            // hydrate both the charge-main row and the tier-row that follows it
+            var rows = body.querySelectorAll('tr.charge-main');
+            var lastMain = rows[rows.length - 1];
+            hydrateSelects(lastMain);
+            if (lastMain.nextElementSibling) hydrateSelects(lastMain.nextElementSibling);
+        });
+
+        document.addEventListener('click', function(e){
+            if (e.target.matches('.remove-shipment')){
+                e.target.closest('tr').remove();
+            }
+            if (e.target.matches('.remove-charge')){
+                const tr = e.target.closest('tr');
+                const next = tr.nextElementSibling;
+                tr.remove();
+                if (next && next.classList.contains('tier-row')) next.remove();
+            }
+            if (e.target.matches('.toggle-tiers')){
+                const tr = e.target.closest('tr');
+                const tierRow = tr.nextElementSibling;
+                if (tierRow && tierRow.classList.contains('tier-row')){
+                    tierRow.style.display = tierRow.style.display === 'none' ? '' : 'none';
+                }
+            }
+            if (e.target.matches('.add-tier')){
+                const tierBody = e.target.closest('.tiers-container').querySelector('.tiers-body');
+                const chargeRow = e.target.closest('tr.tier-row').previousElementSibling;
+                const firstInput = chargeRow.querySelector('[name]');
+                const m = firstInput.getAttribute('name').match(/COM_Trs_SalesQuotationFreightCharges\[(\d+)\]/);
+                const cidx = m ? m[1] : '0';
+                const rowCount = tierBody.querySelectorAll('tr').length;
+                const tpl = '<tr>' +
+                    '<td><input name="COM_Trs_SalesQuotationFreightCharges['+cidx+'].COM_Trs_SalesQuotationFreightChargePriceTiers['+rowCount+'].FromValue" class="form-control form-control-sm" /></td>' +
+                    '<td><input name="COM_Trs_SalesQuotationFreightCharges['+cidx+'].COM_Trs_SalesQuotationFreightChargePriceTiers['+rowCount+'].ToValue" class="form-control form-control-sm" /></td>' +
+                    '<td><input name="COM_Trs_SalesQuotationFreightCharges['+cidx+'].COM_Trs_SalesQuotationFreightChargePriceTiers['+rowCount+'].UnitPrice" class="form-control form-control-sm" /></td>' +
+                    '<td><button type="button" class="btn btn-sm btn-outline-danger remove-tier">Remove</button></td>' +
+                    '</tr>';
+                tierBody.insertAdjacentHTML('beforeend', tpl);
+            }
+            if (e.target.matches('.remove-tier')){
+                e.target.closest('tr').remove();
+            }
+        });
+    })();
+</script>

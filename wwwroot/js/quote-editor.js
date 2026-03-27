@@ -412,7 +412,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         // Pre-load charge codes for the lookup dropdown
-        fetch("/chargecodes/all")
+        fetch("/chargecodes/allcharges")
             .then(r => r.json())
             .then(data => {
                 window.chargeCodes = data;

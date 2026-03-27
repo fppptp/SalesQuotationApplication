@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ViewModels;
+namespace SQTWeb.ViewModels;
 
 public class LoginViewModel
 {

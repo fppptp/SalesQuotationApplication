@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 6,
-   "ContextClassName": "COMMONContext",
+   "ContextClassName": "FMSContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
@@ -8,7 +8,7 @@
    "MinimumProductVersion": "2.6.1382",
    "ModelNamespace": null,
    "OutputContextPath": null,
-   "OutputPath": "Models\\COMMON",
+   "OutputPath": "Models\\FMS",
    "PluralRules": null,
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "SQTWeb",
@@ -23,20 +23,8 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[COM_MS_Setting]",
+         "Name": "[dbo].[COM_MS_TISI_Currency]",
          "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[COM_Sys_SeriesNo]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[COM_Sys_ValueList]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[COM_View_MS_TISI_Currency]",
-         "ObjectType": 3
       }
    ],
    "UiHint": null,

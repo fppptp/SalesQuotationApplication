@@ -1,50 +1,399 @@
-body {
-    background: #f5f7fb;
+/* ══════════════════════════════════════════════════
+   Freight Quote Web — Visual Theme (AdminLTE 4 override)
+   ══════════════════════════════════════════════════ */
+
+/* ── 1. Root variables ── */
+:root {
+    --fq-font:        'Inter', system-ui, -apple-system, sans-serif;
+    --fq-primary:     #3b82f6;
+    --fq-primary-dark:#2563eb;
+    --fq-sidebar-bg:  #1e293b;
+    --fq-sidebar-hover:#334155;
+    --fq-sidebar-active:#3b82f6;
+    --fq-header-bg:   #ffffff;
+    --fq-body-bg:     #f1f5f9;
+    --fq-card-bg:     #ffffff;
+    --fq-card-shadow:  0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --fq-card-radius: .75rem;
+    --fq-text:        #1e293b;
+    --fq-text-muted:  #64748b;
+    --fq-border:      #e2e8f0;
 }
 
+/* ── 2. Typography & body ── */
+body,
+body.layout-fixed {
+    font-family: var(--fq-font) !important;
+    font-size: .9rem;
+    line-height: 1.6;
+    color: var(--fq-text);
+    background: var(--fq-body-bg) !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--fq-font) !important;
+    font-weight: 600;
+    color: var(--fq-text);
+    letter-spacing: -.01em;
+}
+
+p, li, td, th, label, span, a, input, select, textarea, button {
+    font-family: var(--fq-font) !important;
+}
+
+/* ── 3. Top header ── */
+.app-header.navbar {
+    background: var(--fq-header-bg) !important;
+    border-bottom: 1px solid var(--fq-border);
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    min-height: 3.5rem;
+}
+
+.app-header .nav-link {
+    color: var(--fq-text-muted) !important;
+    font-weight: 500;
+    font-size: .875rem;
+    transition: color .15s;
+}
+
+.app-header .nav-link:hover {
+    color: var(--fq-primary) !important;
+}
+
+/* ── 4. Sidebar ── */
+.app-sidebar {
+    background: var(--fq-sidebar-bg) !important;
+    border-right: none !important;
+}
+
+.sidebar-brand {
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.sidebar-brand .brand-link {
+    padding: 1rem 1.25rem;
+}
+
+.sidebar-brand .brand-text {
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -.01em;
+}
+
+.sidebar-menu .nav-link {
+    color: rgba(255,255,255,.65) !important;
+    font-size: .875rem;
+    font-weight: 400;
+    border-radius: .5rem;
+    margin: 2px 8px;
+    padding: .6rem 1rem;
+    transition: all .15s;
+}
+
+.sidebar-menu .nav-link:hover {
+    color: #fff !important;
+    background: var(--fq-sidebar-hover);
+}
+
+.sidebar-menu .nav-link.active {
+    color: #fff !important;
+    background: var(--fq-sidebar-active) !important;
+    font-weight: 500;
+}
+
+.sidebar-menu .nav-header {
+    color: rgba(255,255,255,.35) !important;
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: 1.25rem 1.25rem .5rem;
+}
+
+.sidebar-menu .nav-icon {
+    font-size: 1.1rem;
+    width: 1.5rem;
+    text-align: center;
+}
+
+.sidebar-menu .nav-treeview .nav-link {
+    font-size: .825rem;
+    padding-left: 2.5rem;
+}
+
+/* ── 5. Content header & breadcrumb ── */
+.app-content-header {
+    background: transparent;
+    padding: 1.25rem 0 .25rem;
+}
+
+.app-content-header h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--fq-text);
+}
+
+.breadcrumb {
+    font-size: .8rem;
+    margin-bottom: 0;
+}
+
+.breadcrumb-item a {
+    color: var(--fq-primary);
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: var(--fq-text-muted);
+}
+
+/* ── 6. Cards ── */
 .card {
-    border: 0;
-    border-radius: 1rem;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+    background: var(--fq-card-bg);
+    border: 1px solid var(--fq-border) !important;
+    border-radius: var(--fq-card-radius) !important;
+    box-shadow: var(--fq-card-shadow);
 }
 
+.card-header {
+    background: var(--fq-card-bg) !important;
+    border-bottom: 1px solid var(--fq-border);
+    padding: .875rem 1.25rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+/* ── 7. Tables ── */
+.table {
+    font-size: .85rem;
+    color: var(--fq-text);
+}
+
+.table th {
+    font-weight: 600;
+    font-size: .775rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--fq-text-muted);
+    border-bottom-width: 2px;
+    white-space: nowrap;
+    padding: .75rem;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: .65rem .75rem;
+    border-color: var(--fq-border);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > td {
+    background-color: #f8fafc;
+}
+
+.table-hover > tbody > tr:hover > td {
+    background-color: #eff6ff;
+}
+
+@media (max-width: 767.98px) {
+    .table td,
+    .table th {
+        font-size: .8rem;
+        padding: .5rem;
+    }
+}
+
+/* ── 8. Form controls ── */
+.form-control,
+.form-select {
+    font-size: .875rem;
+    border-color: var(--fq-border);
+    border-radius: .5rem;
+    padding: .5rem .75rem;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--fq-primary);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+.form-label {
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--fq-text-muted);
+    margin-bottom: .35rem;
+}
+
+/* ── 9. Buttons ── */
+.btn {
+    font-size: .85rem;
+    font-weight: 500;
+    border-radius: .5rem;
+    padding: .45rem 1rem;
+    transition: all .15s;
+}
+
+.btn-primary {
+    background: var(--fq-primary) !important;
+    border-color: var(--fq-primary) !important;
+}
+
+.btn-primary:hover {
+    background: var(--fq-primary-dark) !important;
+    border-color: var(--fq-primary-dark) !important;
+    box-shadow: 0 4px 6px -1px rgba(59,130,246,.25);
+}
+
+.btn-outline-primary {
+    color: var(--fq-primary);
+    border-color: var(--fq-primary);
+}
+
+.btn-outline-primary:hover {
+    background: var(--fq-primary);
+    border-color: var(--fq-primary);
+}
+
+.btn-outline-secondary {
+    color: var(--fq-text-muted);
+    border-color: var(--fq-border);
+}
+
+.btn-outline-secondary:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: var(--fq-text);
+}
+
+.btn-group-sm > .btn, .btn-sm {
+    font-size: .8rem;
+    padding: .3rem .65rem;
+    border-radius: .375rem;
+}
+
+/* ── 10. Badges ── */
+.badge {
+    font-weight: 500;
+    font-size: .75rem;
+    padding: .35em .65em;
+    border-radius: .375rem;
+    letter-spacing: .02em;
+}
+
+.badge.text-bg-primary  { background: #dbeafe !important; color: #1d4ed8 !important; }
+.badge.text-bg-success  { background: #dcfce7 !important; color: #15803d !important; }
+.badge.text-bg-danger   { background: #fee2e2 !important; color: #b91c1c !important; }
+.badge.text-bg-warning  { background: #fef3c7 !important; color: #92400e !important; }
+.badge.text-bg-info     { background: #e0f2fe !important; color: #0369a1 !important; }
+.badge.text-bg-secondary{ background: #f1f5f9 !important; color: #475569 !important; }
+.badge.text-bg-light    { background: #f8fafc !important; color: #475569 !important; border: 1px solid var(--fq-border); }
+
+/* ── 11. Dropdown ── */
+.dropdown-menu {
+    border: 1px solid var(--fq-border);
+    border-radius: .5rem;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,.08), 0 4px 6px -4px rgba(0,0,0,.04);
+    font-size: .85rem;
+}
+
+.dropdown-item {
+    padding: .45rem 1rem;
+    border-radius: .25rem;
+    margin: 0 .25rem;
+    width: calc(100% - .5rem);
+}
+
+.dropdown-item:hover {
+    background: #f1f5f9;
+}
+
+/* ── 12. Footer ── */
+.app-footer {
+    font-size: .8rem;
+    color: var(--fq-text-muted);
+    border-top: 1px solid var(--fq-border);
+    background: var(--fq-card-bg);
+    padding: 1rem 1.5rem;
+}
+
+/* ── 13. DataTables overrides ── */
+div.dt-container .dt-search input {
+    border-radius: .5rem;
+    border-color: var(--fq-border);
+    font-size: .85rem;
+    padding: .4rem .75rem;
+}
+
+div.dt-container .dt-search input:focus {
+    border-color: var(--fq-primary);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+div.dt-container .dt-length select {
+    border-radius: .5rem;
+    border-color: var(--fq-border);
+    font-size: .85rem;
+}
+
+div.dt-container .dt-info {
+    font-size: .8rem;
+    color: var(--fq-text-muted);
+}
+
+div.dt-container .dt-paging .page-link {
+    border-radius: .375rem;
+    font-size: .8rem;
+    margin: 0 2px;
+}
+
+/* ── 14. App-specific widgets ── */
 .metric-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
 }
 
 .metric-label {
-    color: #6b7280;
-    font-size: 0.85rem;
+    color: var(--fq-text-muted);
+    font-size: .75rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: .06em;
 }
 
 .metric-value {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 700;
-    margin-top: 0.25rem;
+    margin-top: .25rem;
+    color: var(--fq-text);
 }
 
 .summary-row {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.4rem 0;
+    padding: .4rem 0;
 }
 
 .grand-total {
     font-size: 1.1rem;
     font-weight: 700;
-    border-top: 1px solid #e5e7eb;
-    margin-top: 0.75rem;
-    padding-top: 0.9rem;
+    border-top: 2px solid var(--fq-border);
+    margin-top: .75rem;
+    padding-top: .9rem;
 }
 
 .detail-grid .detail-label {
     display: block;
-    color: #6b7280;
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
+    color: var(--fq-text-muted);
+    font-size: .8rem;
+    font-weight: 500;
+    margin-bottom: .25rem;
 }
 
 .sticky-summary {
@@ -52,12 +401,57 @@ body {
     top: 1rem;
 }
 
-.table td,
-.table th {
-    vertical-align: middle;
+/* ── 15. Details readonly mode ── */
+.details-readonly #add-shipment,
+.details-readonly #add-charge,
+.details-readonly .remove-shipment,
+.details-readonly .remove-charge,
+.details-readonly .toggle-tiers,
+.details-readonly .remove-tier,
+.details-readonly .add-tier,
+.details-readonly .d-grid,
+.details-readonly #source-selects,
+.details-readonly template {
+    display: none !important;
 }
 
-.navbar-brand,
-.text-primary {
-    color: #1744d1 !important;
+.details-readonly fieldset[disabled] .form-control,
+.details-readonly fieldset[disabled] .form-select {
+    background-color: #f8fafc;
+    border-color: var(--fq-border);
+    opacity: 1;
+    color: var(--fq-text);
+}
+
+/* ── 16. Misc polish ── */
+.text-muted {
+    color: var(--fq-text-muted) !important;
+}
+
+.fw-semibold {
+    font-weight: 600 !important;
+}
+
+::selection {
+    background: #bfdbfe;
+    color: #1e293b;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }

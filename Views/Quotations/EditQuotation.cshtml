@@ -1,0 +1,27 @@
+@using QTMSModel.Models
+@model COM_Trs_SalesQuotation
+@{
+    ViewData["Title"] = L["Page_EditQuotation"].Value;
+    ViewData["BreadcrumbParent"] = L["Nav_Quotations"].Value;
+    ViewData["BreadcrumbParentUrl"] = Url.Action("QuotationsList", "Quotations");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">
+            Edit quotation
+            <span class="badge text-bg-secondary ms-2">@Model.QuotationNo</span>
+        </h1>
+        <p class="text-muted mb-0">@Model.CustomerName</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="QuotationDetails" asp-route-id="@Model.QuotationNo" class="btn btn-outline-primary">Details</a>
+        <a asp-action="QuotationsList" class="btn btn-outline-secondary">Back</a>
+    </div>
+</div>
+
+<form asp-action="EditQuotation" method="post">
+    <input type="hidden" name="CompanyCode" value="@Model.CompanyCode" />
+    <input type="hidden" name="QuotationNo" value="@Model.QuotationNo" />
+    <partial name="_QuotationForm" model="@Model" />
+</form>

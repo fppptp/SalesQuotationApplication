@@ -1,4 +1,4 @@
-@using ViewModels
+@using SQTWeb.ViewModels
 @model LoginViewModel
 @{
     ViewData["Title"] = "Login";
@@ -23,8 +23,9 @@
             }
 
             <form method="post" asp-action="Login">
+                @Html.AntiForgeryToken()
                 <input type="hidden" asp-for="ReturnUrl" />
-
+                
                 <div class="mb-3">
                     <label asp-for="Username" class="form-label">Username</label>
                     <input asp-for="Username" class="form-control" autocomplete="username" placeholder="Enter username" />

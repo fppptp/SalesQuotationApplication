@@ -1,0 +1,44 @@
+@{
+    var name = (string)ViewData["Name"] ?? "CustomerCode";
+    var value = (string?)ViewData["Value"];
+    var displayText = (string?)ViewData["DisplayText"] ?? "";
+    var css = (string)ViewData["CssClass"] ?? "form-control";
+}
+@if (ViewContext.HttpContext.Items["SL_CSS"] == null)
+{
+    ViewContext.HttpContext.Items["SL_CSS"] = true;
+    <link rel="stylesheet" href="~/css/search-lookup.css" />
+}
+<div class="sl-root"
+     data-api="/api/masters/customers"
+     data-take="20"
+     data-min-chars="2"
+     data-columns='[{"field":"customerCode","header":"Code","css":"sl-col-code"},{"field":"customerName","header":"Name"},{"field":"idNo","header":"ID No."}]'
+     data-display-format="{customerCode} - {customerName}"
+     data-value-field="customerCode"
+     data-fills='{"CustomerName":"customerName"}'
+     data-depends-on="CompanyCode"
+     data-depends-param="companyCode"
+     data-depends-clear="true">
+    <input type="hidden" class="sl-value" name="@name" value="@value" />
+    <div class="sl-input-wrap">
+        <input type="text" class="@css sl-display" value="@displayText" placeholder="Type 2+ chars to search customer..." autocomplete="off" />
+        <button type="button" class="sl-clear" title="Clear">&times;</button>
+    </div>
+    <div class="sl-dropdown" style="display:none">
+        <div class="sl-grid-wrap">
+            <table class="sl-grid">
+                <thead><tr></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="sl-empty" style="display:none">No results</div>
+        <div class="sl-loading" style="display:none">Searching...</div>
+        <div class="sl-info" style="display:none"></div>
+    </div>
+</div>
+@if (ViewContext.HttpContext.Items["SL_JS"] == null)
+{
+    ViewContext.HttpContext.Items["SL_JS"] = true;
+    <script src="~/js/search-lookup.js"></script>
+}

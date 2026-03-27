@@ -1,0 +1,73 @@
+@model IEnumerable<LMSModel.Models.COM_View_CustomerList>
+@{
+    ViewData["Title"] = "Customers";
+    var keyword = ViewBag.Keyword as string;
+    var companyCode = ViewBag.CompanyCode as string;
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h1 class="h3 mb-1">Customers</h1>
+        <p class="text-muted mb-0">View customers from the system (read-only from database view)</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Company Code</label>
+                <input type="text" name="companyCode" value="@companyCode" class="form-control"
+                       placeholder="e.g. PAC" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">@L["Lbl_Keyword"]</label>
+                <input type="text" name="keyword" value="@keyword" class="form-control"
+                       placeholder="Customer code, name, or tax ID" />
+            </div>
+            <div class="col-md-4 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary">@L["Btn_Search"]</button>
+                <a asp-action="CustomersList" class="btn btn-outline-secondary">@L["Btn_Reset"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Company</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Tax ID</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No customers found. Enter a company code and search.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.CompanyCode</td>
+                            <td><strong>@item.CustomerCode</strong></td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.Type</td>
+                            <td>@item.IDNo</td>
+                            <td>@item.Telephone</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

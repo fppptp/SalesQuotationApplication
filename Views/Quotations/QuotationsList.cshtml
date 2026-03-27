@@ -1,0 +1,221 @@
+@using QTMSModel.Models
+@model List<COM_Trs_SalesQuotation>
+@{
+    ViewData["Title"] = L["Page_QuotationList"].Value;
+    ViewData["BreadcrumbParent"] = L["Nav_Quotations"].Value;
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary btn-sm" type="button"
+                data-bs-toggle="collapse" data-bs-target="#searchPanel" aria-expanded="false">
+            <i class="bi bi-funnel me-1"></i>@L["Btn_Search"]
+        </button>
+        <span id="active-filter-count" class="badge text-bg-primary d-none">0</span>
+    </div>
+    <a asp-action="CreateQuotation" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>@L["Nav_Quotation_Create"]
+    </a>
+</div>
+
+<!-- Collapsible search panel -->
+<div class="collapse mb-3" id="searchPanel">
+    <div class="card">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">@L["Lbl_QuoteNo"]</label>
+                    <input type="text" class="form-control form-control-sm dt-filter" data-col="0"
+                           placeholder="PAC2603-..." />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">@L["Lbl_Customer"]</label>
+                    <input type="text" class="form-control form-control-sm dt-filter" data-col="2"
+                           placeholder="Customer name" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">@L["Lbl_ContactPerson"]</label>
+                    <input type="text" class="form-control form-control-sm dt-filter" data-col="3"
+                           placeholder="Contact person" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">@L["Lbl_Destination"]</label>
+                    <input type="text" class="form-control form-control-sm dt-filter" data-col="4"
+                           placeholder="Port name" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">@L["Lbl_CarrierAgent"]</label>
+                    <input type="text" class="form-control form-control-sm dt-filter" data-col="5"
+                           placeholder="Agent name" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">@L["Lbl_Currency"]</label>
+                    <input type="text" class="form-control form-control-sm dt-filter" data-col="6"
+                           placeholder="THB, USD…" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">@L["Lbl_Status"]</label>
+                    <select class="form-select form-select-sm dt-filter" data-col="12">
+                        <option value="">@L["Lbl_AllStatus"]</option>
+                        @foreach (var s in AppLists.Statuses)
+                        {
+                            <option value="@s">@s</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-outline-secondary btn-sm w-100" id="btn-clear-filters">
+                        <i class="bi bi-x-circle me-1"></i>@L["Btn_Reset"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table id="quotation-table" class="table table-striped table-hover align-middle w-100">
+            <thead>
+                <tr>
+                    <th>@L["Lbl_QuoteNo"]</th>
+                    <th>@L["Lbl_QuoteDate"]</th>
+                    <th>@L["Lbl_Customer"]</th>
+                    <th>@L["Lbl_Destination"]</th>
+                    <th>@L["Lbl_CarrierAgent"]</th>
+                    <th>@L["Lbl_Currency"]</th>
+                    <th>@L["Lbl_GrandTotal"] (Dest)</th>
+                    <th>@L["Lbl_GrossWeight"]</th>
+                    <th>@L["Lbl_Volume"]</th>
+                    <th>@L["Lbl_Status"]</th>
+                    <th>@L["Lbl_CreatedAt"]</th>
+                    <th data-dt-order="disable"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold text-nowrap">@item.QuotationNo</td>
+                        <td data-order="@(item.QuotationDate?.ToString("yyyy-MM-dd"))">@item.QuotationDate?.ToString("dd/MM/yyyy")</td>
+                        <td>@item.CustomerName</td>
+                        <td>@item.PortCode</td>
+                        <td>@item.AgentCode</td>
+                        <td class="text-center">@item.CurrencyCode</td>
+                        <td class="text-end text-nowrap" data-order="@(item.GrandTotalFrieghtAmountDest ?? 0)">@item.GrandTotalFrieghtAmountDest?.ToString("N2")</td>
+                        <td class="text-end text-nowrap" data-order="@(item.GrandTotalGrossWeightKg ?? 0)">@item.GrandTotalGrossWeightKg?.ToString("N2")</td>
+                        <td class="text-end text-nowrap" data-order="@(item.GrandTotalVolumeCBM ?? 0)">@item.GrandTotalVolumeCBM?.ToString("N4")</td>
+                        <td>
+                            @{
+                                var badgeClass = item.StatusName switch
+                                {
+                                    "Draft" => "text-bg-secondary",
+                                    "Open" => "text-bg-primary",
+                                    "Approved" => "text-bg-success",
+                                    "Rejected" => "text-bg-danger",
+                                    "Expired" => "text-bg-warning",
+                                    "Booked" => "text-bg-info",
+                                    _ => "text-bg-light border"
+                                };
+                            }
+                            <span class="badge @badgeClass">@item.StatusName</span>
+                        </td>
+                        <td class="text-nowrap small" data-order="@(item.CreateDate?.ToString("yyyy-MM-dd HH:mm"))">
+                            @item.CreateDate?.ToString("dd/MM/yyyy")
+                            @if (!string.IsNullOrEmpty(item.CreateBy))
+                            {
+                                <div class="text-muted">@item.CreateBy</div>
+                            }
+                        </td>
+                        <td class="text-nowrap">
+                            <div class="btn-group btn-group-sm">
+                                <a asp-action="QuotationDetails" asp-route-id="@item.QuotationNo" class="btn btn-outline-primary" title="@L["Btn_Open"]">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="EditQuotation" asp-route-id="@item.QuotationNo" class="btn btn-outline-secondary" title="@L["Btn_Edit"]">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="visually-hidden">More</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <form asp-action="CopyQuotation" method="post" class="m-0">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.QuotationNo" />
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="bi bi-copy me-1"></i>@L["Btn_Copy"]
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var table = new DataTable('#quotation-table', {
+            responsive: true,
+            order: [[1, 'desc']],
+            pageLength: 25,
+            lengthMenu: [10, 25, 50, 100],
+            language: {
+                search: "",
+                searchPlaceholder: "Quick search…",
+                emptyTable: "@L["Msg_NoQuotationsFound"].Value"
+            },
+            columnDefs: [
+                { targets: -1, orderable: false, searchable: false }
+            ]
+        });
+
+        // Column-level search from the filter panel
+        var filterInputs = document.querySelectorAll('.dt-filter');
+        var countBadge = document.getElementById('active-filter-count');
+
+        function updateFilterCount() {
+            var count = 0;
+            filterInputs.forEach(function (el) {
+                if (el.value && el.value.trim() !== '') count++;
+            });
+            if (count > 0) {
+                countBadge.textContent = count;
+                countBadge.classList.remove('d-none');
+            } else {
+                countBadge.classList.add('d-none');
+            }
+        }
+
+        filterInputs.forEach(function (el) {
+            var colIdx = parseInt(el.getAttribute('data-col'), 10);
+            el.addEventListener('input', function () {
+                table.column(colIdx).search(this.value).draw();
+                updateFilterCount();
+            });
+            el.addEventListener('change', function () {
+                table.column(colIdx).search(this.value).draw();
+                updateFilterCount();
+            });
+        });
+
+        // Clear all filters
+        document.getElementById('btn-clear-filters').addEventListener('click', function () {
+            filterInputs.forEach(function (el) {
+                el.value = '';
+                var colIdx = parseInt(el.getAttribute('data-col'), 10);
+                table.column(colIdx).search('');
+            });
+            table.search('').draw();
+            updateFilterCount();
+        });
+    });
+</script>
+}

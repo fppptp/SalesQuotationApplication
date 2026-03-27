@@ -1,10 +1,12 @@
-using SQTWeb.Models.ACMS;
+using ACMSModel.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using ViewModels;
+using SQTWeb.ViewModels;
+
+namespace SQTWeb.Controllers;
 
 public class AccountController : Controller
 {
@@ -75,5 +77,20 @@ public class AccountController : Controller
         return BitConverter.ToString(hash).Replace("-", "").ToUpperInvariant();
     }
 
-    // GET Login และ Logout เหมือนเดิม
+    // GET: /Account/Login
+    [HttpGet]
+    public IActionResult Login(string returnUrl = null)
+    {
+        var model = new ViewModels.LoginViewModel { ReturnUrl = returnUrl };
+        return View(model);
+    }
+
+    // POST: /Account/Logout
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Login", "Account");
+    }
 }

@@ -1,177 +1,594 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
-  <resheader name="version"><value>2.0</value></resheader>
-  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
-  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-  <!-- ── Navigation ── -->
-  <data name="Nav_Dashboard"       xml:space="preserve"><value>แผงควบคุม</value></data>
-  <data name="Nav_Quotations"      xml:space="preserve"><value>ใบเสนอราคา</value></data>
-  <data name="Nav_NewQuotation"    xml:space="preserve"><value>ใบเสนอราคาใหม่</value></data>
-  <data name="Nav_Rates"           xml:space="preserve"><value>อัตราค่าระวาง</value></data>
-  <data name="Nav_RateCards"       xml:space="preserve"><value>บัตรอัตราค่าระวาง</value></data>
-  <data name="Nav_Surcharges"      xml:space="preserve"><value>ค่าธรรมเนียมพิเศษ</value></data>
-  <data name="Nav_MarginRules"     xml:space="preserve"><value>กฎคำนวณมาร์จิน</value></data>
-  <data name="Nav_RateTemplates"   xml:space="preserve"><value>เทมเพลตอัตราค่าระวาง</value></data>
-  <data name="Nav_Logout"          xml:space="preserve"><value>ออกจากระบบ</value></data>
-  <data name="Nav_Tagline"         xml:space="preserve"><value>ระบบออกใบเสนอราคาขนส่งสินค้า</value></data>
-  <data name="Nav_Settings"        xml:space="preserve"><value>การตั้งค่า</value></data>
-  <data name="Nav_ChargeCodes"     xml:space="preserve"><value>รหัสค่าใช้จ่าย</value></data>
-
-  <!-- ── Buttons ── -->
-  <data name="Btn_Save"            xml:space="preserve"><value>บันทึก</value></data>
-  <data name="Btn_SaveQuotation"   xml:space="preserve"><value>บันทึกใบเสนอราคา</value></data>
-  <data name="Btn_SaveRateCard"    xml:space="preserve"><value>บันทึกบัตรอัตราค่าระวาง</value></data>
-  <data name="Btn_SaveTemplate"    xml:space="preserve"><value>บันทึกเทมเพลต</value></data>
-  <data name="Btn_Cancel"          xml:space="preserve"><value>ยกเลิก</value></data>
-  <data name="Btn_Back"            xml:space="preserve"><value>กลับ</value></data>
-  <data name="Btn_Close"           xml:space="preserve"><value>ปิด</value></data>
-  <data name="Btn_Print"           xml:space="preserve"><value>พิมพ์ / บันทึก PDF</value></data>
-  <data name="Btn_Edit"            xml:space="preserve"><value>แก้ไข</value></data>
-  <data name="Btn_Delete"          xml:space="preserve"><value>ลบ</value></data>
-  <data name="Btn_Search"          xml:space="preserve"><value>ค้นหา</value></data>
-  <data name="Btn_Reset"           xml:space="preserve"><value>รีเซ็ต</value></data>
-  <data name="Btn_Create"          xml:space="preserve"><value>สร้างใหม่</value></data>
-  <data name="Btn_Open"            xml:space="preserve"><value>เปิดดู</value></data>
-  <data name="Btn_Submit"          xml:space="preserve"><value>ส่ง</value></data>
-  <data name="Btn_NewRevision"     xml:space="preserve"><value>แก้ไขฉบับใหม่</value></data>
-  <data name="Btn_Copy"            xml:space="preserve"><value>คัดลอก</value></data>
-  <data name="Btn_BuildQuotation"  xml:space="preserve"><value>สร้างใบเสนอราคา</value></data>
-  <data name="Btn_Upload"          xml:space="preserve"><value>อัปโหลด</value></data>
-  <data name="Btn_Activate"        xml:space="preserve"><value>เปิดใช้งาน</value></data>
-  <data name="Btn_Deactivate"      xml:space="preserve"><value>ปิดใช้งาน</value></data>
-  <data name="Btn_AddLine"         xml:space="preserve"><value>เพิ่มรายการ</value></data>
-
-  <!-- ── Page titles ── -->
-  <data name="Page_Dashboard"          xml:space="preserve"><value>แผงควบคุม</value></data>
-  <data name="Page_QuotationList"      xml:space="preserve"><value>รายการใบเสนอราคา</value></data>
-  <data name="Page_CreateQuotation"    xml:space="preserve"><value>สร้างใบเสนอราคาใหม่</value></data>
-  <data name="Page_EditQuotation"      xml:space="preserve"><value>แก้ไขใบเสนอราคา</value></data>
-  <data name="Page_QuotationDetails"   xml:space="preserve"><value>รายละเอียดใบเสนอราคา</value></data>
-  <data name="Page_RateCardList"       xml:space="preserve"><value>รายการบัตรอัตราค่าระวาง</value></data>
-  <data name="Page_NewRateCard"        xml:space="preserve"><value>สร้างบัตรอัตราค่าระวางใหม่</value></data>
-  <data name="Page_EditRateCard"       xml:space="preserve"><value>แก้ไขบัตรอัตราค่าระวาง</value></data>
-  <data name="Page_RateCardDetails"    xml:space="preserve"><value>รายละเอียดบัตรอัตราค่าระวาง</value></data>
-  <data name="Page_SurchargeList"      xml:space="preserve"><value>รายการค่าธรรมเนียมพิเศษ</value></data>
-  <data name="Page_NewSurcharge"       xml:space="preserve"><value>สร้างค่าธรรมเนียมพิเศษ</value></data>
-  <data name="Page_EditSurcharge"      xml:space="preserve"><value>แก้ไขค่าธรรมเนียมพิเศษ</value></data>
-  <data name="Page_MarginRuleList"     xml:space="preserve"><value>รายการกฎคำนวณมาร์จิน</value></data>
-  <data name="Page_NewMarginRule"      xml:space="preserve"><value>สร้างกฎคำนวณมาร์จินใหม่</value></data>
-  <data name="Page_EditMarginRule"     xml:space="preserve"><value>แก้ไขกฎคำนวณมาร์จิน</value></data>
-  <data name="Page_RateTemplateList"   xml:space="preserve"><value>รายการเทมเพลตอัตราค่าระวาง</value></data>
-  <data name="Page_NewRateTemplate"    xml:space="preserve"><value>สร้างเทมเพลตอัตราค่าระวางใหม่</value></data>
-  <data name="Page_EditRateTemplate"   xml:space="preserve"><value>แก้ไขเทมเพลตอัตราค่าระวาง</value></data>
-  <data name="Page_RateTemplateDetails" xml:space="preserve"><value>รายละเอียดเทมเพลตอัตราค่าระวาง</value></data>
-  <data name="Page_RateSheetImport"    xml:space="preserve"><value>นำเข้าตารางอัตราค่าระวาง</value></data>
-
-  <!-- ── Sections ── -->
-  <data name="Sec_Header"           xml:space="preserve"><value>ข้อมูลทั่วไป</value></data>
-  <data name="Sec_ChargeLines"      xml:space="preserve"><value>รายการค่าใช้จ่าย</value></data>
-  <data name="Sec_ShipmentDetails"  xml:space="preserve"><value>รายละเอียดการขนส่ง</value></data>
-  <data name="Lbl_CategorySubtotal" xml:space="preserve"><value>ยอดรวม</value></data>
-  <data name="Lbl_FreightQuotation" xml:space="preserve"><value>ใบเสนอราคาขนส่ง</value></data>
-  <data name="Lbl_NetAmount"        xml:space="preserve"><value>ยอดสุทธิ์</value></data>
-  <data name="Lbl_PreparedBy"       xml:space="preserve"><value>จัดทำโดย</value></data>
-  <data name="Sec_Summary"          xml:space="preserve"><value>สรุปยอด</value></data>
-  <data name="Sec_FinancialSummary" xml:space="preserve"><value>สรุปยอดทางการเงิน</value></data>
-  <data name="Sec_RemarksTerms"     xml:space="preserve"><value>หมายเหตุ / เงื่อนไข</value></data>
-  <data name="Sec_QuickStatus"      xml:space="preserve"><value>อัปเดตสถานะ</value></data>
-  <data name="Sec_Actions"          xml:space="preserve"><value>การดำเนินการ</value></data>
-  <data name="Sec_RateCardDetails"  xml:space="preserve"><value>รายละเอียดบัตรอัตราค่าระวาง</value></data>
-  <data name="Sec_RateLines"        xml:space="preserve"><value>รายการอัตราค่าระวาง</value></data>
-  <data name="Sec_TemplateDetails"  xml:space="preserve"><value>รายละเอียดเทมเพลต</value></data>
-  <data name="Sec_UploadFile"       xml:space="preserve"><value>อัปโหลดไฟล์</value></data>
-  <data name="Sec_UploadHistory"    xml:space="preserve"><value>ประวัติการอัปโหลด</value></data>
-
-  <!-- ── Common labels ── -->
-  <data name="Lbl_Status"        xml:space="preserve"><value>สถานะ</value></data>
-  <data name="Lbl_Mode"          xml:space="preserve"><value>รูปแบบการขนส่ง</value></data>
-  <data name="Lbl_Route"         xml:space="preserve"><value>เส้นทาง</value></data>
-  <data name="Lbl_Customer"      xml:space="preserve"><value>ลูกค้า</value></data>
-  <data name="Lbl_Currency"      xml:space="preserve"><value>สกุลเงิน</value></data>
-  <data name="Lbl_Active"        xml:space="preserve"><value>ใช้งาน</value></data>
-  <data name="Lbl_Inactive"      xml:space="preserve"><value>ไม่ใช้งาน</value></data>
-  <data name="Lbl_NoData"        xml:space="preserve"><value>ไม่พบข้อมูล</value></data>
-  <data name="Lbl_Keyword"       xml:space="preserve"><value>คำค้นหา</value></data>
-  <data name="Lbl_AllStatus"     xml:space="preserve"><value>ทุกสถานะ</value></data>
-  <data name="Lbl_AllModes"      xml:space="preserve"><value>ทุกรูปแบบ</value></data>
-  <data name="Lbl_Notes"         xml:space="preserve"><value>หมายเหตุ</value></data>
-  <data name="Lbl_Priority"      xml:space="preserve"><value>ลำดับความสำคัญ</value></data>
-  <data name="Lbl_Code"          xml:space="preserve"><value>รหัส</value></data>
-  <data name="Lbl_Category"      xml:space="preserve"><value>ประเภท</value></data>
-  <data name="Lbl_Basis"         xml:space="preserve"><value>หน่วยคิดราคา</value></data>
-  <data name="Lbl_BillTo"        xml:space="preserve"><value>เรียกเก็บจาก</value></data>
-  <data name="Lbl_BuyRate"       xml:space="preserve"><value>ราคาซื้อ</value></data>
-  <data name="Lbl_SellRate"      xml:space="preserve"><value>ราคาขาย</value></data>
-  <data name="Lbl_Margin"        xml:space="preserve"><value>กำไร</value></data>
-  <data name="Lbl_MarginPct"     xml:space="preserve"><value>กำไร (%)</value></data>
-  <data name="Lbl_MarkupPct"     xml:space="preserve"><value>มาร์กอัป (%)</value></data>
-  <data name="Lbl_MinCharge"     xml:space="preserve"><value>ค่าขั้นต่ำ</value></data>
-  <data name="Lbl_TotalBuy"      xml:space="preserve"><value>ต้นทุนรวม</value></data>
-  <data name="Lbl_TotalSell"     xml:space="preserve"><value>ราคาขายรวม</value></data>
-  <data name="Lbl_TotalMargin"   xml:space="preserve"><value>กำไรรวม</value></data>
-  <data name="Lbl_EffectiveDate" xml:space="preserve"><value>วันที่เริ่มใช้งาน</value></data>
-  <data name="Lbl_ExpiryDate"    xml:space="preserve"><value>วันที่สิ้นสุด</value></data>
-  <data name="Lbl_Lines"         xml:space="preserve"><value>รายการ</value></data>
-  <data name="Lbl_CarrierAgent"  xml:space="preserve"><value>สายเรือ / ตัวแทน</value></data>
-  <data name="Lbl_CreatedAt"     xml:space="preserve"><value>วันที่สร้าง</value></data>
-
-  <!-- ── Quotation labels ── -->
-  <data name="Lbl_QuoteNo"        xml:space="preserve"><value>เลขที่ใบเสนอราคา</value></data>
-  <data name="Lbl_QuoteDate"      xml:space="preserve"><value>วันที่ออกใบ</value></data>
-  <data name="Lbl_ValidUntil"     xml:space="preserve"><value>มีผลถึงวันที่</value></data>
-  <data name="Lbl_RevisionNo"     xml:space="preserve"><value>ฉบับที่</value></data>
-  <data name="Lbl_ContactPerson"  xml:space="preserve"><value>ผู้ติดต่อ</value></data>
-  <data name="Lbl_Incoterm"       xml:space="preserve"><value>อินโคเทิร์ม</value></data>
-  <data name="Lbl_Origin"         xml:space="preserve"><value>ต้นทาง</value></data>
-  <data name="Lbl_Destination"    xml:space="preserve"><value>ปลายทาง</value></data>
-  <data name="Lbl_ServiceType"    xml:space="preserve"><value>ประเภทบริการ</value></data>
-  <data name="Lbl_TransitTime"    xml:space="preserve"><value>ระยะเวลาขนส่ง (วัน)</value></data>
-  <data name="Lbl_FreeTime"       xml:space="preserve"><value>ระยะเวลาฟรี (วัน)</value></data>
-  <data name="Lbl_Commodity"      xml:space="preserve"><value>ประเภทสินค้า</value></data>
-  <data name="Lbl_Packages"       xml:space="preserve"><value>หีบห่อ</value></data>
-  <data name="Lbl_GrossWeight"    xml:space="preserve"><value>น้ำหนักรวม</value></data>
-  <data name="Lbl_Volume"         xml:space="preserve"><value>ปริมาตร</value></data>
-  <data name="Lbl_ExchangeRate"   xml:space="preserve"><value>อัตราแลกเปลี่ยน</value></data>
-  <data name="Lbl_SalesPerson"    xml:space="preserve"><value>พนักงานขาย</value></data>
-  <data name="Lbl_Remarks"        xml:space="preserve"><value>หมายเหตุ</value></data>
-  <data name="Lbl_Exclusions"     xml:space="preserve"><value>รายการที่ไม่รวม</value></data>
-  <data name="Lbl_TermsConditions" xml:space="preserve"><value>เงื่อนไขและข้อตกลง</value></data>
-  <data name="Lbl_Subtotal"       xml:space="preserve"><value>ยอดก่อนหักส่วนลด</value></data>
-  <data name="Lbl_CostTotal"      xml:space="preserve"><value>ต้นทุนรวม</value></data>
-  <data name="Lbl_Profit"         xml:space="preserve"><value>กำไร</value></data>
-  <data name="Lbl_GpPercent"      xml:space="preserve"><value>อัตรากำไร (%)</value></data>
-  <data name="Lbl_Discount"       xml:space="preserve"><value>ส่วนลด</value></data>
-  <data name="Lbl_IncludeVAT"     xml:space="preserve"><value>รวม VAT</value></data>
-  <data name="Lbl_VatRate"        xml:space="preserve"><value>อัตรา VAT (%)</value></data>
-  <data name="Lbl_VatAmount"      xml:space="preserve"><value>จำนวน VAT</value></data>
-  <data name="Lbl_GrandTotal"     xml:space="preserve"><value>ยอดรวมสุทธิ</value></data>
-  <data name="Lbl_Quantity"       xml:space="preserve"><value>จำนวน</value></data>
-  <data name="Lbl_UnitCost"       xml:space="preserve"><value>ต้นทุนต่อหน่วย</value></data>
-  <data name="Lbl_UnitSell"       xml:space="preserve"><value>ราคาขายต่อหน่วย</value></data>
-  <data name="Lbl_CostAmount"     xml:space="preserve"><value>จำนวนต้นทุน</value></data>
-  <data name="Lbl_SellAmount"     xml:space="preserve"><value>จำนวนราคาขาย</value></data>
-  <data name="Lbl_ChargeName"     xml:space="preserve"><value>รายการค่าใช้จ่าย</value></data>
-  <data name="Lbl_RouteContainer" xml:space="preserve"><value>เส้นทาง / ตู้คอนเทนเนอร์</value></data>
-
-  <!-- ── Statuses ── -->
-  <data name="Status_Draft"     xml:space="preserve"><value>ร่าง</value></data>
-  <data name="Status_Sent"      xml:space="preserve"><value>ส่งแล้ว</value></data>
-  <data name="Status_Approved"  xml:space="preserve"><value>อนุมัติ</value></data>
-  <data name="Status_Rejected"  xml:space="preserve"><value>ปฏิเสธ</value></data>
-  <data name="Status_Expired"   xml:space="preserve"><value>หมดอายุ</value></data>
-  <data name="Status_Booked"    xml:space="preserve"><value>ยืนยันแล้ว</value></data>
-
-  <!-- ── Messages ── -->
-  <data name="Msg_NoQuotationsFound"    xml:space="preserve"><value>ไม่พบใบเสนอราคา</value></data>
-  <data name="Msg_NoRateCardsFound"     xml:space="preserve"><value>ไม่พบบัตรอัตราค่าระวาง</value></data>
-  <data name="Msg_NoSurchargesFound"    xml:space="preserve"><value>ไม่พบค่าธรรมเนียมพิเศษ</value></data>
-  <data name="Msg_NoMarginRulesFound"   xml:space="preserve"><value>ไม่พบกฎคำนวณมาร์จิน</value></data>
-  <data name="Msg_NoRateTemplatesFound" xml:space="preserve"><value>ไม่พบเทมเพลตอัตราค่าระวาง</value></data>
-  <data name="Msg_AtLeastOneLine"       xml:space="preserve"><value>กรุณาเพิ่มรายการค่าใช้จ่ายอย่างน้อย 1 รายการ</value></data>
-  <data name="Msg_NoChargeCodesFound"   xml:space="preserve"><value>ไม่พบรหัสค่าใช้จ่าย</value></data>
-  <data name="Page_ChargeCodeList"      xml:space="preserve"><value>รายการรหัสค่าใช้จ่าย</value></data>
-  <data name="Page_NewChargeCode"       xml:space="preserve"><value>สร้างรหัสค่าใช้จ่ายใหม่</value></data>
-  <data name="Page_EditChargeCode"      xml:space="preserve"><value>แก้ไขรหัสค่าใช้จ่าย</value></data>
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Dashboard" xml:space="preserve">
+    <value>แผงควบคุม</value>
+  </data>
+  <data name="Nav_Quotations" xml:space="preserve">
+    <value>ใบเสนอราคา</value>
+  </data>
+  <data name="Nav_Quotation_Create" xml:space="preserve">
+    <value>ใบเสนอราคาใหม่</value>
+  </data>
+  <data name="Nav_Rates" xml:space="preserve">
+    <value>อัตราค่าระวาง</value>
+  </data>
+  <data name="Nav_RateCards" xml:space="preserve">
+    <value>บัตรอัตราค่าระวาง</value>
+  </data>
+  <data name="Nav_Surcharges" xml:space="preserve">
+    <value>ค่าธรรมเนียมพิเศษ</value>
+  </data>
+  <data name="Nav_MarginRules" xml:space="preserve">
+    <value>กฎคำนวณมาร์จิน</value>
+  </data>
+  <data name="Nav_RateTemplates" xml:space="preserve">
+    <value>เทมเพลตอัตราค่าระวาง</value>
+  </data>
+  <data name="Nav_Logout" xml:space="preserve">
+    <value>ออกจากระบบ</value>
+  </data>
+  <data name="Nav_Tagline" xml:space="preserve">
+    <value>ระบบออกใบเสนอราคาขนส่งสินค้า</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>การตั้งค่า</value>
+  </data>
+  <data name="Nav_ChargeCodes" xml:space="preserve">
+    <value>รหัสค่าใช้จ่าย</value>
+  </data>
+  <data name="Btn_Save" xml:space="preserve">
+    <value>บันทึก</value>
+  </data>
+  <data name="Btn_SaveQuotation" xml:space="preserve">
+    <value>บันทึกใบเสนอราคา</value>
+  </data>
+  <data name="Btn_SaveRateCard" xml:space="preserve">
+    <value>บันทึกบัตรอัตราค่าระวาง</value>
+  </data>
+  <data name="Btn_SaveTemplate" xml:space="preserve">
+    <value>บันทึกเทมเพลต</value>
+  </data>
+  <data name="Btn_Cancel" xml:space="preserve">
+    <value>ยกเลิก</value>
+  </data>
+  <data name="Btn_Back" xml:space="preserve">
+    <value>กลับ</value>
+  </data>
+  <data name="Btn_Close" xml:space="preserve">
+    <value>ปิด</value>
+  </data>
+  <data name="Btn_Print" xml:space="preserve">
+    <value>พิมพ์ / บันทึก PDF</value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>แก้ไข</value>
+  </data>
+  <data name="Btn_Delete" xml:space="preserve">
+    <value>ลบ</value>
+  </data>
+  <data name="Btn_Search" xml:space="preserve">
+    <value>ค้นหา</value>
+  </data>
+  <data name="Btn_Reset" xml:space="preserve">
+    <value>รีเซ็ต</value>
+  </data>
+  <data name="Btn_Create" xml:space="preserve">
+    <value>สร้างใหม่</value>
+  </data>
+  <data name="Btn_Open" xml:space="preserve">
+    <value>เปิดดู</value>
+  </data>
+  <data name="Btn_Submit" xml:space="preserve">
+    <value>ส่ง</value>
+  </data>
+  <data name="Btn_NewRevision" xml:space="preserve">
+    <value>แก้ไขฉบับใหม่</value>
+  </data>
+  <data name="Btn_Copy" xml:space="preserve">
+    <value>คัดลอก</value>
+  </data>
+  <data name="Btn_BuildQuotation" xml:space="preserve">
+    <value>สร้างใบเสนอราคา</value>
+  </data>
+  <data name="Btn_Upload" xml:space="preserve">
+    <value>อัปโหลด</value>
+  </data>
+  <data name="Btn_Activate" xml:space="preserve">
+    <value>เปิดใช้งาน</value>
+  </data>
+  <data name="Btn_Deactivate" xml:space="preserve">
+    <value>ปิดใช้งาน</value>
+  </data>
+  <data name="Btn_AddLine" xml:space="preserve">
+    <value>เพิ่มรายการ</value>
+  </data>
+  <data name="Page_Dashboard" xml:space="preserve">
+    <value>แผงควบคุม</value>
+  </data>
+  <data name="Page_QuotationList" xml:space="preserve">
+    <value>รายการใบเสนอราคา</value>
+  </data>
+  <data name="Page_CreateQuotation" xml:space="preserve">
+    <value>สร้างใบเสนอราคาใหม่</value>
+  </data>
+  <data name="Page_EditQuotation" xml:space="preserve">
+    <value>แก้ไขใบเสนอราคา</value>
+  </data>
+  <data name="Page_QuotationDetails" xml:space="preserve">
+    <value>รายละเอียดใบเสนอราคา</value>
+  </data>
+  <data name="Page_RateCardList" xml:space="preserve">
+    <value>รายการบัตรอัตราค่าระวาง</value>
+  </data>
+  <data name="Page_NewRateCard" xml:space="preserve">
+    <value>สร้างบัตรอัตราค่าระวางใหม่</value>
+  </data>
+  <data name="Page_EditRateCard" xml:space="preserve">
+    <value>แก้ไขบัตรอัตราค่าระวาง</value>
+  </data>
+  <data name="Page_RateCardDetails" xml:space="preserve">
+    <value>รายละเอียดบัตรอัตราค่าระวาง</value>
+  </data>
+  <data name="Page_SurchargeList" xml:space="preserve">
+    <value>รายการค่าธรรมเนียมพิเศษ</value>
+  </data>
+  <data name="Page_NewSurcharge" xml:space="preserve">
+    <value>สร้างค่าธรรมเนียมพิเศษ</value>
+  </data>
+  <data name="Page_EditSurcharge" xml:space="preserve">
+    <value>แก้ไขค่าธรรมเนียมพิเศษ</value>
+  </data>
+  <data name="Page_MarginRuleList" xml:space="preserve">
+    <value>รายการกฎคำนวณมาร์จิน</value>
+  </data>
+  <data name="Page_NewMarginRule" xml:space="preserve">
+    <value>สร้างกฎคำนวณมาร์จินใหม่</value>
+  </data>
+  <data name="Page_EditMarginRule" xml:space="preserve">
+    <value>แก้ไขกฎคำนวณมาร์จิน</value>
+  </data>
+  <data name="Page_RateTemplateList" xml:space="preserve">
+    <value>รายการเทมเพลตอัตราค่าระวาง</value>
+  </data>
+  <data name="Page_NewRateTemplate" xml:space="preserve">
+    <value>สร้างเทมเพลตอัตราค่าระวางใหม่</value>
+  </data>
+  <data name="Page_EditRateTemplate" xml:space="preserve">
+    <value>แก้ไขเทมเพลตอัตราค่าระวาง</value>
+  </data>
+  <data name="Page_RateTemplateDetails" xml:space="preserve">
+    <value>รายละเอียดเทมเพลตอัตราค่าระวาง</value>
+  </data>
+  <data name="Page_RateSheetImport" xml:space="preserve">
+    <value>นำเข้าตารางอัตราค่าระวาง</value>
+  </data>
+  <data name="Sec_Header" xml:space="preserve">
+    <value>ข้อมูลทั่วไป</value>
+  </data>
+  <data name="Sec_ChargeLines" xml:space="preserve">
+    <value>รายการค่าใช้จ่าย</value>
+  </data>
+  <data name="Sec_ShipmentDetails" xml:space="preserve">
+    <value>รายละเอียดการขนส่ง</value>
+  </data>
+  <data name="Lbl_CategorySubtotal" xml:space="preserve">
+    <value>ยอดรวม</value>
+  </data>
+  <data name="Lbl_FreightQuotation" xml:space="preserve">
+    <value>ใบเสนอราคาขนส่ง</value>
+  </data>
+  <data name="Lbl_NetAmount" xml:space="preserve">
+    <value>ยอดสุทธิ์</value>
+  </data>
+  <data name="Lbl_PreparedBy" xml:space="preserve">
+    <value>จัดทำโดย</value>
+  </data>
+  <data name="Sec_Summary" xml:space="preserve">
+    <value>สรุปยอด</value>
+  </data>
+  <data name="Sec_FinancialSummary" xml:space="preserve">
+    <value>สรุปยอดทางการเงิน</value>
+  </data>
+  <data name="Sec_RemarksTerms" xml:space="preserve">
+    <value>หมายเหตุ / เงื่อนไข</value>
+  </data>
+  <data name="Sec_QuickStatus" xml:space="preserve">
+    <value>อัปเดตสถานะ</value>
+  </data>
+  <data name="Sec_Actions" xml:space="preserve">
+    <value>การดำเนินการ</value>
+  </data>
+  <data name="Sec_RateCardDetails" xml:space="preserve">
+    <value>รายละเอียดบัตรอัตราค่าระวาง</value>
+  </data>
+  <data name="Sec_RateLines" xml:space="preserve">
+    <value>รายการอัตราค่าระวาง</value>
+  </data>
+  <data name="Sec_TemplateDetails" xml:space="preserve">
+    <value>รายละเอียดเทมเพลต</value>
+  </data>
+  <data name="Sec_UploadFile" xml:space="preserve">
+    <value>อัปโหลดไฟล์</value>
+  </data>
+  <data name="Sec_UploadHistory" xml:space="preserve">
+    <value>ประวัติการอัปโหลด</value>
+  </data>
+  <data name="Lbl_Status" xml:space="preserve">
+    <value>สถานะ</value>
+  </data>
+  <data name="Lbl_Mode" xml:space="preserve">
+    <value>รูปแบบการขนส่ง</value>
+  </data>
+  <data name="Lbl_Route" xml:space="preserve">
+    <value>เส้นทาง</value>
+  </data>
+  <data name="Lbl_Customer" xml:space="preserve">
+    <value>ลูกค้า</value>
+  </data>
+  <data name="Lbl_Currency" xml:space="preserve">
+    <value>สกุลเงิน</value>
+  </data>
+  <data name="Lbl_Active" xml:space="preserve">
+    <value>ใช้งาน</value>
+  </data>
+  <data name="Lbl_Inactive" xml:space="preserve">
+    <value>ไม่ใช้งาน</value>
+  </data>
+  <data name="Lbl_NoData" xml:space="preserve">
+    <value>ไม่พบข้อมูล</value>
+  </data>
+  <data name="Lbl_Keyword" xml:space="preserve">
+    <value>คำค้นหา</value>
+  </data>
+  <data name="Lbl_AllStatus" xml:space="preserve">
+    <value>ทุกสถานะ</value>
+  </data>
+  <data name="Lbl_AllModes" xml:space="preserve">
+    <value>ทุกรูปแบบ</value>
+  </data>
+  <data name="Lbl_Notes" xml:space="preserve">
+    <value>หมายเหตุ</value>
+  </data>
+  <data name="Lbl_Priority" xml:space="preserve">
+    <value>ลำดับความสำคัญ</value>
+  </data>
+  <data name="Lbl_Code" xml:space="preserve">
+    <value>รหัส</value>
+  </data>
+  <data name="Lbl_Category" xml:space="preserve">
+    <value>ประเภท</value>
+  </data>
+  <data name="Lbl_Basis" xml:space="preserve">
+    <value>หน่วยคิดราคา</value>
+  </data>
+  <data name="Lbl_BillTo" xml:space="preserve">
+    <value>เรียกเก็บจาก</value>
+  </data>
+  <data name="Lbl_BuyRate" xml:space="preserve">
+    <value>ราคาซื้อ</value>
+  </data>
+  <data name="Lbl_SellRate" xml:space="preserve">
+    <value>ราคาขาย</value>
+  </data>
+  <data name="Lbl_Margin" xml:space="preserve">
+    <value>กำไร</value>
+  </data>
+  <data name="Lbl_MarginPct" xml:space="preserve">
+    <value>กำไร (%)</value>
+  </data>
+  <data name="Lbl_MarkupPct" xml:space="preserve">
+    <value>มาร์กอัป (%)</value>
+  </data>
+  <data name="Lbl_MinCharge" xml:space="preserve">
+    <value>ค่าขั้นต่ำ</value>
+  </data>
+  <data name="Lbl_TotalBuy" xml:space="preserve">
+    <value>ต้นทุนรวม</value>
+  </data>
+  <data name="Lbl_TotalSell" xml:space="preserve">
+    <value>ราคาขายรวม</value>
+  </data>
+  <data name="Lbl_TotalMargin" xml:space="preserve">
+    <value>กำไรรวม</value>
+  </data>
+  <data name="Lbl_EffectiveDate" xml:space="preserve">
+    <value>วันที่เริ่มใช้งาน</value>
+  </data>
+  <data name="Lbl_ExpiryDate" xml:space="preserve">
+    <value>วันที่สิ้นสุด</value>
+  </data>
+  <data name="Lbl_Lines" xml:space="preserve">
+    <value>รายการ</value>
+  </data>
+  <data name="Lbl_CarrierAgent" xml:space="preserve">
+    <value>สายเรือ / ตัวแทน</value>
+  </data>
+  <data name="Lbl_CreatedAt" xml:space="preserve">
+    <value>วันที่สร้าง</value>
+  </data>
+  <data name="Lbl_QuoteNo" xml:space="preserve">
+    <value>เลขที่ใบเสนอราคา</value>
+  </data>
+  <data name="Lbl_QuoteDate" xml:space="preserve">
+    <value>วันที่ออกใบ</value>
+  </data>
+  <data name="Lbl_ValidUntil" xml:space="preserve">
+    <value>มีผลถึงวันที่</value>
+  </data>
+  <data name="Lbl_RevisionNo" xml:space="preserve">
+    <value>ฉบับที่</value>
+  </data>
+  <data name="Lbl_ContactPerson" xml:space="preserve">
+    <value>ผู้ติดต่อ</value>
+  </data>
+  <data name="Lbl_Incoterm" xml:space="preserve">
+    <value>อินโคเทิร์ม</value>
+  </data>
+  <data name="Lbl_Origin" xml:space="preserve">
+    <value>ต้นทาง</value>
+  </data>
+  <data name="Lbl_Destination" xml:space="preserve">
+    <value>ปลายทาง</value>
+  </data>
+  <data name="Lbl_ServiceType" xml:space="preserve">
+    <value>ประเภทบริการ</value>
+  </data>
+  <data name="Lbl_TransitTime" xml:space="preserve">
+    <value>ระยะเวลาขนส่ง (วัน)</value>
+  </data>
+  <data name="Lbl_FreeTime" xml:space="preserve">
+    <value>ระยะเวลาฟรี (วัน)</value>
+  </data>
+  <data name="Lbl_Commodity" xml:space="preserve">
+    <value>ประเภทสินค้า</value>
+  </data>
+  <data name="Lbl_Packages" xml:space="preserve">
+    <value>หีบห่อ</value>
+  </data>
+  <data name="Lbl_GrossWeight" xml:space="preserve">
+    <value>น้ำหนักรวม</value>
+  </data>
+  <data name="Lbl_Volume" xml:space="preserve">
+    <value>ปริมาตร</value>
+  </data>
+  <data name="Lbl_ExchangeRate" xml:space="preserve">
+    <value>อัตราแลกเปลี่ยน</value>
+  </data>
+  <data name="Lbl_SalesPerson" xml:space="preserve">
+    <value>พนักงานขาย</value>
+  </data>
+  <data name="Lbl_Remarks" xml:space="preserve">
+    <value>หมายเหตุ</value>
+  </data>
+  <data name="Lbl_Exclusions" xml:space="preserve">
+    <value>รายการที่ไม่รวม</value>
+  </data>
+  <data name="Lbl_TermsConditions" xml:space="preserve">
+    <value>เงื่อนไขและข้อตกลง</value>
+  </data>
+  <data name="Lbl_Subtotal" xml:space="preserve">
+    <value>ยอดก่อนหักส่วนลด</value>
+  </data>
+  <data name="Lbl_CostTotal" xml:space="preserve">
+    <value>ต้นทุนรวม</value>
+  </data>
+  <data name="Lbl_Profit" xml:space="preserve">
+    <value>กำไร</value>
+  </data>
+  <data name="Lbl_GpPercent" xml:space="preserve">
+    <value>อัตรากำไร (%)</value>
+  </data>
+  <data name="Lbl_Discount" xml:space="preserve">
+    <value>ส่วนลด</value>
+  </data>
+  <data name="Lbl_IncludeVAT" xml:space="preserve">
+    <value>รวม VAT</value>
+  </data>
+  <data name="Lbl_VatRate" xml:space="preserve">
+    <value>อัตรา VAT (%)</value>
+  </data>
+  <data name="Lbl_VatAmount" xml:space="preserve">
+    <value>จำนวน VAT</value>
+  </data>
+  <data name="Lbl_GrandTotal" xml:space="preserve">
+    <value>ยอดรวมสุทธิ</value>
+  </data>
+  <data name="Lbl_Quantity" xml:space="preserve">
+    <value>จำนวน</value>
+  </data>
+  <data name="Lbl_UnitCost" xml:space="preserve">
+    <value>ต้นทุนต่อหน่วย</value>
+  </data>
+  <data name="Lbl_UnitSell" xml:space="preserve">
+    <value>ราคาขายต่อหน่วย</value>
+  </data>
+  <data name="Lbl_CostAmount" xml:space="preserve">
+    <value>จำนวนต้นทุน</value>
+  </data>
+  <data name="Lbl_SellAmount" xml:space="preserve">
+    <value>จำนวนราคาขาย</value>
+  </data>
+  <data name="Lbl_ChargeName" xml:space="preserve">
+    <value>รายการค่าใช้จ่าย</value>
+  </data>
+  <data name="Lbl_RouteContainer" xml:space="preserve">
+    <value>เส้นทาง / ตู้คอนเทนเนอร์</value>
+  </data>
+  <data name="Status_Draft" xml:space="preserve">
+    <value>ร่าง</value>
+  </data>
+  <data name="Status_Approved" xml:space="preserve">
+    <value>อนุมัติ</value>
+  </data>
+  <data name="Status_Rejected" xml:space="preserve">
+    <value>ปฏิเสธ</value>
+  </data>
+  <data name="Status_Expired" xml:space="preserve">
+    <value>หมดอายุ</value>
+  </data>
+  <data name="Status_Booked" xml:space="preserve">
+    <value>ยืนยันแล้ว</value>
+  </data>
+  <data name="Msg_NoQuotationsFound" xml:space="preserve">
+    <value>ไม่พบใบเสนอราคา</value>
+  </data>
+  <data name="Msg_NoRateCardsFound" xml:space="preserve">
+    <value>ไม่พบบัตรอัตราค่าระวาง</value>
+  </data>
+  <data name="Msg_NoSurchargesFound" xml:space="preserve">
+    <value>ไม่พบค่าธรรมเนียมพิเศษ</value>
+  </data>
+  <data name="Msg_NoMarginRulesFound" xml:space="preserve">
+    <value>ไม่พบกฎคำนวณมาร์จิน</value>
+  </data>
+  <data name="Msg_NoRateTemplatesFound" xml:space="preserve">
+    <value>ไม่พบเทมเพลตอัตราค่าระวาง</value>
+  </data>
+  <data name="Msg_AtLeastOneLine" xml:space="preserve">
+    <value>กรุณาเพิ่มรายการค่าใช้จ่ายอย่างน้อย 1 รายการ</value>
+  </data>
+  <data name="Msg_NoChargeCodesFound" xml:space="preserve">
+    <value>ไม่พบรหัสค่าใช้จ่าย</value>
+  </data>
+  <data name="Page_ChargeCodeList" xml:space="preserve">
+    <value>รายการรหัสค่าใช้จ่าย</value>
+  </data>
+  <data name="Page_NewChargeCode" xml:space="preserve">
+    <value>สร้างรหัสค่าใช้จ่ายใหม่</value>
+  </data>
+  <data name="Page_EditChargeCode" xml:space="preserve">
+    <value>แก้ไขรหัสค่าใช้จ่าย</value>
+  </data>
+  <data name="Lbl_TotalGrossWeightKg" xml:space="preserve">
+    <value>น้ำหนักรวม (กก.)</value>
+  </data>
+  <data name="Lbl_TotalFreightChargeAmountDest" xml:space="preserve">
+    <value>ค่าระวางปลายทางรวม</value>
+  </data>
+  <data name="Lbl_TotalVolumeCBM" xml:space="preserve">
+    <value>ปริมาตรรวม (ลบ.ม.)</value>
+  </data>
+  <data name="Lbl_GrandTotalGrossWeightKg" xml:space="preserve">
+    <value>น้ำหนักรวมทั้งหมด (กก.)</value>
+  </data>
+  <data name="Lbl_GrandTotalVolumeCBM" xml:space="preserve">
+    <value>ปริมาตรรวมทั้งหมด (ลบ.ม.)</value>
+  </data>
 </root>
