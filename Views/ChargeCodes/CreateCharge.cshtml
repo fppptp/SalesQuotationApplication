@@ -1,13 +1,13 @@
-@* @using SQTWeb.ViewModels
-@model ChargeCodeInputModel
+@using QTMSModel.Models
+@model COM_Ms_SalesQuotationCharge
 @{
-    ViewData["Title"] = L["Page_NewChargeCode"].Value;
+    ViewData["Title"] = "Create Charge";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h1 class="h3 mb-1">@L["Page_NewChargeCode"]</h1>
-        <p class="text-muted mb-0">Define a new standard charge code for use in quotations and rate cards</p>
+        <h1 class="h3 mb-1">Create Charge</h1>
+        <p class="text-muted mb-0">Define a new standard charge code for use in quotations</p>
     </div>
     <a asp-action="ChargesList" class="btn btn-outline-secondary">@L["Btn_Back"]</a>
 </div>
@@ -18,7 +18,7 @@
 
     <div class="card mb-4">
         <div class="card-header bg-white">
-            <h2 class="h5 mb-0">@L["Sec_Header"]</h2>
+            <h2 class="h5 mb-0">Charge Details</h2>
         </div>
         <div class="card-body">
             <partial name="_ChargeCodeForm" model="Model" />
@@ -33,6 +33,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/chargeCode-editor.js" asp-append-version="true"></script>
 }
- *@

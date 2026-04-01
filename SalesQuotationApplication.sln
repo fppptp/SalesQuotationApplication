@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilityLib", "..\Libraries\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppLib", "..\Libraries\AppLib\AppLib.csproj", "{7172DFA2-5484-44D8-8138-600206616D3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UOMLib", "..\Libraries\UOMLib\UOMLib.csproj", "{439547C8-2A84-4630-A960-B2248A691405}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{7172DFA2-5484-44D8-8138-600206616D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7172DFA2-5484-44D8-8138-600206616D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7172DFA2-5484-44D8-8138-600206616D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{439547C8-2A84-4630-A960-B2248A691405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{439547C8-2A84-4630-A960-B2248A691405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{439547C8-2A84-4630-A960-B2248A691405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{439547C8-2A84-4630-A960-B2248A691405}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{2EC4E9E8-D1A8-4F21-9B2B-06CE42984982} = {F348E6F2-7036-4344-8E82-31F33D03F118}
 		{CE72C7B2-A160-4F7C-B567-F7DC5DB18622} = {A2EEBF7A-D19E-4084-9D2B-9BDABD3603AA}
 		{7172DFA2-5484-44D8-8138-600206616D3A} = {A2EEBF7A-D19E-4084-9D2B-9BDABD3603AA}
+		{439547C8-2A84-4630-A960-B2248A691405} = {A2EEBF7A-D19E-4084-9D2B-9BDABD3603AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09B6D930-4998-4D3E-8382-9AED33824735}

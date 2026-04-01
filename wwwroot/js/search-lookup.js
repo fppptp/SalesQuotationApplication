@@ -44,8 +44,22 @@
         this.columns = root.dataset.columns ? JSON.parse(root.dataset.columns) : [];
 
         // fills: map from HTML form field name → JSON property name
-        // e.g. {"CustomerName":"customerName"} means: set input[name="CustomerName"] = item.customerName
         this.fills = root.dataset.fills ? JSON.parse(root.dataset.fills) : {};
+
+        // static mode: use inline JSON data instead of API
+        this.isStatic = root.dataset.static === 'true';
+        this.staticData = [];
+        if (this.isStatic) {
+            var jsonScript = root.querySelector('script.sl-options');
+            if (jsonScript) {
+                try { this.staticData = JSON.parse(jsonScript.textContent); } catch (e) { this.staticData = []; }
+            } else if (root.dataset.options) {
+                try { this.staticData = JSON.parse(root.dataset.options); } catch (e) { this.staticData = []; }
+            }
+        }
+
+        // allow-manual: if false (default), user must pick from dropdown
+        this.allowManual = root.dataset.allowManual === 'true';
 
         // depends-on: watch another form field
         this.dependsOn = root.dataset.dependsOn || '';
@@ -56,6 +70,7 @@
         this.activeIndex = -1;
         this.isOpen = false;
         this.lastText = this.displayInput.value;
+        this.lastValue = this.hiddenInput.value;
         this.ac = null;
         this.timer = null;
 
@@ -107,6 +122,14 @@
         document.addEventListener('click', function (e) {
             if (!self.root.contains(e.target)) self._close();
         });
+
+        // Reposition / close on scroll or resize while dropdown is open
+        this._onScrollOrResize = function () {
+            if (self.isOpen) self._positionDropdown();
+        };
+        window.addEventListener('resize', this._onScrollOrResize);
+        // Listen on capture so we catch scroll on any ancestor (table-responsive, etc.)
+        document.addEventListener('scroll', this._onScrollOrResize, true);
 
         // depends-on: watch parent field for changes
         if (this.dependsOn) {
@@ -205,9 +228,31 @@
     };
 
     SearchLookup.prototype._search = function (q) {
+        var self = this;
+
+        // Static mode: filter inline data client-side
+        if (this.isStatic) {
+            this._open();
+            var lq = (q || '').toLowerCase();
+            var cols = this.columns.length > 0
+                ? this.columns
+                : [{ field: 'code' }, { field: 'name' }];
+            var filtered = this.staticData.filter(function (item) {
+                if (!lq) return true;
+                for (var c = 0; c < cols.length; c++) {
+                    var v = item[cols[c].field];
+                    if (v && String(v).toLowerCase().indexOf(lq) >= 0) return true;
+                }
+                return false;
+            });
+            self.items = filtered.slice(0, self.take);
+            self._render(self.items);
+            return;
+        }
+
+        // API mode: fetch from server
         if (this.ac) this.ac.abort();
         this.ac = new AbortController();
-        var self = this;
 
         this._showLoading();
         this._open();
@@ -286,15 +331,19 @@
         this.hiddenInput.value = item[this.valueField] || item.value || '';
         this.displayInput.value = this._formatDisplay(item);
         this.lastText = this.displayInput.value;
+        this.lastValue = this.hiddenInput.value;
         this._close();
         this._syncClear();
 
         // Auto-fill related form fields using mapping from data-fills attribute
         // fills = { "FormFieldName": "jsonPropertyName" }
+        // If FormFieldName has no brackets and hiddenInput.name has a dot prefix,
+        // resolve relative to the hidden input's name (sibling field).
         var form = this.root.closest('form') || document;
         for (var formField in this.fills) {
             var jsonProp = this.fills[formField];
-            var el = form.querySelector('[name="' + formField + '"]');
+            var resolvedName = this._resolveFillName(formField);
+            var el = form.querySelector('[name="' + resolvedName + '"]');
             if (el) {
                 el.value = item[jsonProp] != null ? item[jsonProp] : '';
                 el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -308,13 +357,15 @@
         this.hiddenInput.value = '';
         this.displayInput.value = '';
         this.lastText = '';
+        this.lastValue = '';
         this._close();
         this._syncClear();
 
         // Clear related form fields defined in data-fills
         var form = this.root.closest('form') || document;
         for (var formField in this.fills) {
-            var el = form.querySelector('[name="' + formField + '"]');
+            var resolvedName = this._resolveFillName(formField);
+            var el = form.querySelector('[name="' + resolvedName + '"]');
             if (el) {
                 el.value = '';
                 el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -324,15 +375,53 @@
         this.hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
     };
 
+    /* Resolve fill field name relative to hidden input's name prefix.
+       e.g. hidden name = "Items[0].ChargeCode", fills key = "ChargeName"
+       → resolved = "Items[0].ChargeName" */
+    SearchLookup.prototype._resolveFillName = function (formField) {
+        if (formField.indexOf('[') >= 0) return formField; // already absolute
+        var hiddenName = this.hiddenInput.name || '';
+        var dotIdx = hiddenName.lastIndexOf('.');
+        if (dotIdx >= 0) return hiddenName.substring(0, dotIdx + 1) + formField;
+        return formField; // no prefix – use as-is (top-level field)
+    };
+
     SearchLookup.prototype._open = function () {
         this.dropdown.style.display = '';
         this.isOpen = true;
+        this._positionDropdown();
+    };
+
+    /* Position dropdown using fixed coordinates from the display input */
+    SearchLookup.prototype._positionDropdown = function () {
+        var rect = this.displayInput.getBoundingClientRect();
+        var dd = this.dropdown;
+        dd.style.left = rect.left + 'px';
+        dd.style.top = rect.bottom + 'px';
+        dd.style.width = Math.max(rect.width, 280) * 1.1 + 'px';
+
+        // Flip above if not enough space below
+        var ddHeight = dd.offsetHeight || 200;
+        if (rect.bottom + ddHeight > window.innerHeight && rect.top - ddHeight > 0) {
+            dd.style.top = (rect.top - ddHeight) + 'px';
+            dd.style.borderRadius = '6px 6px 0 0';
+        } else {
+            dd.style.borderRadius = '0 0 6px 6px';
+        }
     };
 
     SearchLookup.prototype._close = function () {
         this.dropdown.style.display = 'none';
         this.isOpen = false;
         this.activeIndex = -1;
+
+        // Strict mode: revert to last valid selection if user typed something invalid
+        if (!this.allowManual && this.displayInput.value !== this.lastText) {
+            this.displayInput.value = this.lastText;
+            this.hiddenInput.value = this.lastValue;
+            this._syncClear();
+            this.hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
     };
 
     SearchLookup.prototype._showLoading = function () {

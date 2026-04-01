@@ -1,16 +1,16 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using QTMSModel.Models;
+using UOMLib.Models;
 
 namespace SQTWeb.Controllers;
 
 [Authorize]
 public class UnitsController : Controller
 {
-    private readonly IDbContextFactory<QTMSContext> _dbFactory;
+    private readonly IDbContextFactory<COMMONContext> _dbFactory;
 
-    public UnitsController(IDbContextFactory<QTMSContext> dbFactory)
+    public UnitsController(IDbContextFactory<COMMONContext> dbFactory)
     {
         _dbFactory = dbFactory;
     }

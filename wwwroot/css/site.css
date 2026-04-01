@@ -44,6 +44,20 @@ p, li, td, th, label, span, a, input, select, textarea, button {
     font-family: var(--fq-font) !important;
 }
 
+/* ── Required field indicator ── */
+label.required::after,
+th.required::after {
+    content: " *";
+    color: #dc2626;
+    font-weight: 700;
+}
+
+/* ── Readonly auto-filled fields ── */
+input.form-control[readonly] {
+    background-color: #f1f5f9;
+    color: var(--fq-text-muted);
+}
+
 /* ── 3. Top header ── */
 .app-header.navbar {
     background: var(--fq-header-bg) !important;

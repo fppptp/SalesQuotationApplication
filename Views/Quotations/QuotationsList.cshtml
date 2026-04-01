@@ -1,8 +1,10 @@
 @using QTMSModel.Models
+@inject SQTWeb.Services.IQuotationStatusService StatusService
 @model List<COM_Trs_SalesQuotation>
 @{
     ViewData["Title"] = L["Page_QuotationList"].Value;
     ViewData["BreadcrumbParent"] = L["Nav_Quotations"].Value;
+    var statuses = await StatusService.GetOptionsAsync();
 }
 
 <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
@@ -34,32 +36,27 @@
                            placeholder="Customer name" />
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">@L["Lbl_ContactPerson"]</label>
-                    <input type="text" class="form-control form-control-sm dt-filter" data-col="3"
-                           placeholder="Contact person" />
-                </div>
-                <div class="col-md-3">
                     <label class="form-label">@L["Lbl_Destination"]</label>
-                    <input type="text" class="form-control form-control-sm dt-filter" data-col="4"
-                           placeholder="Port name" />
+                    <input type="text" class="form-control form-control-sm dt-filter" data-col="3"
+                           placeholder="Port code" />
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">@L["Lbl_CarrierAgent"]</label>
-                    <input type="text" class="form-control form-control-sm dt-filter" data-col="5"
-                           placeholder="Agent name" />
+                    <input type="text" class="form-control form-control-sm dt-filter" data-col="4"
+                           placeholder="Agent code" />
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">@L["Lbl_Currency"]</label>
-                    <input type="text" class="form-control form-control-sm dt-filter" data-col="6"
+                    <input type="text" class="form-control form-control-sm dt-filter" data-col="5"
                            placeholder="THB, USD…" />
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">@L["Lbl_Status"]</label>
-                    <select class="form-select form-select-sm dt-filter" data-col="12">
+                    <select class="form-select form-select-sm dt-filter" data-col="9">
                         <option value="">@L["Lbl_AllStatus"]</option>
-                        @foreach (var s in AppLists.Statuses)
+                        @foreach (var s in statuses)
                         {
-                            <option value="@s">@s</option>
+                            <option value="@s.StatusDescription">@s.StatusDescription</option>
                         }
                     </select>
                 </div>

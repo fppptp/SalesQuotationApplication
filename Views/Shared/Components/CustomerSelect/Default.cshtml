@@ -4,11 +4,6 @@
     var displayText = (string?)ViewData["DisplayText"] ?? "";
     var css = (string)ViewData["CssClass"] ?? "form-control";
 }
-@if (ViewContext.HttpContext.Items["SL_CSS"] == null)
-{
-    ViewContext.HttpContext.Items["SL_CSS"] = true;
-    <link rel="stylesheet" href="~/css/search-lookup.css" />
-}
 <div class="sl-root"
      data-api="/api/masters/customers"
      data-take="20"
@@ -22,7 +17,7 @@
      data-depends-clear="true">
     <input type="hidden" class="sl-value" name="@name" value="@value" />
     <div class="sl-input-wrap">
-        <input type="text" class="@css sl-display" value="@displayText" placeholder="Type 2+ chars to search customer..." autocomplete="off" />
+        <input type="text" class="@css sl-display" value="@displayText" autocomplete="off" />
         <button type="button" class="sl-clear" title="Clear">&times;</button>
     </div>
     <div class="sl-dropdown" style="display:none">
@@ -37,8 +32,3 @@
         <div class="sl-info" style="display:none"></div>
     </div>
 </div>
-@if (ViewContext.HttpContext.Items["SL_JS"] == null)
-{
-    ViewContext.HttpContext.Items["SL_JS"] = true;
-    <script src="~/js/search-lookup.js"></script>
-}

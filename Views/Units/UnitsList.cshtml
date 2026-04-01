@@ -1,4 +1,4 @@
-@model List<QTMSModel.Models.COM_Ms_UnitOfMeasure>
+@model List<UOMLib.Models.COM_Ms_UnitOfMeasure>
 @{
     ViewData["Title"] = L["Nav_Units"];
     var keyword = ViewBag.Keyword as string;
@@ -56,10 +56,10 @@
                         <tr>
                             <td><strong>@item.UnitCode</strong></td>
                             <td>@item.UnitName</td>
-                            <td>@item.UnitClassCode</td>
+                            <td>@item.UnitCategoryCode</td>
                             <td>@item.Symbol</td>
-                            <td>@(item.IsBase == true ? "✓" : "")</td>
-                            <td class="text-end">@item.FactorToBase?.ToString("N6")</td>
+                            <td>@(item.FactorTobase == 1m ? "✓" : "")</td>
+                            <td class="text-end">@item.FactorTobase.ToString("N6")</td>
                             <td class="text-end">
                                 <a asp-action="EditUnit" asp-route-id="@item.UnitCode"
                                    class="btn btn-sm btn-outline-primary">Edit</a>

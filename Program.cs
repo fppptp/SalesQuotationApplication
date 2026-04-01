@@ -6,8 +6,14 @@ using ACMSModel.Models;
 using QTMSModel.Models;
 using FMSModel.Models;
 using LMSModel.Models;
-using SQTWeb.Services.Masters;
+using SQTWeb.Services.Quotations;
+using SQTWeb.Navigation;
 using COMMONModel.Models;
+using UOMLib.DependencyInjection;
+using SQTWeb.Services.Agents;
+using SQTWeb.Services.Ports;
+using SQTWeb.Services.QuotationStatus;
+using SQTWeb.Services.UnitOfMeasure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +49,8 @@ builder.Services.AddDbContextFactory<COMMONContext>(options => options.UseSqlSer
 builder.Services.AddDbContextFactory<QTMSContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("QTMSConnection")));
 builder.Services.AddDbContextFactory<LMSContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LMSConnection")));
 
+builder.Services.AddUomServices(builder.Configuration);
+
 builder.Services.AddSingleton<ICompanyService, CompanyService>();
 builder.Services.AddSingleton<ICurrencyService, CurrencyService>();
 builder.Services.AddSingleton<IQuotationStatusService, QuotationStatusService>();
@@ -51,6 +59,17 @@ builder.Services.AddSingleton<IUnitOfMeasureService, UnitOfMeasureService>();
 builder.Services.AddSingleton<IAgentService, AgentService>();
 builder.Services.AddSingleton<IPortService, PortService>();
 builder.Services.AddHostedService<SQTWeb.Services.CacheRefreshHostedService>();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IPageContext, PageContext>();
+
+builder.Services.AddScoped<IShipmentDetailCalculator, ShipmentDetailCalculator>();
+builder.Services.AddScoped<IShipmentSummaryCalculator, ShipmentSummaryCalculator>();
+builder.Services.AddScoped<IFreightChargeTierResolver, FreightChargeTierResolver>();
+builder.Services.AddScoped<IFreightChargeCalculator, FreightChargeCalculator>();
+builder.Services.AddScoped<IQuotationHeaderCalculator, QuotationHeaderCalculator>();
+builder.Services.AddScoped<IQuotationCalculationOrchestrator, QuotationCalculationOrchestrator>();
+builder.Services.AddScoped<IQuotationAppService, QuotationAppService>();
 
 var app = builder.Build();
 

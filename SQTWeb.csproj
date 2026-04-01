@@ -23,11 +23,24 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Libraries\AppLib\AppLib.csproj" />
+    <ProjectReference Include="..\Libraries\UOMLib\UOMLib.csproj" />
     <ProjectReference Include="..\Libraries\UtilityLib\UtilityLib.csproj" />
     <ProjectReference Include="..\Models\ACMSModel\ACMSModel.csproj" />
     <ProjectReference Include="..\Models\COMMONModel\COMMONModel.csproj" />
     <ProjectReference Include="..\Models\FMSModel\FMSModel.csproj" />
     <ProjectReference Include="..\Models\LMSModel\LMSModel.csproj" />
     <ProjectReference Include="..\Models\QTMSModel\QTMSModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Domain\" />
+    <Folder Include="Services\Quotations\Models\" />
+    <Folder Include="Views\Shared\Components\AgentSelect\" />
+    <Folder Include="Views\Shared\Components\ChargeSelect\" />
+    <Folder Include="Views\Shared\Components\CompanySelect\" />
+    <Folder Include="Views\Shared\Components\CurrencySelect\" />
+    <Folder Include="Views\Shared\Components\QuotationStatusSelect\" />
+    <Folder Include="Views\Shared\Components\UnitOfMeasureSelect\" />
   </ItemGroup>
 </Project>

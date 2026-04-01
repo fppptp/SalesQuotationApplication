@@ -1,25 +1,28 @@
-@* @using SQTWeb.ViewModels
-@model ChargeCodeInputModel
+@using QTMSModel.Models
+@model COM_Ms_SalesQuotationCharge
 @{
-    ViewData["Title"] = L["Page_EditChargeCode"].Value;
-    var id = Context.Request.RouteValues["id"];
+    ViewData["Title"] = "Edit Charge";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h1 class="h3 mb-1">@L["Page_EditChargeCode"] — @Model.Code</h1>
-        <p class="text-muted mb-0">@Model.Name</p>
+        <h1 class="h3 mb-1">Edit Charge — @Model.ChargeCode</h1>
+        <p class="text-muted mb-0">@Model.ChargeName</p>
     </div>
     <a asp-action="ChargesList" class="btn btn-outline-secondary">@L["Btn_Back"]</a>
 </div>
 
-<form asp-action="EditCharge" asp-route-id="@id" method="post">
+<form asp-action="EditCharge" method="post">
     @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="CompanyCode" />
+    <input type="hidden" asp-for="Department" />
+    <input type="hidden" asp-for="QuotationType" />
+    <input type="hidden" asp-for="ChargeCode" />
     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
     <div class="card mb-4">
         <div class="card-header bg-white">
-            <h2 class="h5 mb-0">@L["Sec_Header"]</h2>
+            <h2 class="h5 mb-0">Charge Details</h2>
         </div>
         <div class="card-body">
             <partial name="_ChargeCodeForm" model="Model" />
@@ -34,6 +37,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/chargeCode-editor.js" asp-append-version="true"></script>
 }
- *@

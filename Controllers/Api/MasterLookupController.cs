@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LMSModel.Models;
-using SQTWeb.Services.Masters;
+using SQTWeb.Services.Agents;
+using SQTWeb.Services.Ports;
 
 namespace SQTWeb.Controllers.Api;
 
@@ -12,15 +13,18 @@ public class MasterLookupController : Controller
 {
     private readonly IAgentService _agentService;
     private readonly IPortService _portService;
+    private readonly IChargeService _chargeService;
     private readonly IDbContextFactory<LMSContext> _lmsDbFactory;
 
     public MasterLookupController(
         IAgentService agentService,
         IPortService portService,
+        IChargeService chargeService,
         IDbContextFactory<LMSContext> lmsDbFactory)
     {
         _agentService = agentService;
         _portService = portService;
+        _chargeService = chargeService;
         _lmsDbFactory = lmsDbFactory;
     }
 
@@ -78,5 +82,36 @@ public class MasterLookupController : Controller
                 (x.CountryName ?? "").Contains(q.Trim(), StringComparison.OrdinalIgnoreCase));
 
         return Json(filtered.Take(take));
+    }
+
+    [HttpGet("charges")]
+    public async Task<IActionResult> SearchCharges(
+        [FromQuery] string? q,
+        [FromQuery] string? companyCode,
+        [FromQuery] string? department,
+        [FromQuery] string? quotationType,
+        [FromQuery] int take = 50)
+    {
+        var all = await _chargeService.GetOptionsAsync();
+        IEnumerable<QTMSModel.Models.COM_Ms_SalesQuotationCharge> filtered = all;
+
+        if (!string.IsNullOrWhiteSpace(companyCode))
+            filtered = filtered.Where(x => string.Equals(x.CompanyCode, companyCode.Trim(), StringComparison.OrdinalIgnoreCase));
+
+        if (!string.IsNullOrWhiteSpace(department))
+            filtered = filtered.Where(x => string.Equals(x.Department, department.Trim(), StringComparison.OrdinalIgnoreCase));
+
+        if (!string.IsNullOrWhiteSpace(quotationType))
+            filtered = filtered.Where(x => string.Equals(x.QuotationType, quotationType.Trim(), StringComparison.OrdinalIgnoreCase));
+
+        if (!string.IsNullOrWhiteSpace(q))
+        {
+            var kw = q.Trim();
+            filtered = filtered.Where(x =>
+                (x.ChargeCode ?? "").Contains(kw, StringComparison.OrdinalIgnoreCase) ||
+                (x.ChargeName ?? "").Contains(kw, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return Json(filtered.Take(take).Select(x => new { code = x.ChargeCode, name = x.ChargeName }));
     }
 }

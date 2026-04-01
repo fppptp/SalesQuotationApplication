@@ -1,0 +1,33 @@
+@model IReadOnlyList<LMSModel.Models.COM_View_Agent>
+@{
+    var name = (string)ViewData["Name"] ?? "AgentCode";
+    var value = (string?)ViewData["Value"];
+    var css = (string)ViewData["CssClass"] ?? "form-control";
+    var selected = Model.FirstOrDefault(x => x.custcode == value);
+    var displayText = selected != null ? $"{selected.custcode} - {selected.custname}" : "";
+}
+<div class="sl-root"
+     data-static="true"
+     data-columns='[{"field":"code","header":"Code","css":"sl-col-code"},{"field":"name","header":"Name"}]'
+     data-display-format="{code} - {name}"
+     data-value-field="code"
+     data-fills='{"AgentName":"name","AgentAddress1":"address1","AgentAddress2":"address2"}'>
+    <script type="application/json" class="sl-options">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Select(x => new { code = x.custcode, name = x.custname, address1 = x.address1, address2 = x.address2 })))</script>
+    <input type="hidden" class="sl-value" name="@name" value="@value" />
+    <div class="sl-input-wrap">
+        <input type="text" class="@css sl-display" value="@displayText" autocomplete="off" />
+        <button type="button" class="sl-clear" title="Clear">&times;</button>
+    </div>
+    <div class="sl-dropdown" style="display:none">
+        <div class="sl-grid-wrap">
+            <table class="sl-grid">
+                <thead><tr></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="sl-empty" style="display:none">No results</div>
+        <div class="sl-loading" style="display:none">Searching...</div>
+        <div class="sl-info" style="display:none"></div>
+    </div>
+</div>
+

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QTMSModel.Models;
+using SQTWeb.Services;
 
 namespace SQTWeb.Controllers;
 
@@ -9,19 +10,21 @@ namespace SQTWeb.Controllers;
 public class ChargeCodesController : Controller
 {
     private readonly IDbContextFactory<QTMSContext> _dbFactory;
+    private readonly IChargeService _chargeService;
 
-    public ChargeCodesController(IDbContextFactory<QTMSContext> dbFactory)
+    public ChargeCodesController(IDbContextFactory<QTMSContext> dbFactory, IChargeService chargeService)
     {
         _dbFactory = dbFactory;
+        _chargeService = chargeService;
     }
 
-    public async Task<IActionResult> ChargesList(string? keyword, bool? active)
+    public async Task<IActionResult> ChargesList(string? keyword)
     {
         ViewBag.Keyword = keyword;
-        ViewBag.Active = active;
 
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var q = db.COM_Ms_SalesQuotationCharges.AsNoTracking().AsQueryable();
+        var q = db.COM_Ms_SalesQuotationCharges.AsNoTracking()
+            .Where(x => x.Void != true);
 
         if (!string.IsNullOrWhiteSpace(keyword))
         {
@@ -31,7 +34,9 @@ public class ChargeCodesController : Controller
                 (x.ChargeName ?? "").Contains(k));
         }
 
-        var items = await q.OrderBy(x => x.ChargeCode).ToListAsync();
+        var items = await q
+            .OrderBy(x => x.CompanyCode).ThenBy(x => x.Department).ThenBy(x => x.ChargeCode)
+            .ToListAsync();
         return View(items);
     }
 
@@ -48,16 +53,17 @@ public class ChargeCodesController : Controller
         await using var db = await _dbFactory.CreateDbContextAsync();
         db.COM_Ms_SalesQuotationCharges.Add(model);
         await db.SaveChangesAsync();
+        await _chargeService.ClearCacheAsync();
 
         TempData["Success"] = "Charge code created.";
         return RedirectToAction(nameof(ChargesList));
     }
 
     [HttpGet]
-    public async Task<IActionResult> EditCharge(string companyCode, int lineNo)
+    public async Task<IActionResult> EditCharge(string companyCode, string department, string quotationType, string chargeCode)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var entity = await db.COM_Ms_SalesQuotationCharges.FindAsync(companyCode, lineNo);
+        var entity = await db.COM_Ms_SalesQuotationCharges.FindAsync(companyCode, department, quotationType, chargeCode);
         if (entity is null) return NotFound();
         return View(entity);
     }
@@ -72,6 +78,7 @@ public class ChargeCodesController : Controller
         await using var db = await _dbFactory.CreateDbContextAsync();
         db.COM_Ms_SalesQuotationCharges.Update(model);
         await db.SaveChangesAsync();
+        await _chargeService.ClearCacheAsync();
 
         TempData["Success"] = "Charge code updated.";
         return RedirectToAction(nameof(ChargesList));
@@ -79,29 +86,18 @@ public class ChargeCodesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteCharge(string companyCode, int lineNo)
+    public async Task<IActionResult> DeleteCharge(string companyCode, string department, string quotationType, string chargeCode)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var entity = await db.COM_Ms_SalesQuotationCharges.FindAsync(companyCode, lineNo);
+        var entity = await db.COM_Ms_SalesQuotationCharges.FindAsync(companyCode, department, quotationType, chargeCode);
         if (entity is not null)
         {
             db.COM_Ms_SalesQuotationCharges.Remove(entity);
             await db.SaveChangesAsync();
+            await _chargeService.ClearCacheAsync();
         }
 
         TempData["Success"] = "Charge code deleted.";
         return RedirectToAction(nameof(ChargesList));
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> AllCharges()
-    {
-        await using var db = await _dbFactory.CreateDbContextAsync();
-        var items = await db.COM_Ms_SalesQuotationCharges
-            .AsNoTracking()
-            .Where(x => !string.IsNullOrWhiteSpace(x.ChargeCode))
-            .OrderBy(x => x.ChargeCode)
-            .ToListAsync();
-        return Json(items);
     }
 }

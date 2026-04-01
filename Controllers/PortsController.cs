@@ -2,7 +2,7 @@ using LMSModel.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SQTWeb.Services.Masters;
+using SQTWeb.Services.Ports;
 
 namespace SQTWeb.Controllers;
 

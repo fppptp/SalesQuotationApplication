@@ -1,0 +1,35 @@
+@{
+    var name = (string)ViewData["Name"] ?? "ChargeCode";
+    var value = (string?)ViewData["Value"];
+    var displayText = (string?)ViewData["DisplayText"] ?? "";
+    var css = (string)ViewData["CssClass"] ?? "form-control";
+    var isRequired = ViewData["Required"] is true;
+    var companyCode = (string)ViewData["CompanyCode"] ?? "";
+    var department = (string)ViewData["Department"] ?? "IB";
+    var quotationType = (string)ViewData["QuotationType"] ?? "FREIGHT";
+    var apiUrl = $"/api/masters/charges?companyCode={Uri.EscapeDataString(companyCode)}&department={Uri.EscapeDataString(department)}&quotationType={Uri.EscapeDataString(quotationType)}";
+}
+<div class="sl-root"
+     data-api="@apiUrl"
+     data-take="50"
+     data-columns='[{"field":"code","header":"Code","css":"sl-col-code"},{"field":"name","header":"Name"}]'
+     data-display-format="{code} - {name}"
+     data-value-field="code"
+     data-fills='{"ChargeName":"name"}'>
+    <input type="hidden" class="sl-value" name="@name" value="@value" @(isRequired ? "required" : "") />
+    <div class="sl-input-wrap">
+        <input type="text" class="@css sl-display" value="@displayText" autocomplete="off" />
+        <button type="button" class="sl-clear" title="Clear">&times;</button>
+    </div>
+    <div class="sl-dropdown" style="display:none">
+        <div class="sl-grid-wrap">
+            <table class="sl-grid">
+                <thead><tr></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="sl-empty" style="display:none">No results</div>
+        <div class="sl-loading" style="display:none">Searching...</div>
+        <div class="sl-info" style="display:none"></div>
+    </div>
+</div>

@@ -16,26 +16,30 @@
         <div class="row g-3">
             <div class="col-md-3">
                 <label asp-for="QuotationDate" class="form-label"></label>
-                <input asp-for="QuotationDate" class="form-control" />
+                <input asp-for="QuotationDate" type="date" class="form-control" value="@(Model.QuotationDate?.ToString("yyyy-MM-dd"))" />
             </div>
             <div class="col-md-3">
-                <label asp-for="CurrencyCode" class="form-label"></label>
-                @await Component.InvokeAsync("CurrencySelect", new { name = "CurrencyCode", value = Model.CurrencyCode, cssClass = "form-select" })
+                <label asp-for="CurrencyCode" class="form-label required"></label>
+                @await Component.InvokeAsync("CurrencySearchLookup", new { name = "CurrencyCode", value = Model.CurrencyCode, cssClass = "form-control", required = true })
+            </div>
+            <div class="col-md-3">
+                <label asp-for="ExchangeRate" class="form-label required"></label>
+                <input asp-for="ExchangeRate" type="number" step="0.000001" min="0" class="form-control" value="@(Model.ExchangeRate != 0 ? Model.ExchangeRate : 1)" required />
             </div>
             <div class="col-md-3">
                 <label asp-for="StatusName" class="form-label"></label>
                 @if (isCreate)
                 {
-                    @await Component.InvokeAsync("QuotationStatusSelect", new { name = "StatusName", value = "Open", cssClass = "form-select", filter = new[] { "Open" }, disabled = true })
+                    @await Component.InvokeAsync("QuotationStatusSearchLookup", new { name = "StatusName", value = "Open", cssClass = "form-control", filter = new[] { "Open" }, disabled = true })
                 }
                 else
                 {
-                    @await Component.InvokeAsync("QuotationStatusSelect", new { name = "StatusName", value = Model.StatusName, cssClass = "form-select" })
+                    @await Component.InvokeAsync("QuotationStatusSearchLookup", new { name = "StatusName", value = Model.StatusName, cssClass = "form-control" })
                 }
             </div>
             <div class="col-md-3">
                 <label asp-for="CompanyCode" class="form-label"></label>
-                @await Component.InvokeAsync("CompanySelect", new { name = "CompanyCode", value = Model.CompanyCode, cssClass = "form-select" })
+                @await Component.InvokeAsync("CompanySearchLookup", new { name = "CompanyCode", value = Model.CompanyCode, cssClass = "form-control", filter = new[] { "PAC" } })
             </div>
 
             <div class="col-md-3">
@@ -47,22 +51,30 @@
                 <input asp-for="CustomerName" class="form-control"  />
             </div>
 
-            <div class="col-md-6">
-                <label asp-for="PortCode" class="form-label">Port / Destination</label>
-                @await Component.InvokeAsync("PortSelect", new { name = "PortCode", value = Model.PortCode, cssClass = "form-control" })
+            <div class="col-md-3">
+                <label asp-for="PortCode" class="form-label">Port</label>
+                @await Component.InvokeAsync("PortSearchLookup", new { name = "PortCode", value = Model.PortCode, cssClass = "form-control" })
             </div>
-            <div class="col-md-6">
+            <div class="col-md-9">
                 <label asp-for="PortName" class="form-label">Port Name</label>
                 <input name="PortName" value="@Model.PortName" class="form-control"  />
             </div>
 
             <div class="col-md-3">
                 <label asp-for="AgentCode" class="form-label"></label>
-                @await Component.InvokeAsync("AgentSelect", new { name = "AgentCode", value = Model.AgentCode, cssClass = "form-control" })
+                @await Component.InvokeAsync("AgentSearchLookup", new { name = "AgentCode", value = Model.AgentCode, cssClass = "form-control" })
             </div>
             <div class="col-md-9">
                 <label asp-for="AgentName" class="form-label"></label>
                 <input asp-for="AgentName" class="form-control"  />
+            </div>
+            <div class="col-12">
+                <label asp-for="AgentAddress1" class="form-label"></label>
+                <input asp-for="AgentAddress1" class="form-control" />
+            </div>
+            <div class="col-12">
+                <label asp-for="AgentAddress2" class="form-label"></label>
+                <input asp-for="AgentAddress2" class="form-control" />
             </div>
 
             <div class="col-12">
@@ -75,20 +87,20 @@
 
 <!-- Shipments -->
 <div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="card-header">
         <h2 class="h6 mb-0">Shipments</h2>
-        <button type="button" class="btn btn-sm btn-outline-primary" id="add-shipment">Add shipment</button>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-sm mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th style="width:90px">Qty</th>
-                        <th>Unit</th>
+                        <th style="width:90px" class="required">Qty</th>
+                        <th class="required">Unit</th>
                         <th style="width:120px">Gross Wt</th>
                         <th style="width:120px">Wgt Unit</th>
-                        <th>Dimensions</th>
+                        <th>Dimensions (L × W × H)</th>
+                        <th style="width:100px">Dim Unit</th>
                         <th style="width:120px">CBM</th>
                         <th style="width:90px"></th>
                     </tr>
@@ -96,17 +108,18 @@
                 <tbody id="shipments-body">
                     @if (Model.COM_Trs_SalesQuotationShipmentDetails == null || !Model.COM_Trs_SalesQuotationShipmentDetails.Any())
                     {
-                        <tr>
-                            <td><input name="COM_Trs_SalesQuotationShipmentDetails[0].Quantity" class="form-control form-control-sm" /></td>
-                            <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "COM_Trs_SalesQuotationShipmentDetails[0].PackageUnit", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
+                        <tr data-total-gross-weight-kg="0">
+                            <td><input name="COM_Trs_SalesQuotationShipmentDetails[0].Quantity" value="0" class="form-control form-control-sm js-ship-qty" required /></td>
+                            <td>@await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = "COM_Trs_SalesQuotationShipmentDetails[0].PackageUnit", value = (string?)null, cssClass = "form-control form-control-sm", unitCategoryCode = "Count", required = true })</td>
                             <td><input name="COM_Trs_SalesQuotationShipmentDetails[0].GrossWeight" class="form-control form-control-sm" /></td>
-                            <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "COM_Trs_SalesQuotationShipmentDetails[0].GrossWeightUnit", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
-                            <td class="d-flex gap-2">
-                                <input name="COM_Trs_SalesQuotationShipmentDetails[0].Length" class="form-control form-control-sm" placeholder="L" />
-                                <input name="COM_Trs_SalesQuotationShipmentDetails[0].Width" class="form-control form-control-sm" placeholder="W" />
-                                <input name="COM_Trs_SalesQuotationShipmentDetails[0].Height" class="form-control form-control-sm" placeholder="H" />
+                            <td>@await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = "COM_Trs_SalesQuotationShipmentDetails[0].GrossWeightUnit", value = (string?)null, cssClass = "form-control form-control-sm", unitCategoryCode = "Mass" })
+                            <td class="d-flex gap-1">
+                                <input name="COM_Trs_SalesQuotationShipmentDetails[0].Length" class="form-control form-control-sm js-dim" placeholder="L" />
+                                <input name="COM_Trs_SalesQuotationShipmentDetails[0].Width" class="form-control form-control-sm js-dim" placeholder="W" />
+                                <input name="COM_Trs_SalesQuotationShipmentDetails[0].Height" class="form-control form-control-sm js-dim" placeholder="H" />
                             </td>
-                            <td><input name="COM_Trs_SalesQuotationShipmentDetails[0].TotalVolumeCBM" class="form-control form-control-sm" /></td>
+                            <td>@await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = "COM_Trs_SalesQuotationShipmentDetails[0].DimensionUnit", value = (string?)null, cssClass = "form-control form-control-sm", unitCategoryCode = "Length" })
+                            <td><input name="COM_Trs_SalesQuotationShipmentDetails[0].TotalVolumeCBM" class="form-control form-control-sm js-cbm" readonly /></td>
                             <td><button type="button" class="btn btn-sm btn-outline-danger remove-shipment">Remove</button></td>
                         </tr>
                     }
@@ -115,17 +128,18 @@
                         @for (var i = 0; i < Model.COM_Trs_SalesQuotationShipmentDetails.Count; i++)
                         {
                             var s = Model.COM_Trs_SalesQuotationShipmentDetails.ElementAt(i);
-                            <tr>
-                                <td><input name="COM_Trs_SalesQuotationShipmentDetails[@i].Quantity" value="@(s.Quantity?.ToString())" class="form-control form-control-sm" /></td>
-                                <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = $"COM_Trs_SalesQuotationShipmentDetails[{i}].PackageUnit", value = s.PackageUnit, cssClass = "form-select form-select-sm" })</td>
-                                <td><input name="COM_Trs_SalesQuotationShipmentDetails[@i].GrossWeight" value="@(s.GrossWeight?.ToString())" class="form-control form-control-sm" /></td>
-                                <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = $"COM_Trs_SalesQuotationShipmentDetails[{i}].GrossWeightUnit", value = s.GrossWeightUnit, cssClass = "form-select form-select-sm" })</td>
-                                <td class="d-flex gap-2">
-                                    <input name="COM_Trs_SalesQuotationShipmentDetails[@i].Length" value="@(s.Length?.ToString())" class="form-control form-control-sm" placeholder="L" />
-                                    <input name="COM_Trs_SalesQuotationShipmentDetails[@i].Width" value="@(s.Width?.ToString())" class="form-control form-control-sm" placeholder="W" />
-                                    <input name="COM_Trs_SalesQuotationShipmentDetails[@i].Height" value="@(s.Height?.ToString())" class="form-control form-control-sm" placeholder="H" />
+                            <tr data-total-gross-weight-kg="@(s.TotalGrossWeightKG ?? 0)">
+                                <td><input name="COM_Trs_SalesQuotationShipmentDetails[@i].Quantity" value="@s.Quantity" class="form-control form-control-sm js-ship-qty" required /></td>
+                                <td>@await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = $"COM_Trs_SalesQuotationShipmentDetails[{i}].PackageUnit", value = s.PackageUnit, cssClass = "form-control form-control-sm", unitCategoryCode = "Count", required = true })</td>
+                                <td><input name="COM_Trs_SalesQuotationShipmentDetails[@i].GrossWeight" value="@(s.GrossWeight?.ToString() ?? "0")" class="form-control form-control-sm" /></td>
+                                <td>@await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = $"COM_Trs_SalesQuotationShipmentDetails[{i}].GrossWeightUnit", value = s.GrossWeightUnit, cssClass = "form-control form-control-sm", unitCategoryCode = "Mass" })
+                                <td class="d-flex gap-1">
+                                    <input name="COM_Trs_SalesQuotationShipmentDetails[@i].Length" value="@(s.Length?.ToString() ?? "0")" class="form-control form-control-sm js-dim" placeholder="L" />
+                                    <input name="COM_Trs_SalesQuotationShipmentDetails[@i].Width" value="@(s.Width?.ToString() ?? "0")" class="form-control form-control-sm js-dim" placeholder="W" />
+                                    <input name="COM_Trs_SalesQuotationShipmentDetails[@i].Height" value="@(s.Height?.ToString() ?? "0")" class="form-control form-control-sm js-dim" placeholder="H" />
                                 </td>
-                                <td><input name="COM_Trs_SalesQuotationShipmentDetails[@i].TotalVolumeCBM" value="@(s.TotalVolumeCBM?.ToString())" class="form-control form-control-sm" /></td>
+                                <td>@await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = $"COM_Trs_SalesQuotationShipmentDetails[{i}].DimensionUnit", value = s.DimensionUnit, cssClass = "form-control form-control-sm", unitCategoryCode = "Length" })
+                                <td><input name="COM_Trs_SalesQuotationShipmentDetails[@i].TotalVolumeCBM" value="@(s.TotalVolumeCBM?.ToString() ?? "0")" class="form-control form-control-sm js-cbm" readonly /></td>
                                 <td><button type="button" class="btn btn-sm btn-outline-danger remove-shipment">Remove</button></td>
                             </tr>
                         }
@@ -133,27 +147,37 @@
                 </tbody>
             </table>
         </div>
+        <div class="p-2">
+            <button type="button" class="btn btn-sm btn-outline-primary" id="add-shipment">Add shipment</button>
+        </div>
+    </div>
+    <div class="card-footer">
+        <table class="table table-sm mb-0">
+            <tr>
+                <td><strong>Grand Total Gross Wt:</strong> <span id="grand-total-gross-wt">@(Model.GrandTotalGrossWeightKg ?? 0)</span></td>
+                <td><strong>Grand Total CBM:</strong> <span id="grand-total-cbm">@(Model.GrandTotalVolumeCBM ?? 0)</span></td>
+            </tr>
+        </table>
     </div>
 </div>
 
 <!-- Freight charges -->
 <div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="card-header">
         <h2 class="h6 mb-0">Freight Charges</h2>
-        <div>
-            <button type="button" class="btn btn-sm btn-outline-primary" id="add-charge">Add charge</button>
-        </div>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-sm mb-0">
+            <table class="table table-sm mb-0" id="charges-table">
                 <thead class="table-light">
                     <tr>
-                        <th style="width:110px">Code</th>
+                        <th style="width:110px" class="required">Code</th>
                         <th>Name</th>
                         <th style="width:90px">Unit</th>
                         <th style="width:120px">Unit Price</th>
-                        <th style="width:100px">Currency</th>
+                        <th style="width:120px" class="required">Margin</th>
+                        <th style="width:100px" class="required">Currency</th>
+                        <th style="width:120px" class="required">Ex. Rate=><span class="js-header-ccy-label">@(Model.CurrencyCode ?? "?")</span></th>
                         <th style="width:120px"></th>
                     </tr>
                 </thead>
@@ -161,18 +185,20 @@
                     @if (Model.COM_Trs_SalesQuotationFreightCharges == null || !Model.COM_Trs_SalesQuotationFreightCharges.Any())
                     {
                         <tr class="charge-main">
-                            <td>@await Component.InvokeAsync("ChargeSelect", new { name = "COM_Trs_SalesQuotationFreightCharges[0].ChargeCode", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
+                            <td>@await Component.InvokeAsync("ChargeSearchLookup", new { name = "COM_Trs_SalesQuotationFreightCharges[0].ChargeCode", value = (string?)null, cssClass = "form-control form-control-sm", companyCode = "PAC", department = "IB", quotationType = "FREIGHT", required = true })</td>
                             <td><input name="COM_Trs_SalesQuotationFreightCharges[0].ChargeName" class="form-control form-control-sm" /></td>
-                            <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "COM_Trs_SalesQuotationFreightCharges[0].ChargeUnit", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
-                            <td><input name="COM_Trs_SalesQuotationFreightCharges[0].UnitPrice" class="form-control form-control-sm" /></td>
-                            <td>@await Component.InvokeAsync("CurrencySelect", new { name = "COM_Trs_SalesQuotationFreightCharges[0].CurrencyCode", value = (string?)null, cssClass = "form-select form-select-sm" })</td>
+                            <td>@await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = "COM_Trs_SalesQuotationFreightCharges[0].ChargeUnit", value = (string?)null, cssClass = "form-control form-control-sm" })</td>
+                            <td><input name="COM_Trs_SalesQuotationFreightCharges[0].UnitPrice" value="0" class="form-control form-control-sm js-unitprice" readonly tabindex="-1" /></td>
+                            <td><input name="COM_Trs_SalesQuotationFreightCharges[0].MarginAmount" value="0" class="form-control form-control-sm" required /></td>
+                            <td>@await Component.InvokeAsync("CurrencySearchLookup", new { name = "COM_Trs_SalesQuotationFreightCharges[0].CurrencyCode", value = (string?)null, cssClass = "form-control form-control-sm", required = true })</td>
+                            <td><input name="COM_Trs_SalesQuotationFreightCharges[0].ExchangeRateToHeader" value="1" class="form-control form-control-sm js-exrate" required /></td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-outline-secondary toggle-tiers">Tiers</button>
                                 <button type="button" class="btn btn-sm btn-outline-danger remove-charge">Remove</button>
                             </td>
                         </tr>
                         <tr class="tier-row" style="display:none">
-                            <td colspan="6">
+                            <td colspan="8">
                                 <div class="tiers-container">
                                     <table class="table table-sm mb-0">
                                         <thead>
@@ -200,31 +226,33 @@
                         {
                             var c = Model.COM_Trs_SalesQuotationFreightCharges.ElementAt(i);
                             <tr class="charge-main">
-                                <td>@await Component.InvokeAsync("ChargeSelect", new { name = $"COM_Trs_SalesQuotationFreightCharges[{i}].ChargeCode", value = c.ChargeCode, cssClass = "form-select form-select-sm" })</td>
+                                <td>@await Component.InvokeAsync("ChargeSearchLookup", new { name = $"COM_Trs_SalesQuotationFreightCharges[{i}].ChargeCode", value = c.ChargeCode, cssClass = "form-control form-control-sm", companyCode = "PAC", department = "IB", quotationType = "FREIGHT", required = true })</td>
                                 <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].ChargeName" value="@c.ChargeName" class="form-control form-control-sm" /></td>
-                                <td>@await Component.InvokeAsync("UnitOfMeasureSelect", new { name = $"COM_Trs_SalesQuotationFreightCharges[{i}].ChargeUnit", value = c.ChargeUnit, cssClass = "form-select form-select-sm" })</td>
-                                <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].UnitPrice" value="@(c.UnitPrice?.ToString())" class="form-control form-control-sm" /></td>
-                                <td>@await Component.InvokeAsync("CurrencySelect", new { name = $"COM_Trs_SalesQuotationFreightCharges[{i}].CurrencyCode", value = c.CurrencyCode, cssClass = "form-select form-select-sm" })</td>
+                                <td>@await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = $"COM_Trs_SalesQuotationFreightCharges[{i}].ChargeUnit", value = c.ChargeUnit, cssClass = "form-control form-control-sm" })</td>
+                                <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].UnitPrice" value="@(c.UnitPrice?.ToString() ?? "0")" class="form-control form-control-sm js-unitprice" readonly tabindex="-1" /></td>
+                                <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].MarginAmount" value="@c.MarginAmount" class="form-control form-control-sm" required /></td>
+                                <td>@await Component.InvokeAsync("CurrencySearchLookup", new { name = $"COM_Trs_SalesQuotationFreightCharges[{i}].CurrencyCode", value = c.CurrencyCode, cssClass = "form-control form-control-sm", required = true })</td>
+                                <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].ExchangeRateToHeader" value="@(c.ExchangeRateToHeader != 0 ? c.ExchangeRateToHeader : 1)" class="form-control form-control-sm js-exrate" required /></td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-outline-secondary toggle-tiers">Tiers</button>
                                     <button type="button" class="btn btn-sm btn-outline-danger remove-charge">Remove</button>
                                 </td>
                             </tr>
                             <tr class="tier-row" style="display:none">
-                                <td colspan="6">
+                                <td colspan="8">
                                     <div class="tiers-container">
                                         <table class="table table-sm mb-0">
                                             <thead>
                                                 <tr><th>From</th><th>To</th><th>Unit Price</th><th></th></tr>
                                             </thead>
                                             <tbody class="tiers-body">
-                                                @for (var t = 0; t < c.COM_Trs_SalesQuotationFreightChargePriceTiers.Count; t++)
+                                                @for (var t = 0; t < (c.COM_Trs_SalesQuotationFreightChargePriceTiers?.Count ?? 0); t++)
                                                 {
                                                     var tier = c.COM_Trs_SalesQuotationFreightChargePriceTiers.ElementAt(t);
                                                     <tr>
                                                         <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].COM_Trs_SalesQuotationFreightChargePriceTiers[@t].FromValue" value="@(tier.FromValue?.ToString())" class="form-control form-control-sm" /></td>
                                                         <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].COM_Trs_SalesQuotationFreightChargePriceTiers[@t].ToValue" value="@(tier.ToValue?.ToString())" class="form-control form-control-sm" /></td>
-                                                        <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].COM_Trs_SalesQuotationFreightChargePriceTiers[@t].UnitPrice" value="@(tier.UnitPrice?.ToString())" class="form-control form-control-sm" /></td>
+                                                        <td><input name="COM_Trs_SalesQuotationFreightCharges[@i].COM_Trs_SalesQuotationFreightChargePriceTiers[@t].UnitPrice" value="@tier.UnitPrice" class="form-control form-control-sm" /></td>
                                                         <td><button type="button" class="btn btn-sm btn-outline-danger remove-tier">Remove</button></td>
                                                     </tr>
                                                 }
@@ -241,6 +269,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="p-2">
+            <button type="button" class="btn btn-sm btn-outline-primary" id="add-charge">Add charge</button>
+        </div>
     </div>
 </div>
 
@@ -249,46 +280,62 @@
     <a asp-action="QuotationsList" class="btn btn-outline-secondary">@L["Btn_Cancel"]</a>
 </div>
 
-<!-- Hidden source selects for JS cloning in dynamic rows -->
-<div id="source-selects" style="display:none">
-    @await Component.InvokeAsync("ChargeSelect", new { name = "__SRC_ChargeCode__", value = (string?)null, cssClass = "form-select form-select-sm" })
-    @await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "__SRC_ChargeUnit__", value = (string?)null, cssClass = "form-select form-select-sm" })
-    @await Component.InvokeAsync("CurrencySelect", new { name = "__SRC_CurrencyCode__", value = (string?)null, cssClass = "form-select form-select-sm" })
-    @await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "__SRC_PackageUnit__", value = (string?)null, cssClass = "form-select form-select-sm" })
-    @await Component.InvokeAsync("UnitOfMeasureSelect", new { name = "__SRC_GrossWeightUnit__", value = (string?)null, cssClass = "form-select form-select-sm" })
+<!-- Hidden source lookups for JS cloning in dynamic rows -->
+<div id="source-lookups" style="display:none">
+    <div data-source-id="__SRC_ChargeCode__">
+        @await Component.InvokeAsync("ChargeSearchLookup", new { name = "__SRC_ChargeCode__", value = (string?)null, cssClass = "form-control form-control-sm", companyCode = "PAC", department = "IB", quotationType = "FREIGHT", required = true })
+    </div>
+    <div data-source-id="__SRC_ChargeUnit__">
+        @await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = "__SRC_ChargeUnit__", value = (string?)null, cssClass = "form-control form-control-sm" })
+    </div>
+    <div data-source-id="__SRC_CurrencyCode__">
+        @await Component.InvokeAsync("CurrencySearchLookup", new { name = "__SRC_CurrencyCode__", value = (string?)null, cssClass = "form-control form-control-sm", required = true })
+    </div>
+    <div data-source-id="__SRC_PackageUnit__">
+        @await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = "__SRC_PackageUnit__", value = (string?)null, cssClass = "form-control form-control-sm", unitCategoryCode = "Count", required = true })
+    </div>
+    <div data-source-id="__SRC_GrossWeightUnit__">
+        @await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = "__SRC_GrossWeightUnit__", value = (string?)null, cssClass = "form-control form-control-sm", unitCategoryCode = "Mass" })
+    </div>
+    <div data-source-id="__SRC_DimensionUnit__">
+        @await Component.InvokeAsync("UnitOfMeasureSearchLookup", new { name = "__SRC_DimensionUnit__", value = (string?)null, cssClass = "form-control form-control-sm", unitCategoryCode = "Length" })
+    </div>
 </div>
 
 <!-- Templates -->
 <template id="shipment-template">
-    <tr>
-        <td><input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Quantity" class="form-control form-control-sm" /></td>
-        <td><select name="COM_Trs_SalesQuotationShipmentDetails[__index__].PackageUnit" class="form-select form-select-sm" data-clone-source="__SRC_PackageUnit__"></select></td>
+    <tr data-total-gross-weight-kg="0">
+        <td><input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Quantity" value="0" class="form-control form-control-sm js-ship-qty" required /></td>
+        <td><div data-clone-sl="__SRC_PackageUnit__" data-target-name="COM_Trs_SalesQuotationShipmentDetails[__index__].PackageUnit"></div></td>
         <td><input name="COM_Trs_SalesQuotationShipmentDetails[__index__].GrossWeight" class="form-control form-control-sm" /></td>
-        <td><select name="COM_Trs_SalesQuotationShipmentDetails[__index__].GrossWeightUnit" class="form-select form-select-sm" data-clone-source="__SRC_GrossWeightUnit__"></select></td>
-        <td class="d-flex gap-2">
-            <input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Length" class="form-control form-control-sm" placeholder="L" />
-            <input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Width" class="form-control form-control-sm" placeholder="W" />
-            <input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Height" class="form-control form-control-sm" placeholder="H" />
+        <td><div data-clone-sl="__SRC_GrossWeightUnit__" data-target-name="COM_Trs_SalesQuotationShipmentDetails[__index__].GrossWeightUnit"></div></td>
+        <td class="d-flex gap-1">
+            <input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Length" class="form-control form-control-sm js-dim" placeholder="L" />
+            <input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Width" class="form-control form-control-sm js-dim" placeholder="W" />
+            <input name="COM_Trs_SalesQuotationShipmentDetails[__index__].Height" class="form-control form-control-sm js-dim" placeholder="H" />
         </td>
-        <td><input name="COM_Trs_SalesQuotationShipmentDetails[__index__].TotalVolumeCBM" class="form-control form-control-sm" /></td>
+        <td><div data-clone-sl="__SRC_DimensionUnit__" data-target-name="COM_Trs_SalesQuotationShipmentDetails[__index__].DimensionUnit"></div></td>
+        <td><input name="COM_Trs_SalesQuotationShipmentDetails[__index__].TotalVolumeCBM" class="form-control form-control-sm js-cbm" readonly /></td>
         <td><button type="button" class="btn btn-sm btn-outline-danger remove-shipment">Remove</button></td>
     </tr>
 </template>
 
 <template id="charge-template">
     <tr class="charge-main">
-        <td><select name="COM_Trs_SalesQuotationFreightCharges[__index__].ChargeCode" class="form-select form-select-sm" data-clone-source="__SRC_ChargeCode__"></select></td>
+        <td><div data-clone-sl="__SRC_ChargeCode__" data-target-name="COM_Trs_SalesQuotationFreightCharges[__index__].ChargeCode"></div></td>
         <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].ChargeName" class="form-control form-control-sm" /></td>
-        <td><select name="COM_Trs_SalesQuotationFreightCharges[__index__].ChargeUnit" class="form-select form-select-sm" data-clone-source="__SRC_ChargeUnit__"></select></td>
-        <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].UnitPrice" class="form-control form-control-sm" /></td>
-        <td><select name="COM_Trs_SalesQuotationFreightCharges[__index__].CurrencyCode" class="form-select form-select-sm" data-clone-source="__SRC_CurrencyCode__"></select></td>
+        <td><div data-clone-sl="__SRC_ChargeUnit__" data-target-name="COM_Trs_SalesQuotationFreightCharges[__index__].ChargeUnit"></div></td>
+        <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].UnitPrice" value="0" class="form-control form-control-sm js-unitprice" readonly tabindex="-1" /></td>
+        <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].MarginAmount" value="0" class="form-control form-control-sm" required /></td>
+        <td><div data-clone-sl="__SRC_CurrencyCode__" data-target-name="COM_Trs_SalesQuotationFreightCharges[__index__].CurrencyCode"></div></td>
+        <td><input name="COM_Trs_SalesQuotationFreightCharges[__index__].ExchangeRateToHeader" value="1" class="form-control form-control-sm js-exrate" required /></td>
         <td>
             <button type="button" class="btn btn-sm btn-outline-secondary toggle-tiers">Tiers</button>
             <button type="button" class="btn btn-sm btn-outline-danger remove-charge">Remove</button>
         </td>
     </tr>
     <tr class="tier-row" style="display:none">
-        <td colspan="6">
+        <td colspan="8">
             <div class="tiers-container">
                 <table class="table table-sm mb-0">
                     <thead>
@@ -313,47 +360,208 @@
 
 <script>
     (function(){
+        /* ── Helpers ─────────────────────────────────── */
         function replaceIndex(html, idx){
             return html.split(/__index__/g).join(idx);
         }
 
-        // Clone options from hidden source selects into dynamically created selects
-        function hydrateSelects(container){
-            container.querySelectorAll('select[data-clone-source]').forEach(function(sel){
-                var srcName = sel.getAttribute('data-clone-source');
-                var src = document.querySelector('#source-selects select[name="' + srcName + '"]');
-                if (src){
-                    sel.innerHTML = src.innerHTML;
-                }
-                sel.removeAttribute('data-clone-source');
+        /* Clone SearchLookup components from #source-lookups into newly added rows */
+        function hydrateLookups(container){
+            container.querySelectorAll('[data-clone-sl]').forEach(function(el){
+                var srcId = el.getAttribute('data-clone-sl');
+                var targetName = el.getAttribute('data-target-name') || '';
+                var srcWrap = document.querySelector('#source-lookups [data-source-id="' + srcId + '"]');
+                if (!srcWrap) return;
+                var srcRoot = srcWrap.querySelector('.sl-root');
+                if (!srcRoot) return;
+                var clone = srcRoot.cloneNode(true);
+                clone.removeAttribute('data-sl-init');
+                var hidden = clone.querySelector('.sl-value');
+                if (hidden) { hidden.name = targetName; hidden.value = ''; }
+                var display = clone.querySelector('.sl-display');
+                if (display) display.value = '';
+                el.parentNode.replaceChild(clone, el);
+            });
+            if (window.SearchLookup) window.SearchLookup.initAll(container);
+        }
+
+        /* Read header currency from the SearchLookup hidden input */
+        function getHeaderCurrency(){
+            var el = document.querySelector('[name="CurrencyCode"]');
+            return el ? el.value : '';
+        }
+
+        /* ── Server-side shipment row recalculation ──── */
+        var _shipRecalcTimer;
+
+        function collectShipmentRowData(row){
+            function val(field){
+                var sl = row.querySelector('input.sl-value[name$=".' + field + '"]');
+                if (sl) return sl.value || null;
+                var el = row.querySelector('input[name$=".' + field + '"]');
+                return el ? (el.value || null) : null;
+            }
+            return {
+                quantity: val('Quantity'),
+                packageUnit: val('PackageUnit'),
+                grossWeight: val('GrossWeight'),
+                grossWeightUnit: val('GrossWeightUnit'),
+                length: val('Length'),
+                width: val('Width'),
+                height: val('Height'),
+                dimensionUnit: val('DimensionUnit')
+            };
+        }
+
+        function recalcShipmentRow(row){
+            var data = collectShipmentRowData(row);
+            var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            fetch('/quotationshipmentdetails/CalculateDetailDimension', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                body: JSON.stringify(data)
+            })
+            .then(function(r){ return r.ok ? r.json() : Promise.reject(r); })
+            .then(function(d){
+                var cbmEl = row.querySelector('.js-cbm');
+                if (cbmEl) cbmEl.value = d.totalVolumeCBM ?? '';
+                row.dataset.totalGrossWeightKg = d.totalGrossWeightKG || 0;
+                updateGrandTotals();
+            })
+            .catch(function(){});
+        }
+
+        function updateGrandTotals(){
+            var totalCBM = 0, totalGW = 0;
+            document.querySelectorAll('#shipments-body tr').forEach(function(row){
+                totalCBM += parseFloat(row.querySelector('.js-cbm')?.value) || 0;
+                totalGW += parseFloat(row.dataset.totalGrossWeightKg) || 0;
+            });
+            var gwSpan = document.getElementById('grand-total-gross-wt');
+            var cbmSpan = document.getElementById('grand-total-cbm');
+            if (gwSpan) gwSpan.textContent = totalGW ? totalGW.toFixed(6) : '0';
+            if (cbmSpan) cbmSpan.textContent = totalCBM ? totalCBM.toFixed(6) : '0';
+        }
+
+        /* Trigger recalc on any input in a shipment row (debounced) */
+        document.getElementById('shipments-body')?.addEventListener('input', function(e){
+            var row = e.target.closest('tr');
+            if (!row || e.target.classList.contains('js-cbm')) return;
+            clearTimeout(_shipRecalcTimer);
+            var capturedRow = row;
+            _shipRecalcTimer = setTimeout(function(){ recalcShipmentRow(capturedRow); }, 400);
+        });
+
+        /* Trigger recalc when a SearchLookup value changes inside a shipment row */
+        document.addEventListener('change', function(e){
+            if (e.target.classList.contains('sl-value') && e.target.name){
+                var row = e.target.closest('#shipments-body tr');
+                if (row) recalcShipmentRow(row);
+            }
+        });
+
+        /* ── Exchange rate logic ─────────────────────── */
+        function syncExRateForRow(row){
+            var ccyHidden = row.querySelector('input.sl-value[name$=".CurrencyCode"]');
+            var exInput = row.querySelector('.js-exrate');
+            if (!ccyHidden || !exInput) return;
+            var headerCcy = getHeaderCurrency();
+            var chargeCcy = ccyHidden.value;
+            if (headerCcy && chargeCcy && chargeCcy === headerCcy){
+                exInput.value = '1';
+                exInput.readOnly = true;
+            } else {
+                exInput.readOnly = false;
+            }
+        }
+
+        function syncAllExRates(){
+            document.querySelectorAll('#charges-body tr.charge-main').forEach(syncExRateForRow);
+        }
+
+        function updateHeaderCcyLabels(){
+            var ccy = getHeaderCurrency() || '?';
+            document.querySelectorAll('.js-header-ccy-label').forEach(function(el){ el.textContent = ccy; });
+        }
+
+        // Watch header currency change (SearchLookup fires change on hidden input)
+        var headerCcyInput = document.querySelector('[name="CurrencyCode"]');
+        if (headerCcyInput){
+            headerCcyInput.addEventListener('change', function(){
+                updateHeaderCcyLabels();
+                syncAllExRates();
             });
         }
 
+        // Watch charge-level currency change (SearchLookup fires change on .sl-value)
+        document.addEventListener('change', function(e){
+            if (e.target.classList.contains('sl-value') && e.target.name && e.target.name.endsWith('.CurrencyCode')){
+                var row = e.target.closest('tr.charge-main');
+                if (row) syncExRateForRow(row);
+            }
+        });
+
+        function requireHeaderCurrency(){
+            if (!getHeaderCurrency()){
+                alert('Please select the header Currency first.');
+                var headerDisplay = document.querySelector('[name="CurrencyCode"]')?.closest('.sl-root')?.querySelector('.sl-display');
+                if (headerDisplay) { headerDisplay.focus(); headerDisplay.classList.add('is-invalid'); setTimeout(function(){ headerDisplay.classList.remove('is-invalid'); }, 3000); }
+                return false;
+            }
+            return true;
+        }
+
+        /* Pre-fill charge currency from header */
+        function prefillChargeCurrency(chargeRow){
+            var headerCcy = getHeaderCurrency();
+            if (!headerCcy) return;
+            var ccyHidden = chargeRow.querySelector('input.sl-value[name$=".CurrencyCode"]');
+            if (!ccyHidden) return;
+            ccyHidden.value = headerCcy;
+            var slRoot = ccyHidden.closest('.sl-root');
+            if (!slRoot) return;
+            var optionsEl = slRoot.querySelector('.sl-options');
+            if (optionsEl){
+                try {
+                    var opts = JSON.parse(optionsEl.textContent);
+                    var match = opts.find(function(o){ return o.code === headerCcy; });
+                    var display = slRoot.querySelector('.sl-display');
+                    if (display && match) display.value = match.code + ' - ' + match.name;
+                } catch(e){}
+            }
+        }
+
+        /* ── Add shipment ────────────────────────────── */
         document.getElementById('add-shipment')?.addEventListener('click', function(){
             const body = document.getElementById('shipments-body');
             const tpl = document.getElementById('shipment-template').innerHTML;
             const idx = body.querySelectorAll('tr').length;
             const html = replaceIndex(tpl, idx);
             body.insertAdjacentHTML('beforeend', html);
-            hydrateSelects(body.lastElementChild);
+            hydrateLookups(body.lastElementChild);
         });
 
+        /* ── Add charge ──────────────────────────────── */
         document.getElementById('add-charge')?.addEventListener('click', function(){
+            if (!requireHeaderCurrency()) return;
             const body = document.getElementById('charges-body');
             const tpl = document.getElementById('charge-template').innerHTML;
             const idx = body.querySelectorAll('tr.charge-main').length;
             const html = replaceIndex(tpl, idx);
             body.insertAdjacentHTML('beforeend', html);
-            // hydrate both the charge-main row and the tier-row that follows it
             var rows = body.querySelectorAll('tr.charge-main');
             var lastMain = rows[rows.length - 1];
-            hydrateSelects(lastMain);
-            if (lastMain.nextElementSibling) hydrateSelects(lastMain.nextElementSibling);
+            hydrateLookups(lastMain);
+            if (lastMain.nextElementSibling) hydrateLookups(lastMain.nextElementSibling);
+            prefillChargeCurrency(lastMain);
+            syncExRateForRow(lastMain);
         });
 
+        /* ── Delegated click handlers ────────────────── */
         document.addEventListener('click', function(e){
             if (e.target.matches('.remove-shipment')){
                 e.target.closest('tr').remove();
+                updateGrandTotals();
             }
             if (e.target.matches('.remove-charge')){
                 const tr = e.target.closest('tr');
@@ -387,5 +595,9 @@
                 e.target.closest('tr').remove();
             }
         });
+
+        /* ── Initial sync on page load ───────────────── */
+        updateHeaderCcyLabels();
+        syncAllExRates();
     })();
 </script>

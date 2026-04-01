@@ -21,6 +21,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
+        AppLib.Authication.User.Clear();
         if (!ModelState.IsValid)
             return View(model);
 
@@ -36,7 +37,7 @@ public class AccountController : Controller
         }
 
         // ตรวจสอบสถานะ
-        if (user.IsVoid) // ปรับ property ชื่อถ้าใน entity ต่างกัน
+        if (user.IsVoid)
         {
             ModelState.AddModelError("", "This account is inactive.");
             return View(model);
@@ -52,6 +53,16 @@ public class AccountController : Controller
             ModelState.AddModelError("", "Invalid username or password.");
             return View(model);
         }
+
+        // Set static user session (single entry point)
+        AppLib.Authication.User.SetFromLogin(
+            username: user.Username,
+            fullname: user.Fullname,
+            isAdmin: user.IsAdminRole,
+            company: user.Company,
+            department: user.Department,
+            email: user.Email,
+            position: user.Position);
 
         var claims = new List<Claim>
         {
@@ -90,6 +101,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
+        AppLib.Authication.User.Clear();
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Login", "Account");
     }

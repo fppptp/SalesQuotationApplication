@@ -21,7 +21,6 @@
 </div>
 
 <form asp-action="EditQuotation" method="post">
-    <input type="hidden" name="CompanyCode" value="@Model.CompanyCode" />
     <input type="hidden" name="QuotationNo" value="@Model.QuotationNo" />
     <partial name="_QuotationForm" model="@Model" />
 </form>
